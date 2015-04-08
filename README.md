@@ -1,5 +1,7 @@
 # CyborgUnplug
+
 Cyborg Unplug firmware files
+============================
 
 Here are the files relevant to build the Cyborg Unplug firmware for the
 TPLink-WR710N (Atheros ar71xx) using the OpenWrt Image Builder. The target was
@@ -16,7 +18,7 @@ All of the code in root/scripts, www/cgi-bin was written by Julian Oliver with
 the PHP (UI code) in www/ written by both Julian Oliver and Samim Winiger.
 
 BUILD
--------
+=====
 
 (Tested on Debian GNU/Linux (Stable) only)
 
@@ -36,7 +38,7 @@ _cyborg-unplug-wr710n.bin_ in a folder _cyborg-unplug_ in your working
 directory.
 
 INSTALL
--------
+=======
 
 Start up your TP-Link WR710N and connect to it. Visit the administration page
 and in the advanced settings select 'upgrade firmware'. Browse to the file
@@ -48,7 +50,7 @@ worst you'll need a soldering iron and a USB serial FTDI:
     http://wiki.openwrt.org/toh/tp-link/tl-wr710n
 
 USE
----
+===
 
 Once it has rebooted pick up a smartphone, tablet or laptop and look for a
 network beginning with the word _unplug_, followed with 6 alphanumeric
