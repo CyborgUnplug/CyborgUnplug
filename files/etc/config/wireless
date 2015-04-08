@@ -1,0 +1,17 @@
+
+config wifi-device 'radio0'
+	option type 'mac80211'
+	option channel '11'
+	option hwmode '11g'
+	option path 'platform/ar933x_wmac'
+	option htmode 'HT20'
+
+config wifi-iface
+	option device 'radio0'
+	option network 'lan'
+	option ssid 'unplug'
+	option encryption 'none'
+	option mode 'ap'
+    option encryption 'psk2'
+    option key 'l1ttl35n1pp3r'
+

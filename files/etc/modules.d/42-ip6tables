@@ -1,0 +1,7 @@
+nf_defrag_ipv6
+nf_conntrack_ipv6
+ip6_tables
+ip6table_filter
+ip6table_mangle
+ip6table_raw
+ip6t_REJECT
