@@ -1,11 +1,13 @@
 # CyborgUnplug
 
-Cyborg Unplug OpenWrt firmware for TP-Link WR710N
+Cyborg Unplug firmware for TP-Link WR710N
 =================================================
 
-Here are the files relevant to build the Cyborg Unplug firmware for the
-TPLink-WR710N (Atheros ar71xx) using the OpenWrt Image Builder. The target was
-the European 8Mb Flash model. It will not run on anything smaller.
+Here are the files relevant to build the [https://plugunplug.net](Cyborg Unplug)
+firmware for the TPLink WR710N (Atheros ar71xx). It is based on
+[http://openwrt.org](OpenWrt) and intended to be built using the OpenWrt Image
+Builder. The target was the European 8Mb Flash model. It will not run on
+anything smaller.
 
 This is similar but not as polished as the firmware shipping on the sold rt5350f
 _Little Snipper_ Cyborg Unplug model; intended for the more experienced
@@ -14,8 +16,9 @@ no smartphone notification system, no Tor transparent proxy and a disabled
 update routine (easily enabled). These components/aspects will be refined for
 the _Little Snipper_ and possibly folded back into this branch at a later date.
 
-All of the code in root/scripts, www/cgi-bin was written by Julian Oliver with
-the PHP (UI code) in www/ written by both Julian Oliver and Samim Winiger.
+All of the code in root/scripts, www/cgi-bin was written by
+[http://julianoliver.com](Julian Oliver) with the PHP (UI code) in www/ written
+by both Julian Oliver and [http://samim.io](Samim Winiger).
 
 BUILD
 -----
