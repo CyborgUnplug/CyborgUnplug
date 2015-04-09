@@ -39,7 +39,6 @@ insmod ath9k
 # Set to station mode (taking down 'hostapd') so that we have control of the NIC
 uci set wireless.@wifi-iface[0].mode="sta"
 uci commit wireless
-wifi down
 wifi up
 sleep 1 # Important
 
@@ -96,6 +95,8 @@ case "$MODE" in
         # Read in the networks we're watching and build the target string. 
         SRCN=$(cat /www/config/networks | cut -d "," -f 1)
         NETWORKS='@('$(echo $SRCN | sed 's/\ /\|/g')')'
+        # Screen is handy when debugging and needing to log in and live monitor
+        # the airodump-ng output. It adds no overhead so left in.
         screen -Adm airodump-ng --output-format csv -c $CHANNELS -w $CAPDIR/cap $NIC
         #airodump-ng --output-format csv -c $CHANNELS -w $CAPDIR/cap $NIC
     ;;
@@ -119,7 +120,7 @@ while true;
             sleep $POLLTIME
             echo "Sleeping for " $POLLTIME " and writing capture log"
             
-            # Sort associated clients into temporary pairing files Channels are
+            # Sort associated clients into temporary pairing files. Channels are
             # not in the probed/association section of airodump-ng and so the
             # pairs need to be extraced and matched separately.
             cat $CAPDIR/cap*.csv | awk '/Key/ {flag=1;next} /Station/{flag=0} flag {print $1 " " $6}' | sed -e 's/,//g' | sort -u > $CAPDIR/channels 
