@@ -97,16 +97,16 @@ case "$MODE" in
         NETWORKS='@('$(echo $SRCN | sed 's/\ /\|/g')')'
         # Screen is handy when debugging and needing to log in and live monitor
         # the airodump-ng output. It adds no overhead so left in.
-        screen -Adm airodump-ng --output-format csv -c $CHANNELS -w $CAPDIR/cap $NIC
+        screen -Adm airodump-ng -a --output-format csv -c $CHANNELS -w $CAPDIR/cap $NIC
         #airodump-ng --output-format csv -c $CHANNELS -w $CAPDIR/cap $NIC
     ;;
     *alarm*)
         # airodump-ng will do a random walk of channels on its own
-        screen -Adm airodump-ng --output-format csv -w $CAPDIR/cap $NIC
+        screen -Adm airodump-ng -a --output-format csv -w $CAPDIR/cap $NIC
         #airodump-ng --output-format csv -w $CAPDIR/cap $NIC
     ;;
     *allout*)
-        screen -Adm airodump-ng --output-format csv -w $CAPDIR/cap $NIC
+        screen -Adm airodump-ng -a --output-format csv -w $CAPDIR/cap $NIC
         #airodump-ng --output-format csv -w $CAPDIR/cap $NIC
     ;;
     *)                    
