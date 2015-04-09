@@ -68,7 +68,7 @@ while true;
 		if [ -f $CONFIG/armed ]; then
 				sleep 5 # Grace time for final configuration page to load
 				echo "Starting detector..."
-				$SCRIPTS/detect.sh &
+                $SCRIPTS/detect.sh &
                 rm -f $CONFIG/updated # remove if it exists
 				exit
 		fi
