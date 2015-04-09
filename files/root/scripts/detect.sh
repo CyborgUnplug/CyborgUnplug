@@ -66,6 +66,7 @@ rm -f $CAPDIR/cap*.csv
 cp /www/active.php /www/index.php
 
 deauth() {
+    echo "Target found."
     # Pause airodump-ng
     killall -STOP airodump-ng 
     # We can set the channel of $NIC and mon0 at once as $NIC is in Monitor mode
@@ -125,9 +126,14 @@ while true;
             # pairs need to be extraced and matched separately.
             cat $CAPDIR/cap*.csv | awk '/Key/ {flag=1;next} /Station/{flag=0} flag {print $1 " " $6}' | sed -e 's/,//g' | sort -u > $CAPDIR/channels 
             cat $CAPDIR/cap*.csv | sed '1,/Probed/d'| awk '{ print $1 " " $8 " " $4 " " $5}' | sed -e 's/,//g' -e '/not/d' | sort -u > $CAPDIR/pairs 
-            cat $CAPDIR/pairs
-
             echo "<-------------------------------------------------------//"
+            if [ -f $CAPDIR/pairs ]; then
+                echo "These are our association pairs"
+                cat $CAPDIR/pairs
+            else
+                echo "No association pairs found so far"
+            fi
+            echo "//------------------------------------------------------->"
             if [ -f $CAPDIR/pairs ]; then
                      while read line;
                              do
@@ -162,11 +168,12 @@ while true;
                                             echo $(date) "detected" $STA "on" $BSSID >> $LOGS/detected
                                         fi
                                 else
-                                    echo "No targets detected this pair for mode:" $MODE 
+                                    # Remove redirect during debugging
+                                    echo "No targets detected this pair for mode:" $MODE > /dev/null 
                                 fi
                          done < $CAPDIR/pairs
-                         echo "Processed" $(cat /tmp/pairs)
-                         echo "Removing temporary files"
+                         echo "Removing temporary files and waiting for capture."
                          rm -f $CAPDIR/pairs $CAPDIR/channels 
+                         echo "<-------------------------------------------------------//"
                     fi
 done
