@@ -46,7 +46,7 @@ INSTALL
 
 Start up your TP-Link WR710N and connect to it. Visit the administration page
 and in the advanced settings select 'upgrade firmware'. Browse to the file
-_cyborg-unplug_ , let it flash and once done, it should reboot.
+_cyborg-unplug-wr710n.bin_ , let it flash and once done, it should reboot.
 
 If anything goes hideously wrong, see the unbricking guide on this page. At the
 worst you'll need a soldering iron and a USB serial FTDI:
