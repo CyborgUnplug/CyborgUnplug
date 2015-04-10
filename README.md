@@ -69,9 +69,57 @@ You will be granted an IP in the 10.10.10.0-255 range. Either type
 'littlesnipper' or 'http://10.10.10.1' in the URL bar of your browser to be
 taken to the configuration page.
 
+NOTE: If no configuration is done using the browser interface, the Unplug
+defaults to being a nice little wireless router - just plug it into a router
+with a gateway to the Internet (with an Ethernet cable on the WAN port) and
+you're good to go.
 
+CONFIGURE
+---------
 
+To change passwords (recommended), log in over ssh on port 3030 like so:
 
+    ssh -p 3030 root@10.10.10.1
+   
+Password is:
 
+    l1ttl35n1pp3r
 
+You'll see:
+
+    BusyBox v1.22.1 (2014-07-17 06:45:57 PDT) built-in shell (ash)
+    Enter 'help' for a list of built-in commands.
+
+                __                                  __         
+      ______ __/ /  ___  _______ _  __ _____  ___  / /_ _____ _
+     / __/ // / _ \/ _ \/ __/ _ `/ / // / _ \/ _ \/ / // / _ `/
+     \__/\_, /_.__/\___/_/  \_, /  \_,_/_//_/ .__/_/\_,_/\_, / 
+        /___/              /___/           /_/          /___/ 
+     
+     ----------------------------------------------------------
+     Built on OpenWrt BARRIER BREAKER (Bleeding Edge) 
+     ----------------------------------------------------------
+     http://plugunplug.net
+     http://openwrt.org
+     ----------------------------------------------------------
+
+Now change your root password by typing the following, providing a new one in
+turn:
+
+    passwd
+
+Now change the WiFi key (must be between 8 and 63 chars long):
+
+    uci set wireless.@wifi-iface[0].key="yourKeyH3r3"
+    uci commit
+    exit & reboot -n
+
+To change the ESSID of your Unplug, type:
+
+    uci set wireless.@wifi-iface[0].SSID="AnotherESSID"
+    uci commit
+    exit & reboot -n
+
+NOTE: If you log in over Ethernet cable, type 'wifi' in place of 'exit &
+reboot -n'.
 
