@@ -24,6 +24,18 @@ under the [General Public License](https://www.gnu.org/copyleft/gpl.html) (Versi
 The *files/etc* has been included as it contains many original OpenWrt files
 modified to get things working. It was easier just to throw in the whole dir.
 
+ABOUT CYBORG UNPLUG
+------------------
+
+Cyborg Unplug is an anti wireless (WiFi) surveillance system for the home, hotel
+and workplace. It detects and kicks selected devices known to pose a risk to
+personal privacy from your wireless network, breaking uploads and streams.
+
+Rather than functioning as a jammer, it targets devices selectively and as such
+is gentle on spectra.
+
+Visit the project page [here](https://plugunplug.net).
+
 BUILD
 -----
 
