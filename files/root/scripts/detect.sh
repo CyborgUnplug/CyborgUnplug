@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Cyborg Unplug detector script for the TL-WR710. Detects and de-auths
-# use-selected target devices. 
+# user-selected target devices resourced from /www/config/. 
 # 
 # Copyright (C) 2015 Julian Oliver 
 # 
