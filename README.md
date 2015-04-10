@@ -16,10 +16,13 @@ no smartphone notification system, no Tor transparent proxy and a disabled
 update routine (easily enabled). These components/aspects will be refined for
 the _Little Snipper_ and possibly folded back into this branch at a later date.
 
-All of the code in root/scripts, www/cgi-bin was written by [Julian
-Oliver](http://julianoliver.com) with the PHP (UI code) in www/ written by both
+All of the code in *root/scripts*, *www/cgi-bin* was written by [Julian
+Oliver](http://julianoliver.com) with the PHP (UI code) in *www/* written by both
 Julian Oliver and [Samim Winiger](http://samim.io) and is made available here
 under the [General Public License](https://www.gnu.org/copyleft/gpl.html) (Version 3 or later).
+
+The *files/etc* has been included as it contains many original OpenWrt files
+modified to get things working. It was easier just to throw in the whole dir.
 
 BUILD
 -----
@@ -31,14 +34,14 @@ Builder for the ar71xx target:
 
     http://wiki.openwrt.org/doc/howto/obtain.firmware.generate
 
-Copy the _files_ directory and _build.sh_ script from this repo into the top
+Copy the *files* directory and *build.sh* script from this repo into the top
 level of that tree and, ensuring you have a working Internet connection, run the
 script like so:
 
     ~$ sh build.sh
 
 If the stars are on your side, that should build, leaving you with the file
-_cyborg-unplug-wr710n.bin_ in a folder _cyborg-unplug_ in your working
+*cyborg-unplug-wr710n.bin* in a folder *cyborg-unplug* in your working
 directory.
 
 INSTALL
@@ -46,7 +49,7 @@ INSTALL
 
 Start up your TP-Link WR710N and connect to it. Visit the administration page
 and in the advanced settings select 'upgrade firmware'. Browse to the file
-_cyborg-unplug-wr710n.bin_ , let it flash and once done, it should reboot.
+*cyborg-unplug-wr710n.bin* , let it flash and once done, it should reboot.
 
 If anything goes hideously wrong, see the unbricking guide on this page. At the
 worst you'll need a soldering iron and a USB serial FTDI:
@@ -66,7 +69,7 @@ Connect to the network using the (deliberately unimaginative) password:
     l1ttl35n1pp3r
 
 You will be granted an IP in the 10.10.10.0-255 range. Either type
-'littlesnipper' or 'http://10.10.10.1' in the URL bar of your browser to be
+_littlesnipper_ or _http://10.10.10.1_ in the URL bar of your browser to be
 taken to the configuration page.
 
 NOTE: If no configuration is done using the browser interface, the Unplug
@@ -120,6 +123,6 @@ To change the ESSID of your Unplug, type:
     uci commit
     exit & reboot -n
 
-NOTE: If you log in over Ethernet cable, type 'wifi' in place of 'exit &
-reboot -n'.
+NOTE: If you log in over Ethernet cable, type _wifi_ in place of _exit &
+reboot -n_.
 
