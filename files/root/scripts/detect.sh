@@ -28,6 +28,9 @@ DROPTIME=20 # Seconds we wait for a previously seen target to re-appear before d
 FRAMES=10 # Number of de-auth frames to send. 10 a good hit/time tradeoff
 NETWORKS='' # Placeholder. Technically redundant.
 
+COUNT=0
+RESET=360
+
 # Read in the user selected target devices and build the target string.
 SRCT=$(cat /www/config/targets | cut -d "," -f 2)
 TARGETS='@('$(echo $SRCT | sed 's/\ /\*\|/g')'*)'
@@ -67,9 +70,9 @@ cp /www/active.php /www/index.php
 
 deauth() {
     echo "Target found."
-    # Pause airodump-ng
-    killall -STOP airodump-ng 
+    # Pause airodump-ng and set the channel
     # We can set the channel of $NIC and mon0 at once as $NIC is in Monitor mode
+    killall -STOP airodump-ng 
     iwconfig $NIC channel $SETCHANNEL
     sleep 1
     # Log this for the report page
@@ -98,42 +101,43 @@ case "$MODE" in
         NETWORKS='@('$(echo $SRCN | sed 's/\ /\|/g')')'
         # Screen is handy when debugging and needing to log in and live monitor
         # the airodump-ng output. It adds no overhead so left in.
-        screen -Adm airodump-ng -a --output-format csv -c $CHANNELS -w $CAPDIR/cap $NIC
+        DUMP="screen -Adm airodump-ng -a --output-format csv -c $CHANNELS -w $CAPDIR/cap $NIC"
         #airodump-ng --output-format csv -c $CHANNELS -w $CAPDIR/cap $NIC
     ;;
     *alarm*)
         # airodump-ng will do a random walk of channels on its own
-        screen -Adm airodump-ng -a --output-format csv -w $CAPDIR/cap $NIC
+        DUMP="screen -Adm airodump-ng -a --output-format csv -w $CAPDIR/cap $NIC"
         #airodump-ng --output-format csv -w $CAPDIR/cap $NIC
     ;;
     *allout*)
-        screen -Adm airodump-ng -a --output-format csv -w $CAPDIR/cap $NIC
+        DUMP="screen -Adm airodump-ng -a --output-format csv -w $CAPDIR/cap $NIC"
         #airodump-ng --output-format csv -w $CAPDIR/cap $NIC
     ;;
     *)                    
 esac
+
+eval $DUMP
 
 echo "This is our target list: "$TARGETS > $LOGS/targets
 
 while true;
         do
             echo "//------------------------------------------------------->"
+            let "COUNT=$COUNT+1"
             sleep $POLLTIME
             echo "Sleeping for " $POLLTIME " and writing capture log"
-            
             # Sort associated clients into temporary pairing files. Channels are
             # not in the probed/association section of airodump-ng and so the
             # pairs need to be extraced and matched separately.
             cat $CAPDIR/cap*.csv | awk '/Key/ {flag=1;next} /Station/{flag=0} flag {print $1 " " $6}' | sed -e 's/,//g' | sort -u > $CAPDIR/channels 
             cat $CAPDIR/cap*.csv | sed '1,/Probed/d'| awk '{ print $1 " " $8 " " $4 " " $5}' | sed -e 's/,//g' -e '/not/d' | sort -u > $CAPDIR/pairs 
-            echo "<-------------------------------------------------------//"
             if [ -f $CAPDIR/pairs ]; then
                 echo "These are our association pairs"
                 cat $CAPDIR/pairs
             else
                 echo "No association pairs found so far"
             fi
-            echo "//------------------------------------------------------->"
+            echo "//<-----------------Starting-pass-$COUNT------------------"
             if [ -f $CAPDIR/pairs ]; then
                      while read line;
                              do
@@ -149,7 +153,6 @@ while true;
                                 if [[ "$STA" == $TARGETS && "$BSSID" == $NETWORKS && "$MODE" == "territory" ]]; then
                                         LASTT=$(date -d "$(echo $line | cut -d " " -f 3,4)" "+%s")
                                         let "DELTA=$T - $LASTT"
-                                        echo $DELTA "for mode" $TERRITORY "and target" $STA
                                         if [ $DELTA -lt $DROPTIME ]; then
                                             SETCHANNEL=$(cat $CONFIG/networks | grep -i $BSSID | awk 'BEGIN { FS = "," }; { print $NF }')
                                             deauth
@@ -171,9 +174,21 @@ while true;
                                     # Remove redirect during debugging
                                     echo "No targets detected this pair for mode:" $MODE > /dev/null 
                                 fi
-                         done < $CAPDIR/pairs
-                         echo "Removing temporary files and waiting for capture."
-                         rm -f $CAPDIR/pairs $CAPDIR/channels 
-                         echo "<-------------------------------------------------------//"
+                        done < $CAPDIR/pairs
+                        echo "Removing temporary files and waiting for capture."
+                        rm -f $CAPDIR/pairs $CAPDIR/channels 
+
+                        # airodump-ng provides no way to flush memory, which can
+                        # grow full of old associations and probes. This results
+                        # in large CSVs, which airodump-ng copies out
+                        # continuously from memory. Here we restart it every
+                        # $RESET passes (default is about an hour) to flush memory.
+                        if [ $COUNT -gt $RESET ]; then
+                            killall screen
+                            rm -f $CAPDIR/*.csv
+                            sleep 1
+                            eval $DUMP
+                            COUNT=0
+                        fi
                     fi
 done

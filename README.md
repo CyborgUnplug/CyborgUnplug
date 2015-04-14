@@ -29,7 +29,7 @@ ABOUT CYBORG UNPLUG
 
 Cyborg Unplug is an anti wireless (WiFi) surveillance system for the home, hotel
 and workplace. It detects and kicks selected devices known to pose a risk to
-personal privacy from your wireless network, breaking uploads and streams.
+personal privacy from local wireless networks, breaking uploads and streams.
 
 Rather than functioning as a jammer, it targets devices selectively and as such
 is gentle on spectra.
