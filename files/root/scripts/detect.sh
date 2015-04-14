@@ -116,6 +116,7 @@ case "$MODE" in
     *)                    
 esac
 
+# Start airodump-ng
 eval $DUMP
 
 echo "This is our target list: "$TARGETS > $LOGS/targets
@@ -124,12 +125,14 @@ while true;
         do
             echo "//------------------------------------------------------->"
             let "COUNT=$COUNT+1"
-            sleep $POLLTIME
             echo "Sleeping for " $POLLTIME " and writing capture log"
+            sleep $POLLTIME
             # Sort associated clients into temporary pairing files. Channels are
             # not in the probed/association section of airodump-ng and so the
             # pairs need to be extraced and matched separately.
-            cat $CAPDIR/cap*.csv | awk '/Key/ {flag=1;next} /Station/{flag=0} flag {print $1 " " $6}' | sed -e 's/,//g' | sort -u > $CAPDIR/channels 
+            if [[ "$MODE" == "allout" ]]; then
+                cat $CAPDIR/cap*.csv | awk '/Key/ {flag=1;next} /Station/{flag=0} flag {print $1 " " $6}' | sed -e 's/,//g' | sort -u > $CAPDIR/channels 
+            fi
             cat $CAPDIR/cap*.csv | sed '1,/Probed/d'| awk '{ print $1 " " $8 " " $4 " " $5}' | sed -e 's/,//g' -e '/not/d' | sort -u > $CAPDIR/pairs 
             if [ -f $CAPDIR/pairs ]; then
                 echo "These are our association pairs"
@@ -175,7 +178,7 @@ while true;
                                     echo "No targets detected this pair for mode:" $MODE > /dev/null 
                                 fi
                         done < $CAPDIR/pairs
-                        echo "Removing temporary files and waiting for capture."
+                        echo "Removing temporary files."
                         rm -f $CAPDIR/pairs $CAPDIR/channels 
 
                         # airodump-ng provides no way to flush memory, which can
@@ -185,10 +188,16 @@ while true;
                         # $RESET passes (default is about an hour) to flush memory.
                         if [ $COUNT -gt $RESET ]; then
                             killall screen
+                            COUNT=0
                             rm -f $CAPDIR/*.csv
                             sleep 1
                             eval $DUMP
-                            COUNT=0
+                            if [ $? -ne 0 ]; then
+                                # Something is wrong, like a dead mon0
+                                # and/or NIC. Store settings and reboot.
+                                touch $CONFIG/updated && reboot -n 
+                            fi
+
                         fi
                     fi
 done
