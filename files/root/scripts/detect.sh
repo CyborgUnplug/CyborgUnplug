@@ -58,7 +58,6 @@ ifconfig $NIC up
 airmon-ng stop mon0 && airmon-ng start $NIC 
 sleep 2
 
-
 deauth() {
     echo "Target found."
     # Pause airodump-ng and set the channel
@@ -91,10 +90,12 @@ channelWalk(){
         done
 }
 
-
+# Start horst with upper channel limit of 13 in quiet mode and a command hook
+# for remote control (-X). Has to be backgrounded.
 horst -u 13 -q -d 250 -i $NIC -f DATA -o $CAPDIR/cap -X detect &
 HPID=$!
-if [ $? -ne 0 ]; then
+
+if [ $? -ne 0 ]; then # Test horst exit status 
   # Something is wrong, like a dead mon0
   # and/or NIC. Store settings and reboot.
    touch $CONFIG/updated && reboot -n 
@@ -142,12 +143,11 @@ while true;
                     kill -STOP $CPID
                      while read line;
                              do
-                                ARR=($line)
+                                ARR=($line) # Array from the line
                                 SRC=${ARR[0]}
                                 DST=${ARR[1]}
                                 BSSID=${ARR[2]}
                                 FREQ=${ARR[3]}
-
                                 echo $SRC $DST $BSSID $FREQ
 
                                 if [ $SRC != $BSSID ]; then
@@ -167,17 +167,14 @@ while true;
                                     # Remove redirect during debugging
                                     echo "No targets detected this pair for mode:" $MODE > /dev/null 
                                 fi
-                        done < $CAPDIR/pairs
-                        echo "Removing temporary files."
-                        rm -f $CAPDIR/pairs $CAPDIR/channels 
-                        horst -x pause
-                        kill -CONT $CPID
-                        rm -f $CAPDIR/cap
-                        horst -x outfile=$CAPDIR/cap
-                        horst -x resume 
-
-                    else
-                        echo "No pairs this round"
-                    fi
+                        done < $CAPDIR/pairs #EOF
+            echo "Removing temporary files."
+            rm -f $CAPDIR/pairs $CAPDIR/channels 
+            horst -x pause
+            kill -CONT $CPID
+            rm -f $CAPDIR/cap
+            horst -x outfile=$CAPDIR/cap
+            horst -x resume 
+        fi
 done
 
