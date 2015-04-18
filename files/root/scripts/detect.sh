@@ -111,6 +111,7 @@ case "$MODE" in
         # We'll poll for as many seconds as there are networks to guard 
         POLLTIME=$(wc -l < $CONFIG/networks)
         echo "These are the networks we're watching"
+        cat $CONFIG/networks
         # Read in the networks we're watching and build the target string. 
         SRCN=$(cat /www/config/networks | cut -d "," -f 1)
         NETWORKS='@('$(echo $SRCN | sed 's/\ /\|/g')')'
