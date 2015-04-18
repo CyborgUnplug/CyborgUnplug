@@ -144,10 +144,7 @@ while true;
                      while read line;
                              do
                                 ARR=($line) # Array from the line
-                                SRC=${ARR[0]}
-                                DST=${ARR[1]}
-                                BSSID=${ARR[2]}
-                                FREQ=${ARR[3]}
+                                SRC=${ARR[0]}; DST=${ARR[1]}; BSSID=${ARR[2]}; FREQ=${ARR[3]}
                                 echo $SRC $DST $BSSID $FREQ
 
                                 if [ $SRC != $BSSID ]; then
