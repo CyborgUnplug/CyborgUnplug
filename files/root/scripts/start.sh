@@ -25,8 +25,6 @@ DATA=/www/data
 POLLTIME=5                                          
 WIFIDEV=radio0                                                             
 
-#$SCRIPTS/gpio.sh
-
 sleep 10
 
 echo "Scanning for networks..."
@@ -35,7 +33,7 @@ echo "Found the following.."
 cat $DATA/networks
  
 # Derive a unique ESSID from the internal NIC
-SSID=unplug_$(ifconfig -a | grep eth0.1 | cut -d ':' -f 5-8 | sed 's/://g')
+SSID=unplug_$(ifconfig -a | grep eth1 | cut -d ':' -f 5-8 | sed 's/://g')
  
 # Bring up Access Point
 wifi down $WIFIDEV
