@@ -25,6 +25,9 @@ DATA=/www/data
 POLLTIME=5                                          
 WIFIDEV=radio0                                                             
 
+# Start the automounter
+block umount; block mount
+
 $SCRIPTS/gpio.sh
 
 if [ ! -f $SCRIPTS/ledfifo ]; then 
@@ -42,6 +45,7 @@ cat $DATA/networks
  
 # Derive a unique ESSID from the internal NIC
 SSID=unplug_$(ifconfig -a | grep eth0.1 | cut -d ':' -f 5-8 | sed 's/://g')
+echo $SSID > $CONFIG/ssid
  
 # Bring up Access Point
 wifi down $WIFIDEV
