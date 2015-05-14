@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Cyborg Unplug scan script for the RT5350f Little Snipper. Scans for networks and writes out
+# Cyborg Unplug scan script for the TL-WR710. Scans for networks and writes out
 # the important stuff for each all on one line.
 #
 # Copyright (C) 2015 Julian Oliver
