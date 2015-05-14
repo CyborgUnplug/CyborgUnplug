@@ -57,6 +57,15 @@ case "$EVENT" in
 		echo '<meta http-equiv="Refresh" content="1; url=http://10.10.10.1/share.php">'
 		echo '</html>'
     ;; 
+    *umount*)
+        block umount
+        sleep 1
+		echo Content-type: text/html
+		echo
+		echo "<html>"
+		echo '<meta http-equiv="Refresh" content="1; url=http://10.10.10.1/share.php">'
+		echo '</html>'
+    ;; 
 	*devices*)
 		echo $EVENT > /tmp/foo
 		echo $EVENT | cut -d "=" -f 2 | sed -e 's/%3D/=/g' -e 's/\ //g' | base64 -d | sed 's/^\ //' > $CONFIG/targets
