@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Cyborg Unplug main start script for the RT5350f Little Snipper. Invoked from /etc/rc.local
+# Cyborg Unplug main start script for the TL-WR710. Invoked from /etc/rc.local
 # on each boot.
 #
 # Copyright (C) 2015 Julian Oliver
@@ -25,7 +25,13 @@ DATA=/www/data
 POLLTIME=5                                          
 WIFIDEV=radio0                                                             
 
-#$SCRIPTS/gpio.sh
+$SCRIPTS/gpio.sh
+
+if [ ! -f $SCRIPTS/ledfifo ]; then 
+    mkfifo $SCRIPTS/ledfifo
+fi
+
+$SCRIPTS/blink.sh &
 
 sleep 10
 
