@@ -9,7 +9,6 @@ number=$RANDOM
 let "number %= $RANGE"
 #sleep $number
 echo sleeping for $number
-touch /tmp/foo
 rm -f update-daily.tar.gz
 echo "Retreiving update package"
 wget http://dislocative.com/unplug/update/update-daily.tar.gz -P $TMPDIR 
@@ -24,6 +23,6 @@ if [[ "$CHECKSIG" == VALIDSIG ]]
         echo "Backing up existing files..."
         tar cvzf $BUPDIR/$FULLDATE.tar.gz /etc /root/scripts /www
 		echo "Extracting archive..."
-		tar xvzf update-daily.tar.gz -C /
+		tar xvzf update-daily.tar.gz -C $TMPDIR
         reboot
 fi
