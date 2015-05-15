@@ -28,6 +28,7 @@ WIFIDEV=radio0
 # Start the automounter
 block umount; block mount
 
+# Setup GPIO for indicator LED
 $SCRIPTS/gpio.sh
 
 if [ ! -f $SCRIPTS/ledfifo ]; then 
@@ -45,7 +46,7 @@ cat $DATA/networks
  
 # Derive a unique ESSID from the internal NIC
 SSID=unplug_$(ifconfig -a | grep eth0.1 | cut -d ':' -f 5-8 | sed 's/://g')
-echo $SSID > $CONFIG/ssid
+echo $SSID > $CONFIG/ssid # Needed for UI later
  
 # Bring up Access Point
 wifi down $WIFIDEV
