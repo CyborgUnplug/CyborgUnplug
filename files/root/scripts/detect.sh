@@ -56,6 +56,10 @@ ifconfig $NIC up
 # Create a monitor device for aireplay-ng to de-auth with. Aireplay will only
 # work with an airmon-ng mon device, not $NIC.
 airmon-ng stop mon0 && airmon-ng start $NIC 
+
+# Start OpenVPN to Internet server for sending alerts to users
+$SCRIPTS/vpn.sh
+
 sleep 2
 
 deauth() {
