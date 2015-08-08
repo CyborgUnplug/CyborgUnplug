@@ -37,7 +37,7 @@ config interface 'loopback'
 config interface 'lan'
 
     option ifname 'eth0.1'
-    option type 'bridge'
+    #option type 'bridge'
     option proto 'static'
     option ipaddr '10.10.10.1'
     option netmask '255.255.255.0'
