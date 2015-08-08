@@ -25,6 +25,10 @@ DATA=/www/data
 POLLTIME=5                                          
 WIFIDEV=radio0                                                             
 
+# Fix the eth0-no-MAC issue. 
+# TODO: fix it permanently!
+$SCRIPTS/ethfix.sh
+
 # Start the automounter
 block umount; block mount
 
