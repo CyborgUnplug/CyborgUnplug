@@ -1,0 +1,9 @@
+eth0      Link encap:Ethernet  HWaddr 00:1F:1F:BE:B9:83  
+          inet6 addr: fe80::21f:1fff:febe:b983/64 Scope:Link
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:4 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000 
+          RX bytes:0 (0.0 B)  TX bytes:482 (482.0 B)
+          Interrupt:5 
+

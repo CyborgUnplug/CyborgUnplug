@@ -26,6 +26,7 @@ NETWORKS=$DATA/networks
 #iw dev mon0 del
 wifi down
 uci set wireless.@wifi-iface[0].mode="monitor"
+uci set wireless.@wifi-iface[0].disabled=0
 uci commit wireless
 wifi
 
@@ -38,5 +39,5 @@ horst -x channel_auto=1
 HPID2=$!
 sleep 5
 kill -9 $HPID $HPID2
-cat $SCAN | awk '{ print $2 $4 $13 $15 }' | sort -u | sed 's/,$//' > $NETWORKS
+cat $SCAN | awk '{ print $2 $13 $15 }' | sort -u | sed 's/,$//' > $NETWORKS
 cat $NETWORKS

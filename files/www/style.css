@@ -35,11 +35,26 @@
 	transform: translate3d(0,0,0);
 }
 
+#container_general{
+	width:100%; 
+	padding-left:0%;
+	text-align: left;
+    margin-left: auto ;
+    margin-right: auto ;
+}
+
 #container_devices{
 	width:100%; 
 	margin:0px; 
 	padding:0px;
 	text-align: left;
+}
+#container_start{
+	width:100%; 
+	padding-left:0%;
+	text-align: left;
+    margin-left: auto ;
+    margin-right: auto ;
 }
 #container_files{
 	width:100%; 
@@ -188,7 +203,7 @@ input, select, textarea {
 	color: #777;
 	font-size: 1em;
 	padding: 1em;
-	width:60%;
+	width:100%;
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	-ms-box-sizing: border-box;
@@ -204,13 +219,61 @@ input:hover, textarea:hover, input:focus, textarea:focus,input:active, textarea:
 input[type="text"],textarea{cursor: text;}
 input[type="radio"], input[type="checkbox"] { display: inline; width:auto; height: auto; margin-right: 1em; }
 input[type="checkbox"] + label, input[type="radio"] + label { display: inline;}
-input[type="file"]{ border: none;}
+
+
+label.upload input[type="file"] {
+    position: fixed;
+    top: -1000px;
+}
+
+/***** Example custom styling *****/
+.upload {
+    border: 0px solid #AAA;
+    padding: 0px;
+    width: 81%;
+    margin: 0px;
+    text-align: center;
+    background: #DDD;
+    display: inline-block;
+    margin-left: auto ;
+    margin-right: auto ;
+}
+.upload:hover {
+    background: #CCC;
+}
+.upload:active {
+    background: #CCF;
+}
+.upload :invalid + span {
+    color: red;
+}
+.upload :valid + span {
+    color: red;
+}
 input[type="date"]{ width: auto;}
 select {height: auto;}
 /* Placeholders */
-::-webkit-input-placeholder { color: #BBB;}
-:-moz-placeholder {color: #BBB;}
-:-ms-input-placeholder {color: #BBB;}
+
+::-webkit-input-placeholder {
+   color: red;
+	font-size: 1.1em;
+    text-align: center
+}
+:-moz-placeholder { /* Firefox 18- */
+   color: red;  
+	font-size: 1.1em;
+    text-align: center
+}
+::-moz-placeholder {  /* Firefox 19+ */
+   color: red;  
+	font-size: 1.1em;
+    text-align: center
+}
+:-ms-input-placeholder {  
+   color: red;  
+	font-size: 1.1em;
+    text-align: center
+}
 /* validate.js */
 label.error { color: #0078CF; margin: 0.5em 0 0 0.5em; font-weight: normal; font-style: italic; }
 
@@ -383,6 +446,11 @@ html[xmlns] .slides {display: block;}
 	margin-top: 15px!important;
 	margin-bottom: 15px!important;
 	background: #82cc51; 
+}
+.stdout{ 
+	margin-top: 15px!important;
+	margin-bottom: 15px!important;
+	background: #222; 
 }
 
 #reports_container{

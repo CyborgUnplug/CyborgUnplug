@@ -1,0 +1,25 @@
+GATEWAY_INTERFACE=CGI/1.1
+SHLVL=1
+REMOTE_ADDR=10.10.10.203
+QUERY_STRING=checkvpn=checkvpn
+HTTP_USER_AGENT=Mozilla/5.0 (Android; Mobile; rv:40.0) Gecko/40.0 Firefox/40.0
+DOCUMENT_ROOT=/www
+REMOTE_PORT=49330
+HTTP_ACCEPT=text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+CONTENT_LENGTH=0
+SCRIPT_FILENAME=/www/cgi-bin/config.cgi
+HTTP_HOST=10.10.10.1
+REQUEST_URI=/cgi-bin/config.cgi?checkvpn=checkvpn
+SERVER_SOFTWARE=lighttpd/1.4.35
+HTTP_CONNECTION=keep-alive
+HTTP_ACCEPT_LANGUAGE=en-GB,en;q=0.5
+HTTP_REFERER=http://10.10.10.1/vpn.php
+SERVER_PROTOCOL=HTTP/1.1
+HTTP_ACCEPT_ENCODING=gzip, deflate
+REDIRECT_STATUS=200
+REQUEST_METHOD=GET
+SERVER_ADDR=0.0.0.0
+PWD=/www/cgi-bin
+SERVER_PORT=80
+SCRIPT_NAME=/cgi-bin/config.cgi
+SERVER_NAME=10.10.10.1

@@ -41,10 +41,8 @@ config interface 'lan'
     option proto 'static'
     option ipaddr '10.10.10.1'
     option netmask '255.255.255.0'
-    option macaddr '00:1f:1f:f1:9e:2c'
 
 config interface 'wan'
 
     option ifname 'eth0.2'
     option proto 'dhcp'
-    option macaddr '00:1f:1f:f1:9e:2d'

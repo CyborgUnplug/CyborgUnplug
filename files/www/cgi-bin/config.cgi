@@ -19,12 +19,15 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-ROOT=/www
-DATA=$ROOT/data
-CONFIG=$ROOT/config
+SITE=/www
+DATA=$SITE/data
+CONFIG=$SITE/config
 EVENT=$(echo $QUERY_STRING | sed 's/\+/\ /g')
 OLDIFS=$IFS
+SCRIPTS=/root/scripts
 IFS="&"
+UPLOAD=/tmp/upload
+
 set $EVENT
 echo $EVENT > event.log 
 env > environment
@@ -34,7 +37,6 @@ rm -f $CONFIG/armed
 
 case "$EVENT" in
     *detect*)
-        echo $EVENT > /tmp/foo
 		echo Content-type: text/html
 		echo
 		echo "<html>"
@@ -42,15 +44,20 @@ case "$EVENT" in
 		echo '</html>'
     ;; 
     *encrypt*)
-        echo $EVENT > /tmp/foo
 		echo Content-type: text/html
 		echo
-		echo "<html>"
-		echo '<meta http-equiv="Refresh" content="1; url=http://10.10.10.1/vpn.php">'
-		echo '</html>'
+        if [ $(cat $CONFIG/vpnstatus) == "unconfigured" ]; then
+            rm -f $UPLOAD/*
+            echo "<html>"
+            echo '<meta http-equiv="Refresh" content="1; url=http://10.10.10.1/vpnconf.php">'
+            echo '</html>'
+        elif [ -f $CONFIG/startvpn ]; then
+            echo "<html>"
+            echo '<meta http-equiv="Refresh" content="1; url=http://10.10.10.1/vpn.php">'
+            echo '</html>'
+        fi
     ;; 
     *share*)
-        echo $EVENT > /tmp/foo
 		echo Content-type: text/html
 		echo
 		echo "<html>"
@@ -66,8 +73,29 @@ case "$EVENT" in
 		echo '<meta http-equiv="Refresh" content="1; url=http://10.10.10.1/share.php">'
 		echo '</html>'
     ;; 
+    *configure*)
+		echo Content-type: text/html
+		echo
+		echo "<html>"
+		echo '<meta http-equiv="Refresh" content="1; url=http://10.10.10.1/configure.php">'
+		echo '</html>'
+    ;; 
+    *ap*)
+		echo Content-type: text/html
+		echo
+		echo "<html>"
+		echo '<meta http-equiv="Refresh" content="1; url=http://10.10.10.1/wlanconf.php">'
+		echo '</html>'
+    ;;
+    *wlanrestart*)
+        touch $CONFIG/setwifi
+		echo Content-type: text/html
+		echo
+		echo "<html>"
+		echo '<meta http-equiv="Refresh" content="1; url=http://10.10.10.1/wlanrestart.php">'
+		echo '</html>'
+    ;; 
 	*devices*)
-		echo $EVENT > /tmp/foo
 		echo $EVENT | cut -d "=" -f 2 | sed -e 's/%3D/=/g' -e 's/\ //g' | base64 -d | sed 's/^\ //' > $CONFIG/targets
 		echo Content-type: text/html
 		echo
@@ -97,6 +125,42 @@ case "$EVENT" in
 		echo
 		echo "<html>"
 		echo '<meta http-equiv="Refresh" content="1; url=http://10.10.10.1/allout.php">'
+		echo '</html>'
+	;;
+	*startvpn*)
+        VPNARGS=$(echo $EVENT | cut -d "=" -f 2 | sed -e 's/%3D/=/g' | base64 -d)
+        echo $VPNARGS > $CONFIG/startvpn
+        echo started > $CONFIG/vpnstatus
+        chmod go-rw $UPLOAD/* 
+        sleep 1
+		echo Content-type: text/html
+		echo
+		echo "<html>"
+		echo '<meta http-equiv="Refresh" content="1; url=http://10.10.10.1/vpn.php">'
+		echo '</html>'
+	;;
+	*checkvpn*)
+		echo Content-type: text/html
+		echo
+		echo "<html>"
+		echo '<meta http-equiv="Refresh" content="1; url=http://10.10.10.1/vpn.php">'
+		echo '</html>'
+	;;
+	*stopvpn*)
+        echo stopped > $CONFIG/vpnstatus
+        sleep 3 # grace time for PID to exit fully 
+		echo Content-type: text/html
+		echo
+		echo "<html>"
+		echo '<meta http-equiv="Refresh" content="1; url=http://10.10.10.1/vpnconf.php">'
+		echo '</html>'
+	;;
+	*newvpn*)
+        echo unconfigured > $CONFIG/vpnstatus
+		echo Content-type: text/html
+		echo
+		echo "<html>"
+		echo '<meta http-equiv="Refresh" content="1; url=http://10.10.10.1/vpnconf.php">'
 		echo '</html>'
 	;;
 	*finish1*)
