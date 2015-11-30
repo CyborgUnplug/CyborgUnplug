@@ -1,50 +1,47 @@
-config interface 'loopback'
-        option ifname 'lo'
-        option proto 'static'
-        option ipaddr '127.0.0.1'
-        option netmask '255.0.0.0'
 
-#config globals 'globals'
-#        option ula_prefix 'fd2f:ca07:cc2e::/48'
+config interface 'loopback'
+	option ifname 'lo'
+	option proto 'static'
+	option ipaddr '127.0.0.1'
+	option netmask '255.0.0.0'
 
 config switch
-
-    option name 'rt305x'
-    option reset '1'
-    option enable_vlan '1'
-
+	option name 'rt305x'
+	option reset '1'
+	option enable_vlan '1'
 
 config switch_vlan
-
-    option device 'rt305x'
-    option vlan '1'
-    option ports '0 1 2 3 6t'
-
+	option device 'rt305x'
+	option vlan '1'
+	option ports '0 1 2 3 6t'
 
 config switch_vlan
-
-    option device 'rt305x'
-    option vlan '2'
-    option ports '4 6t'
-
-config interface 'loopback'
-
-    option ifname 'lo'
-    option proto 'static'
-    option ipaddr '127.0.0.1'
-    option netmask '255.0.0.0'
+	option device 'rt305x'
+	option vlan '2'
+	option ports '4 6t'
 
 config interface 'lan'
+	option ifname 'eth0.1'
+	#option type 'bridge'
+	option proto 'static'
+	option ipaddr '10.10.11.1'
+	option netmask '255.255.255.0'
 
-    option ifname 'eth0.1'
-    #option type 'bridge'
-    option proto 'static'
-    option ipaddr '10.10.10.1'
-    option netmask '255.255.255.0'
-    option macaddr '00:1f:1f:f1:9e:2c'
+config 'interface' 'wifi'
+        option 'proto'      'static'
+        option 'ipaddr'     '10.10.10.1'
+        option 'netmask'    '255.255.255.0' 
 
 config interface 'wan'
+	option ifname 'eth0.2'
+	option proto 'dhcp'
 
-    option ifname 'eth0.2'
-    option proto 'dhcp'
-    option macaddr '00:1f:1f:f1:9e:2d'
+config interface 'vpn0'
+	option ifname 'tun0'
+	option auto '1'
+	option proto 'none'
+
+config interface 'vpn1'
+	option ifname   'tun1'
+	option auto 	'1'
+	option proto	'none'

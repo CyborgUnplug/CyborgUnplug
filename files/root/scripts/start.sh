@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# Cyborg Unplug main start script for RT5350f LittleSnipper. Invoked from /etc/rc.local
-# on each boot.
+# Cyborg Unplug main start script for RT5350f LittleSnipper. Invoked from
+# /etc/rc.local on each boot.
 #
 # Copyright (C) 2015 Julian Oliver
 #
@@ -25,62 +25,69 @@ DATA=/www/data
 POLLTIME=5                                          
 WIFIDEV=radio0                                                             
 
+mkdir /tmp/{upload,config}
+#chmod go-r /tmp/{upload,config}
+
 # Fix the eth0-no-MAC issue. 
 # TODO: fix it permanently!
 $SCRIPTS/ethfix.sh
+
+#Start networking
+/etc/init.d/network start
+
+# Give the network some time to come up
+sleep 5
+
+# Take down the radio device
+#wifi down $WIFIDEV
 
 # Start the automounter
 block umount; block mount
 
 # Setup GPIO for indicator LED
-$SCRIPTS/gpio.sh
+#$SCRIPTS/gpio.sh
 
 if [ ! -f $SCRIPTS/ledfifo ]; then 
     mkfifo $SCRIPTS/ledfifo
 fi
 
-$SCRIPTS/blink.sh &
 
-sleep 10
-
+# Scanning is done with a randomly generated NIC (TY mac80211!)
+# The scan.sh script brings up the wireless NIC for us and sets 
+# it in Monitor mode.
 echo "Scanning for networks..."
 $SCRIPTS/scan.sh               
 echo "Found the following.."
 cat $DATA/networks
- 
-# Derive a unique ESSID from the internal NIC
-SSID=unplug_$(ifconfig -a | grep eth0.1 | cut -d ':' -f 5-8 | sed 's/://g')
-echo $SSID > $CONFIG/ssid # Needed for UI later
- 
-# Bring up Access Point
-wifi down $WIFIDEV
-uci set wireless.@wifi-iface[0].mode="ap"
-uci set wireless.@wifi-iface[0].ssid=$SSID
-uci commit wireless
-echo "Bringing up AP..."
-wifi
- 
-echo "AP should be up with name: " $SSID
 
-sleep 5                                                                       
-# NIC names seem to change when taking wifi radio's up and down
-NIC=$(iw dev | grep Interface | awk '{ print $2 }')
-#ifconfig $NIC up                 
+# Bring up the AP
+$SCRIPTS/wifi.sh
  
 # Copy our config site page to index.php                              
 cp /www/index.php.conf /www/index.php                                 
                                                                    
-#wifi up $WIFIDEV                    
-NIC=$(iw dev | grep Interface | awk '{ print $2 }')
-                                                                 
 if [ ! -f $CONFIG/updated ]; then                               
     rm -f $CONFIG/armed                            
     rm -f $CONFIG/networks        
     rm -f $CONFIG/targets
     rm -f $CONFIG/mode                                 
+    rm -f $CONFIG/vpnargs
     rm -f $LOGS/detected                                           
 fi
-                     
+
+echo unconfigured > /www/config/vpnstatus
+
+# Disable wifi (incl hostapd) for the next boot as we want to 
+# manage bringing up wifi on our own terms.
+#uci set wireless.@wifi-iface[0].disabled=1
+#uci commit
+
+# Update the date on this file. Acts as a firstboot.
+touch $CONFIG/since
+
+# Start the LED blinker
+$SCRIPTS/blink.sh &
+
 while true;   
     do        
         if [ -f $CONFIG/armed ]; then
@@ -89,6 +96,16 @@ while true;
                 $SCRIPTS/detect.sh &
                 rm -f $CONFIG/updated # remove if it exists
                 exit                                             
+        fi
+        if [ -f $CONFIG/startvpn ]; then
+                echo "Checking vpn..." $(date) > /tmp/start.log
+                #$SCRIPTS/vpn.sh &
+                $SCRIPTS/vpn.sh 
+                #exit                                             
+        fi
+        if [ -f $CONFIG/setwifi ]; then
+                $SCRIPTS/wifi.sh 
+                rm -f $CONFIG/setwifi
         fi
         sleep $POLLTIME
 done
