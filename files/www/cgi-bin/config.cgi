@@ -1,7 +1,8 @@
 #!/bin/bash
 
-# Cyborg Unplug CGI script for the TL-WR710. Takes 'events' from the PHP based
-# interface, parses it and writes configuration files used by the detection
+# Cyborg Unplug CGI script for the RT5350f target.
+# Takes 'events' from the PHP based interface, parses it and writes 
+# configuration files used by the detection
 # routine. 
 # 
 # Copyright (C) 2015 Julian Oliver 
