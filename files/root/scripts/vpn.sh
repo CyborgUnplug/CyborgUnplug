@@ -1,18 +1,4 @@
 #!/bin/bash
-# Copyright (C) 2015 Julian Oliver
-#
-# This program is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 SCRIPTS=/root/scripts
 BINPATH=/usr/sbin/
@@ -29,14 +15,16 @@ vpnup () {
     if [[ $STARTED != 1 && $STATUS == "started" ]]; then
         echo "Attempting to bring up VPN..."
         ifconfig $ETH up 
-        VPNARGS=($(cat $CONFIG/vpnargs)) # array
+        VPNARGS=($(cat $CONFIG/startvpn)) # array
         ARG1=${VPNARGS[0]}
         ARG2=${VPNARGS[1]}
         if [ $ARG1 == 1 ]; then
             AUTH=$OVPN/$ARG2.auth 
-            $BINPATH/openvpn --config $OVPN/$ARG2 --auth-user-pass $AUTH > $LOG & #--inactive 30 --ping 10 --ping-exit 60 &
+            #$BINPATH/openvpn --config $OVPN/$ARG2 --auth-user-pass $AUTH > $LOG & #--inactive 30 --ping 10 --ping-exit 60 &
+	    $BINPATH/openvpn --config $OVPN/$ARG2 --auth-user-pass $AUTH > $LOG & --ping 10 --ping-exit 60
         else
-            $BINPATH/openvpn --config $OVPN/$ARG2 --inactive 30 --ping 10 --ping-exit 60 &
+            #$BINPATH/openvpn --config $OVPN/$ARG2 --inactive 30 --ping 10 --ping-exit 60 &
+	    $BINPATH/openvpn --config $OVPN/$ARG2 --ping 10 --ping-exit 60 &
         fi
         VPNPID=$!
         if [ ! -z "$VPNPID" ]; then
@@ -57,9 +45,8 @@ vpnup () {
                 done
         fi 
     else 
-        VPNPID=$(ps | grep [open]vpn)
+	VPNPID=$(ps | grep [open]vpn | awk '{ print $1 }')
         if [ -z "$VPNPID" ]; then
-            echo "made it to here, VPNPID = " $VPNPID > /tmp/log
             # immediately take down our WAN interface to stop leaks 
             ifconfig $ETH down
             echo "VPN is down"
@@ -80,7 +67,7 @@ vpndown() {
         # immediately take down our wired WAN interface to stop leaks.
         # 'eth0' is easiest to work with on this platform as it brings down/up eth0.1, eth0.2.
         ifconfig $ETH down
-        rm -f $OPVN/*
+        rm -f $OVPN/*
         STARTED=0
         echo unconfigured > /www/config/vpnstatus
     fi
