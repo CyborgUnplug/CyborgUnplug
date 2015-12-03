@@ -10,7 +10,7 @@ config wifi-iface
 	option device 'radio0'
 	option network 'wifi'
 	option encryption 'psk2'
-	option key 'm0ss2080'
+	option key 'l1ttl35n1pp3r'
 	option ssid 'unplug_ACFA'
 	option macaddr '00:17:A5:D9:AC:FA'
 	option channel '6'
