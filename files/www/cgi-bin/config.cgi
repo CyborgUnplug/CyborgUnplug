@@ -1,8 +1,7 @@
 #!/bin/bash
 
-# Cyborg Unplug CGI script for the RT5350f target.
-# Takes 'events' from the PHP based interface, parses it and writes 
-# configuration files used by the detection
+# Cyborg Unplug CGI script for the TL-WR710. Takes 'events' from the PHP based
+# interface, parses it and writes configuration files used by the detection
 # routine. 
 # 
 # Copyright (C) 2015 Julian Oliver 
@@ -132,6 +131,7 @@ case "$EVENT" in
         VPNARGS=$(echo $EVENT | cut -d "=" -f 2 | sed -e 's/%3D/=/g' | base64 -d)
         echo $VPNARGS > $CONFIG/startvpn
         echo started > $CONFIG/vpnstatus
+	# check it's wise to have uploads in tmp
         chmod go-rw $UPLOAD/* 
         sleep 1
 		echo Content-type: text/html

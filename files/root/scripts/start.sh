@@ -71,7 +71,7 @@ if [ ! -f $CONFIG/updated ]; then
     rm -f $CONFIG/networks        
     rm -f $CONFIG/targets
     rm -f $CONFIG/mode                                 
-    rm -f $CONFIG/vpnargs
+    rm -f $CONFIG/startvpn
     rm -f $LOGS/detected                                           
 fi
 
@@ -98,7 +98,7 @@ while true;
                 exit                                             
         fi
         if [ -f $CONFIG/startvpn ]; then
-                echo "Checking vpn..." $(date) > /tmp/start.log
+                echo "Checking vpn..." $(date) >> /tmp/start.log
                 #$SCRIPTS/vpn.sh &
                 $SCRIPTS/vpn.sh 
                 #exit                                             

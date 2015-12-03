@@ -98,11 +98,12 @@ if ($vpnup==0) {
           $conffile=false;
      }
     }
-    if(isset($_POST['username']) && isset($_POST['password'])) {
+    if(!empty($_POST['username']) && !empty($_POST['password'])) {
+	echo "yes it is...";
         $data = $_POST['username']."\n".$_POST['password'];
         $fn ='/tmp/upload/'.$filename.'.auth'; 
         $f = fopen($fn, 'w');
-        $ret = fwrite($f, $data);
+	$ret = fwrite($f, $data);
         fclose($f); 
         if($ret === false) {
             die('There was an error writing this file');
@@ -113,6 +114,7 @@ if ($vpnup==0) {
               echo "OpenVPN login data saved.\n";
               //echo "$ret bytes written to auth file";
               echo "</div>";
+	      echo "this is the form data ".$data;
               $authfile=true;
         }
     }
