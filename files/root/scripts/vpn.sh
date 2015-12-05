@@ -23,25 +23,28 @@ POLLTIME=5
 ETH=eth0.2 # WAN interface
 STATUS=$(cat $CONFIG/vpnstatus)
 TUN=""
+STARTED=0
 
 vpnstart () {
-    if [[ $STATUS == "start" ]]; then
+    if [[ $STATUS == "start" && $STARTED != 1 ]]; then
         echo "Attempting to bring up VPN..."
         ifconfig $ETH up # in case taken down here earlier
+        killall -SIGTERM openvpn
         VPNARGS=($(cat $CONFIG/startvpn)) # array
         ARG1=${VPNARGS[0]}
         ARG2=${VPNARGS[1]}
-        if [ $ARG1 == 1 ]; then
+        if [[ $ARG1 == 1 ]]; then
             AUTH=$OVPN/$ARG2.auth 
             $BINPATH/openvpn --config $OVPN/$ARG2 --mlock --ping 10 --ping-restart 60 --up-restart --up "$SCRIPTS/up.sh" --down "$SCRIPTS/down.sh" --script-security 2 --auth-user-pass $AUTH > $LOG & 
         else
             $BINPATH/openvpn --config $OVPN/$ARG2 --mlock --ping 10 --ping-restart 30 --up-restart --up "$SCRIPTS/up.sh" --down "$SCRIPTS/down.sh" --script-security 2 > $LOG &
         fi
         COUNT=0
-        while [ ! -z $(ps | grep [open]vpn) ];
+        while [[ ! -z $(ps | grep [open]vpn) ]];
             do
+                STARTED=1
                 STATUS=$(cat $CONFIG/vpnstatus)
-                if [ $STATUS != "up" ]; then
+                if [[ $STATUS != "up" ]]; then
                     if [ $COUNT -lt 20 ]; then
                         let "COUNT+=1"
                         echo "Count $COUNT with PID $VPNPID. Waiting for tun/tap to come up"
@@ -80,6 +83,7 @@ vpncheck () {
 
 vpnstop() {
     VPNPID=$(ps | grep [open]vpn)
+    STARTED=0
     if [ ! -z "$VPNPID" ]; then
         killall -SIGTERM openvpn
         echo "Killed OpenVPN process"
@@ -88,7 +92,7 @@ vpnstop() {
     #ifconfig $ETH down
     #rm -f $OVPN/*
     echo unconfigured > $CONFIG/vpnstatus
-    echo 1 > $SCRIPTS/ledfifo 
+    echo 2 > $SCRIPTS/ledfifo 
 }
 
 while true; 
