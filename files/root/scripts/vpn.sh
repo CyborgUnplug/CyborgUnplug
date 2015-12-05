@@ -6,71 +6,75 @@ CONFIG=/www/config
 OVPN=/tmp/upload # must chmod this root-only read/write
 LOG=/var/log/openvpn.log
 POLLTIME=5
-ETH=eth0
+ETH=eth0.2 # WAN interface
 STATUS=$(cat $CONFIG/vpnstatus)
-STARTED=0
 TUN=""
 
-vpnup () {
-    if [[ $STARTED != 1 && $STATUS == "started" ]]; then
+vpnstart () {
+    if [[ $STATUS == "start" ]]; then
         echo "Attempting to bring up VPN..."
-        ifconfig $ETH up 
+        ifconfig $ETH up # in case taken down here earlier
         VPNARGS=($(cat $CONFIG/startvpn)) # array
         ARG1=${VPNARGS[0]}
         ARG2=${VPNARGS[1]}
         if [ $ARG1 == 1 ]; then
             AUTH=$OVPN/$ARG2.auth 
-            #$BINPATH/openvpn --config $OVPN/$ARG2 --auth-user-pass $AUTH > $LOG & #--inactive 30 --ping 10 --ping-exit 60 &
-	    $BINPATH/openvpn --config $OVPN/$ARG2 --auth-user-pass $AUTH > $LOG & --ping 10 --ping-exit 60
+            $BINPATH/openvpn --config $OVPN/$ARG2 --mlock --ping 10 --ping-restart 60 --up-restart --up "$SCRIPTS/up.sh" --down "$SCRIPTS/down.sh" --script-security 2 --auth-user-pass $AUTH > $LOG & 
         else
-            #$BINPATH/openvpn --config $OVPN/$ARG2 --inactive 30 --ping 10 --ping-exit 60 &
-	    $BINPATH/openvpn --config $OVPN/$ARG2 --ping 10 --ping-exit 60 &
+            $BINPATH/openvpn --config $OVPN/$ARG2 --mlock --ping 10 --ping-restart 30 --up-restart --up "$SCRIPTS/up.sh" --down "$SCRIPTS/down.sh" --script-security 2 > $LOG &
         fi
-        VPNPID=$!
-        if [ ! -z "$VPNPID" ]; then
-            echo "we have a VPNPID" $VPNPID
-            while [ $STATUS == "started"  ];
-                do 
-                    if ! ifconfig | grep -q tun[0-9]; then 
-                        echo "waiting for tun to come up"
+        COUNT=0
+        while [ ! -z $(ps | grep [open]vpn) ];
+            do
+                STATUS=$(cat $CONFIG/vpnstatus)
+                if [ $STATUS != "up" ]; then
+                    if [ $COUNT -lt 20 ]; then
+                        let "COUNT+=1"
+                        echo "Count $COUNT with PID $VPNPID. Waiting for tun/tap to come up"
                         sleep 1 
                     else
-                        echo up > $CONFIG/vpnstatus
-                        echo "VPN is up"
-                        echo 3 | $SCRIPTS/ledfifo 
-                        STARTED=1
-                        break
+                        echo "Failed to reach remote host, bailing out..."
+                        vpnstop
+                        return 1 
                     fi
-                    STATUS=$(cat $CONFIG/vpnstatus)
-                done
-        fi 
-    else 
-	VPNPID=$(ps | grep [open]vpn | awk '{ print $1 }')
-        if [ -z "$VPNPID" ]; then
-            # immediately take down our WAN interface to stop leaks 
-            ifconfig $ETH down
-            echo "VPN is down"
-            echo down > $CONFIG/vpnstatus
-            STARTED=0
-        else
-            echo "All seems fine. Passing this round"
-        fi
+                else
+                    echo "tun/tap device is up"
+                    return 0 
+                fi
+        done
+        echo "OpenVPN process died, bailing out..."
+        vpnstop
+        return 1
     fi
-    #cat /www/config/vpnstatus
 }
 
-vpndown() {
+vpncheck () {
+    VPNPID=$(ps | grep [open]vpn | awk '{ print $1 }')
+    if [ -z "$VPNPID" ]; then
+        echo "VPN is down, do stuff here...."
+        # VPN was in use, so take down WAN NIC immediately, to avoid leaks
+        ifconfig $ETH down
+        echo down > $CONFIG/vpnstatus
+    else
+        # do test ping here
+        echo "VPN status is: " $(cat $CONFIG/vpnstatus)
+        echo "tun/tap is up"
+        echo 3 > $SCRIPTS/ledfifo 
+        #cat /www/config/vpnstatus
+    fi
+}
+
+vpnstop() {
     VPNPID=$(ps | grep [open]vpn)
     if [ ! -z "$VPNPID" ]; then
         killall -SIGTERM openvpn
-        echo "Killed OpenVPN"
-        # immediately take down our wired WAN interface to stop leaks.
-        # 'eth0' is easiest to work with on this platform as it brings down/up eth0.1, eth0.2.
-        ifconfig $ETH down
-        rm -f $OVPN/*
-        STARTED=0
-        echo unconfigured > /www/config/vpnstatus
+        echo "Killed OpenVPN process"
     fi
+    echo "VPN is down"
+    #ifconfig $ETH down
+    #rm -f $OVPN/*
+    echo unconfigured > $CONFIG/vpnstatus
+    echo 1 > $SCRIPTS/ledfifo 
 }
 
 while true; 
@@ -79,20 +83,14 @@ while true;
         echo "OpenVPN status: " $STATUS
         case "$STATUS" in
             *up*)
-                vpnup
+                vpncheck 
             ;;
-            *stopped*)
-                vpndown 
-                #rm -f $CONFIG/vpnargs
+            *stop*)
+                vpnstop 
             ;; 
-            *started*)
-                vpnup
+            *start*)
+                vpnstart
             ;; 
-            #*unconfigured*)
-                #vpndown 
-                #rm -f $CONFIG/vpnargs
-                #rm -f /www/upload/*
-            #;; 
             *)
         esac
         sleep $POLLTIME
