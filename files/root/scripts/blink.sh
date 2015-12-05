@@ -25,7 +25,7 @@ default_on() {
     while true;                                     
         do                                          
             wink .1 .25 
-	    wink .1 .25
+            wink .1 .25
             $SLEEP 1
 	    
         done      
