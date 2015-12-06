@@ -12,7 +12,7 @@ if (file_exists($fn)) {
         else if (preg_match('/up/', $g) == 1) {
             $vpnup=1;
         }
-        else if (preg_match('/started/', $g) == 1) {
+        else if (preg_match('/start/', $g) == 1) {
             $vpnup=0;
         }
         else if (preg_match('/down/', $g) == 1) {
