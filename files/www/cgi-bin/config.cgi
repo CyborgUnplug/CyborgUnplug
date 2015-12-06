@@ -130,7 +130,7 @@ case "$EVENT" in
 	*startvpn*)
         VPNARGS=$(echo $EVENT | cut -d "=" -f 2 | sed -e 's/%3D/=/g' | base64 -d)
         echo $VPNARGS > $CONFIG/startvpn
-        echo started > $CONFIG/vpnstatus
+        echo start > $CONFIG/vpnstatus
 	# check it's wise to have uploads in tmp
         chmod go-rw $UPLOAD/* 
         sleep 1
@@ -148,7 +148,7 @@ case "$EVENT" in
 		echo '</html>'
 	;;
 	*stopvpn*)
-        echo stopped > $CONFIG/vpnstatus
+        echo stop > $CONFIG/vpnstatus
         sleep 3 # grace time for PID to exit fully 
 		echo Content-type: text/html
 		echo
