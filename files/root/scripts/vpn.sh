@@ -35,9 +35,9 @@ vpnstart () {
         ARG2=${VPNARGS[1]}
         if [[ $ARG1 == 1 ]]; then
             AUTH=$OVPN/$ARG2.auth 
-            $BINPATH/openvpn --config $OVPN/$ARG2 --mlock --ping 10 --ping-restart 60 --up-restart --up "$SCRIPTS/up.sh" --down "$SCRIPTS/down.sh" --script-security 2 --auth-user-pass $AUTH > $LOG & 
+            $BINPATH/openvpn --config $OVPN/$ARG2 --mlock --ping 10 --ping-restart 60 --up-restart --up "/root/scripts/up.sh" --down "/root/scripts/down.sh" --script-security 2 --auth-user-pass $AUTH > $LOG & 
         else
-            $BINPATH/openvpn --config $OVPN/$ARG2 --mlock --ping 10 --ping-restart 30 --up-restart --up "$SCRIPTS/up.sh" --down "$SCRIPTS/down.sh" --script-security 2 > $LOG &
+            $BINPATH/openvpn --config $OVPN/$ARG2 --mlock --ping 10 --ping-restart 30 --up-restart --up "/root/scripts/up.sh" --down "/root/scripts/down.sh" --script-security 2 > $LOG &
         fi
         COUNT=0
         while [[ ! -z $(ps | grep [open]vpn) ]];
@@ -56,6 +56,8 @@ vpnstart () {
                     fi
                 else
                     echo "tun/tap device is up"
+                    echo "Updating date"
+                    ntpd -n -p 0.openwrt.pool.ntp.org -q # don't daemonise, quit after setting
                     return 0 
                 fi
         done
@@ -66,12 +68,14 @@ vpnstart () {
 }
 
 vpncheck () {
-    VPNPID=$(ps | grep [open]vpn | awk '{ print $1 }')
-    if [ -z "$VPNPID" ]; then
+    # VPNPID=$(ps | grep [open]vpn | awk '{ print $1 }') # PID not reliable, zombie procs
+    TUN=$(ifconfig | grep -e tun -e tap)
+    if [ -z "$TUN" ]; then
         echo "VPN is down, do stuff here...."
         # VPN was in use, so take down WAN NIC immediately, to avoid leaks
         ifconfig $ETH down
         echo down > $CONFIG/vpnstatus
+        killall -SIGTERM openvpn # zombie processes
     else
         # do test ping here
         echo "VPN status is: " $(cat $CONFIG/vpnstatus)
