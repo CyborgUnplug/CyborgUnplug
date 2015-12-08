@@ -29,7 +29,8 @@ IFS="&"
 UPLOAD=/tmp/upload
 
 set $EVENT
-echo $EVENT > event.log 
+EVENT=${EVENT/=*/} 
+#echo $EVENT > event.log 
 env > environment
 
 # Remove each time script is invoked to disarm in case the user goes back
@@ -39,7 +40,7 @@ case "$EVENT" in
     *detect*)
 		echo Content-type: text/html
 		echo
-		echo "<html>"
+		echo '<html>'
 		echo '<meta http-equiv="Refresh" content="1; url=http://10.10.10.1/detect.php">'
 		echo '</html>'
     ;; 
@@ -48,20 +49,39 @@ case "$EVENT" in
 		echo
         if [ $(cat $CONFIG/vpnstatus) == "unconfigured" ]; then
             rm -f $UPLOAD/*
-            echo "<html>"
+            echo '<html>'
             echo '<meta http-equiv="Refresh" content="1; url=http://10.10.10.1/vpnconf.php">'
             echo '</html>'
         elif [ -f $CONFIG/startvpn ]; then
-            echo "<html>"
+            echo '<html>'
             echo '<meta http-equiv="Refresh" content="1; url=http://10.10.10.1/vpn.php">'
             echo '</html>'
         fi
     ;; 
-    *share*)
+    *share)
 		echo Content-type: text/html
 		echo
-		echo "<html>"
+		echo '<html>'
 		echo '<meta http-equiv="Refresh" content="1; url=http://10.10.10.1/share.php">'
+		echo '</html>'
+    ;; 
+    *sharerefresh*)
+        block umount
+        block mount
+        sleep 1
+		echo Content-type: text/html
+		echo
+		echo '<html>'
+		echo '<meta http-equiv="Refresh" content="1; url=http://10.10.10.1/share.php">'
+		echo '</html>'
+    ;; 
+    *sharelock*)
+        cp $SITE/share-visits.php $SITE/index.php
+        sleep 1
+		echo Content-type: text/html
+		echo
+		echo '<html>'
+		echo '<meta http-equiv="Refresh" content="1; url=http://10.10.10.1/index.php">'
 		echo '</html>'
     ;; 
     *umount*)
@@ -69,21 +89,21 @@ case "$EVENT" in
         sleep 1
 		echo Content-type: text/html
 		echo
-		echo "<html>"
+		echo '<html>'
 		echo '<meta http-equiv="Refresh" content="1; url=http://10.10.10.1/share.php">'
 		echo '</html>'
     ;; 
     *configure*)
 		echo Content-type: text/html
 		echo
-		echo "<html>"
+		echo '<html>'
 		echo '<meta http-equiv="Refresh" content="1; url=http://10.10.10.1/configure.php">'
 		echo '</html>'
     ;; 
     *ap*)
 		echo Content-type: text/html
 		echo
-		echo "<html>"
+		echo '<html>'
 		echo '<meta http-equiv="Refresh" content="1; url=http://10.10.10.1/wlanconf.php">'
 		echo '</html>'
     ;;
@@ -91,7 +111,7 @@ case "$EVENT" in
         touch $CONFIG/setwifi
 		echo Content-type: text/html
 		echo
-		echo "<html>"
+		echo '<html>'
 		echo '<meta http-equiv="Refresh" content="1; url=http://10.10.10.1/wlanrestart.php">'
 		echo '</html>'
     ;; 
@@ -99,7 +119,7 @@ case "$EVENT" in
 		echo $EVENT | cut -d "=" -f 2 | sed -e 's/%3D/=/g' -e 's/\ //g' | base64 -d | sed 's/^\ //' > $CONFIG/targets
 		echo Content-type: text/html
 		echo
-		echo "<html>"
+		echo '<html>'
 		echo '<meta http-equiv="Refresh" content="1; url=http://10.10.10.1/mode.php">'
 		echo '</html>'
 	;;
@@ -107,7 +127,7 @@ case "$EVENT" in
 		echo territory > $CONFIG/mode
 		echo Content-type: text/html
 		echo
-		echo "<html>"
+		echo '<html>'
 		echo '<meta http-equiv="Refresh" content="1; url=http://10.10.10.1/territorial.php">'
 		echo '</html>'
 	;;
@@ -115,7 +135,7 @@ case "$EVENT" in
 		echo allout > $CONFIG/mode
 		echo Content-type: text/html
 		echo
-		echo "<html>"
+		echo '<html>'
 		echo '<meta http-equiv="Refresh" content="1; url=http://10.10.10.1/allout.php">'
 		echo '</html>'
 	;;
@@ -123,7 +143,7 @@ case "$EVENT" in
 		echo alarm > $CONFIG/mode
 		echo Content-type: text/html
 		echo
-		echo "<html>"
+		echo '<html>'
 		echo '<meta http-equiv="Refresh" content="1; url=http://10.10.10.1/allout.php">'
 		echo '</html>'
 	;;
@@ -136,14 +156,14 @@ case "$EVENT" in
         sleep 1
 		echo Content-type: text/html
 		echo
-		echo "<html>"
+		echo '<html>'
 		echo '<meta http-equiv="Refresh" content="1; url=http://10.10.10.1/vpn.php">'
 		echo '</html>'
 	;;
 	*checkvpn*)
 		echo Content-type: text/html
 		echo
-		echo "<html>"
+		echo '<html>'
 		echo '<meta http-equiv="Refresh" content="1; url=http://10.10.10.1/vpn.php">'
 		echo '</html>'
 	;;
@@ -152,7 +172,7 @@ case "$EVENT" in
         sleep 3 # grace time for PID to exit fully 
 		echo Content-type: text/html
 		echo
-		echo "<html>"
+		echo '<html>'
 		echo '<meta http-equiv="Refresh" content="1; url=http://10.10.10.1/vpnconf.php">'
 		echo '</html>'
 	;;
@@ -160,7 +180,7 @@ case "$EVENT" in
         echo unconfigured > $CONFIG/vpnstatus
 		echo Content-type: text/html
 		echo
-		echo "<html>"
+		echo '<html>'
 		echo '<meta http-equiv="Refresh" content="1; url=http://10.10.10.1/vpnconf.php">'
 		echo '</html>'
 	;;
@@ -168,7 +188,7 @@ case "$EVENT" in
 		echo $EVENT | cut -d "=" -f 2 | sed -e 's/%3D/=/g' -e 's/\ //g' | base64 -d  > $CONFIG/networks
 		echo Content-type: text/html
 		echo
-		echo "<html>"
+		echo '<html>'
 		echo '<meta http-equiv="Refresh" content="1; url=http://10.10.10.1/finish.php">'
 		echo '</html>'
 	;;
@@ -176,7 +196,7 @@ case "$EVENT" in
 		cat $DATA/networks > $CONFIG/networks
         echo Content-type: text/html
         echo
-        echo "<html>"
+        echo '<html>'
         echo '<meta http-equiv="Refresh" content="1; url=http://10.10.10.1/finish.php">'
         echo '</html>'	
 	;;
