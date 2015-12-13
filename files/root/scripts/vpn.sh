@@ -17,8 +17,8 @@
 SCRIPTS=/root/scripts
 BINPATH=/usr/sbin/
 CONFIG=/www/config
-OVPN=/tmp/upload # must chmod this root-only read/write
-LOG=/var/log/openvpn.log
+OVPN=/tmp/keys # chmod'd root-only read/write 
+LOG=/var/log/openvpn.log # only used for debugging
 POLLTIME=5
 ETH=eth0.2 # WAN interface
 STATUS=$(cat $CONFIG/vpnstatus)
@@ -29,15 +29,15 @@ vpnstart () {
     if [[ $STATUS == "start" && $STARTED != 1 ]]; then
         echo "Attempting to bring up VPN..."
         ifconfig $ETH up # in case taken down here earlier
-        killall -SIGTERM openvpn
+        #killall -SIGTERM openvpn
         VPNARGS=($(cat $CONFIG/startvpn)) # array
         ARG1=${VPNARGS[0]}
         ARG2=${VPNARGS[1]}
         if [[ $ARG1 == 1 ]]; then
             AUTH=$OVPN/$ARG2.auth 
-            $BINPATH/openvpn --config $OVPN/$ARG2 --mlock --ping 10 --ping-restart 60 --up-restart --up "/root/scripts/up.sh" --down "/root/scripts/down.sh" --script-security 2 --auth-user-pass $AUTH > $LOG & 
+            $BINPATH/openvpn --config $OVPN/$ARG2 --up-restart --up "/root/scripts/up.sh" --down "/root/scripts/down.sh" --script-security 2 --auth-user-pass $AUTH > /dev/null & 
         else
-            $BINPATH/openvpn --config $OVPN/$ARG2 --mlock --ping 10 --ping-restart 30 --up-restart --up "/root/scripts/up.sh" --down "/root/scripts/down.sh" --script-security 2 > $LOG &
+            $BINPATH/openvpn --config $OVPN/$ARG2 --up-restart --up "/root/scripts/up.sh" --down "/root/scripts/down.sh" --script-security 2 > /dev/null &
         fi
         COUNT=0
         while [[ ! -z $(ps | grep [open]vpn) ]];
@@ -57,7 +57,7 @@ vpnstart () {
                 else
                     echo "tun/tap device is up"
                     echo "Updating date"
-                    ntpd -n -p 0.openwrt.pool.ntp.org -q # don't daemonise, quit after setting
+                    ntpd -q -n -p 0.openwrt.pool.ntp.org # don't daemonise, quit after setting
                     return 0 
                 fi
         done

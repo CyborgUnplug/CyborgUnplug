@@ -56,5 +56,5 @@ boot() {
 		rootdev=$(awk 'BEGIN { RS=" "; FS="="; } $1 == "root" { print $2 }' < /proc/cmdline)
 		[ -n "$rootdev" ] && ln -s "$rootdev" /dev/root
 	}
-    /root/scripts/gio.sh
+    /root/scripts/gpio.sh
 }
