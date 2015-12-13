@@ -70,7 +70,7 @@ if ($vpnup==0) {
       $ext = substr($filename, strrpos($filename, '.') + 1);
       if ($_FILES["uploaded_file"]["size"] < 20000) {
         //Determine the path to which we want to save this file
-          $newname = '/tmp/upload/'.$filename;
+          $newname = '/tmp/keys/'.$filename;
           //Check if the file with the same name is already exists on the server
           if (!file_exists($newname)) {
             //Attempt to move the uploaded file to it's new place
@@ -101,7 +101,7 @@ if ($vpnup==0) {
     if(!empty($_POST['username']) && !empty($_POST['password'])) {
 	echo "yes it is...";
         $data = $_POST['username']."\n".$_POST['password'];
-        $fn ='/tmp/upload/'.$filename.'.auth'; 
+        $fn ='/tmp/keys/'.$filename.'.auth'; 
         $f = fopen($fn, 'w');
 	$ret = fwrite($f, $data);
         fclose($f); 

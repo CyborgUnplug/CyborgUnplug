@@ -29,7 +29,7 @@ IFS="&"
 UPLOAD=/tmp/upload
 
 set $EVENT
-EVENT=${EVENT/=*/} 
+#EVENT=${EVENT/=*/} 
 #echo $EVENT > event.log 
 env > environment
 

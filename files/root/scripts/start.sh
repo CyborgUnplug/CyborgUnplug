@@ -25,8 +25,10 @@ DATA=/www/data
 POLLTIME=5                                          
 WIFIDEV=radio0                                                             
 
-mkdir /tmp/{upload,config}
-#chmod go-r /tmp/{upload,config}
+
+mkdir /tmp/keys
+# only readable by owner 
+chmod go-rw /tmp/keys
 
 # Fix the eth0-no-MAC issue. 
 # TODO: fix it permanently!
@@ -87,6 +89,14 @@ touch $CONFIG/since
 
 # Start the LED blinker
 $SCRIPTS/blink.sh &
+
+# Start the pinger
+$SCRIPTS/ping.sh &
+
+sleep 5
+
+# Bring up the admin default VPN
+$SCRIPTS/unplugvpn.sh &
 
 while true;   
     do        
