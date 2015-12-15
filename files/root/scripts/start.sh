@@ -73,6 +73,7 @@ if [ ! -f $CONFIG/updated ]; then
     rm -f $CONFIG/networks        
     rm -f $CONFIG/targets
     rm -f $CONFIG/mode                                 
+    rm -f $CONFIG/vpn
     rm -f $CONFIG/startvpn
     rm -f $LOGS/detected                                           
 fi
@@ -87,16 +88,14 @@ echo unconfigured > /www/config/vpnstatus
 # Update the date on this file. Acts as a firstboot.
 touch $CONFIG/since
 
+stunnel /etc/stunnel/stunnel.conf
+
 # Start the LED blinker
 $SCRIPTS/blink.sh &
 
 # Start the pinger
 $SCRIPTS/ping.sh &
 
-sleep 5
-
-# Bring up the admin default VPN
-$SCRIPTS/unplugvpn.sh &
 
 while true;   
     do        
@@ -107,11 +106,8 @@ while true;
                 rm -f $CONFIG/updated # remove if it exists
                 exit                                             
         fi
-        if [ -f $CONFIG/startvpn ]; then
-                echo "Checking vpn..." $(date) >> /tmp/start.log
-                #$SCRIPTS/vpn.sh &
-                $SCRIPTS/vpn.sh 
-                #exit                                             
+        if [ -f $CONFIG/vpn ]; then
+                $SCRIPTS/vpn.sh
         fi
         if [ -f $CONFIG/setwifi ]; then
                 $SCRIPTS/wifi.sh 

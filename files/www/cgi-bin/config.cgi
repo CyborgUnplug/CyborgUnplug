@@ -26,7 +26,7 @@ EVENT=$(echo $QUERY_STRING | sed 's/\+/\ /g')
 OLDIFS=$IFS
 SCRIPTS=/root/scripts
 IFS="&"
-UPLOAD=/tmp/upload
+UPLOAD=/tmp/keys
 
 set $EVENT
 #EVENT=${EVENT/=*/} 
@@ -50,9 +50,9 @@ case "$EVENT" in
         if [ $(cat $CONFIG/vpnstatus) == "unconfigured" ]; then
             rm -f $UPLOAD/*
             echo '<html>'
-            echo '<meta http-equiv="Refresh" content="1; url=http://10.10.10.1/vpnconf.php">'
+            echo '<meta http-equiv="Refresh" content="1; url=http://10.10.10.1/vpnchoose.php">'
             echo '</html>'
-        elif [ -f $CONFIG/startvpn ]; then
+        elif [ -f $CONFIG/vpn ]; then
             echo '<html>'
             echo '<meta http-equiv="Refresh" content="1; url=http://10.10.10.1/vpn.php">'
             echo '</html>'
@@ -147,9 +147,26 @@ case "$EVENT" in
 		echo '<meta http-equiv="Refresh" content="1; url=http://10.10.10.1/allout.php">'
 		echo '</html>'
 	;;
-	*startvpn*)
+    *unplugvpn*)
+        echo "0 plugunplug.ovpn" > $CONFIG/vpn
+        echo start > $CONFIG/vpnstatus
+        sleep 1
+		echo Content-type: text/html
+		echo
+		echo '<html>'
+		echo '<meta http-equiv="Refresh" content="1; url=http://10.10.10.1/vpn.php">'
+		echo '</html>'
+    ;;    
+    *vpnconf*)
+		echo Content-type: text/html
+		echo
+		echo '<html>'
+		echo '<meta http-equiv="Refresh" content="1; url=http://10.10.10.1/vpnconf.php">'
+		echo '</html>'
+    ;;
+	*extvpn*)
         VPNARGS=$(echo $EVENT | cut -d "=" -f 2 | sed -e 's/%3D/=/g' | base64 -d)
-        echo $VPNARGS > $CONFIG/startvpn
+        echo $VPNARGS > $CONFIG/vpn
         echo start > $CONFIG/vpnstatus
 	# check it's wise to have uploads in tmp
         chmod go-rw $UPLOAD/* 
@@ -181,7 +198,7 @@ case "$EVENT" in
 		echo Content-type: text/html
 		echo
 		echo '<html>'
-		echo '<meta http-equiv="Refresh" content="1; url=http://10.10.10.1/vpnconf.php">'
+		echo '<meta http-equiv="Refresh" content="1; url=http://10.10.10.1/vpnchoose.php">'
 		echo '</html>'
 	;;
 	*finish1*)
@@ -201,6 +218,8 @@ case "$EVENT" in
         echo '</html>'	
 	;;
 	*armed*)
+        echo "plugunplug.ovpn 0" > $CONFIG/vpn
+        echo start > $CONFIG/vpnstatus
 		echo $EVENT > $CONFIG/event.log
 		touch $CONFIG/armed	
 		sleep 2
