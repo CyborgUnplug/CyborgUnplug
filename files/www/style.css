@@ -63,6 +63,13 @@
 	text-align: left;
 	background-color: #f7f7f7;
 }
+#container_caption{
+	width:95%; 
+	padding-left:0%;
+	text-align: left;
+    margin-left: 10% ;
+    margin-right: auto ;
+}
 .device{
 	
 }

@@ -57,8 +57,8 @@ ifconfig $NIC up
 # work with an airmon-ng mon device, not $NIC.
 airmon-ng stop mon0 && airmon-ng start $NIC 
 
-# Start OpenVPN to Internet server for sending alerts to users
-$SCRIPTS/vpn.sh
+# Bring up the admin default VPN for sending alerts to users
+$SCRIPTS/vpn.sh &
 
 sleep 2
 

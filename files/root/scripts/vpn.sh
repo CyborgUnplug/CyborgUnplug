@@ -19,6 +19,7 @@ BINPATH=/usr/sbin/
 CONFIG=/www/config
 OVPN=/tmp/keys # chmod'd root-only read/write 
 LOG=/var/log/openvpn.log # only used for debugging
+UNPLUGVPN=/root/keys/plugunplug.ovpn
 POLLTIME=5
 ETH=eth0.2 # WAN interface
 STATUS=$(cat $CONFIG/vpnstatus)
@@ -29,15 +30,22 @@ vpnstart () {
     if [[ $STATUS == "start" && $STARTED != 1 ]]; then
         echo "Attempting to bring up VPN..."
         ifconfig $ETH up # in case taken down here earlier
-        #killall -SIGTERM openvpn
-        VPNARGS=($(cat $CONFIG/startvpn)) # array
+        killall -SIGTERM openvpn
+        #killall stunnel
+        VPNARGS=($(cat $CONFIG/vpn)) # array
         ARG1=${VPNARGS[0]}
         ARG2=${VPNARGS[1]}
         if [[ $ARG1 == 1 ]]; then
             AUTH=$OVPN/$ARG2.auth 
             $BINPATH/openvpn --config $OVPN/$ARG2 --up-restart --up "/root/scripts/up.sh" --down "/root/scripts/down.sh" --script-security 2 --auth-user-pass $AUTH > /dev/null & 
         else
-            $BINPATH/openvpn --config $OVPN/$ARG2 --up-restart --up "/root/scripts/up.sh" --down "/root/scripts/down.sh" --script-security 2 > /dev/null &
+            if [[ $ARG2 == "plugunplug.ovpn" ]]; then
+                #stunnel /etc/stunnel/stunnel.conf
+                $BINPATH/openvpn --config $UNPLUGVPN --up-restart --up "/root/scripts/up.sh" --down "/root/scripts/down.sh" --script-security 2 > /dev/null &
+                echo "Started Unplug VPN"
+            else
+                $BINPATH/openvpn --config $OVPN/$ARG2 --up-restart --up "/root/scripts/up.sh" --down "/root/scripts/down.sh" --script-security 2 > /dev/null &
+            fi
         fi
         COUNT=0
         while [[ ! -z $(ps | grep [open]vpn) ]];
@@ -45,9 +53,9 @@ vpnstart () {
                 STARTED=1
                 STATUS=$(cat $CONFIG/vpnstatus)
                 if [[ $STATUS != "up" ]]; then
-                    if [ $COUNT -lt 20 ]; then
+                    if [ $COUNT -lt 60 ]; then
                         let "COUNT+=1"
-                        echo "Count $COUNT with PID $VPNPID. Waiting for tun/tap to come up"
+                        echo "Count $COUNT. Waiting for tun/tap to come up"
                         sleep 1 
                     else
                         echo "Failed to reach remote host, bailing out..."
@@ -57,7 +65,8 @@ vpnstart () {
                 else
                     echo "tun/tap device is up"
                     echo "Updating date"
-                    ntpd -q -n -p 0.openwrt.pool.ntp.org # don't daemonise, quit after setting
+                    #ntpd -q -n -p 0.openwrt.pool.ntp.org & # don't daemonise, quit after setting
+                    echo "This is STARTED: " $STARTED
                     return 0 
                 fi
         done
@@ -70,6 +79,7 @@ vpnstart () {
 vpncheck () {
     # VPNPID=$(ps | grep [open]vpn | awk '{ print $1 }') # PID not reliable, zombie procs
     TUN=$(ifconfig | grep -e tun -e tap)
+    echo $TUN
     if [ -z "$TUN" ]; then
         echo "VPN is down, do stuff here...."
         # VPN was in use, so take down WAN NIC immediately, to avoid leaks
@@ -80,7 +90,7 @@ vpncheck () {
         # do test ping here
         echo "VPN status is: " $(cat $CONFIG/vpnstatus)
         echo "tun/tap is up"
-        echo 3 > $SCRIPTS/ledfifo 
+        echo 3 > $SCRIPTS/ledfifo & 
         #cat /www/config/vpnstatus
     fi
 }
