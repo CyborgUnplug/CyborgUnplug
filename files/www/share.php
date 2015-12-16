@@ -11,13 +11,13 @@ include("php_file_tree.php");
     </head>
     <body>
 	<h1 id="headline">Share files wirelessly</h1>
-    <br>
 		<?php
         $f = fopen("config/ssid", "r");
         $ssid = fgets($f);
         fclose($f);
 		$g = "usb/empty";
         if (file_exists($g)){
+            echo "<br>";
             echo "<div class='warning warning3'>";
             echo "Insert USB stick to share files.";
             echo "</div>"; 
@@ -32,7 +32,6 @@ include("php_file_tree.php");
             echo "<div class='warning warning3'>";
             echo "Devices connected to the network <b>".$ssid."</b> can now download the following files:";
             echo "</div>"; 
-            echo "<hr>";
             echo "<div id='container_files'>";
             echo "<form method='get' id='start' action='cgi-bin/config.cgi'>";
             echo "<br>";

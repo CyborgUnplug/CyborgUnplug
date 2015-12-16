@@ -78,7 +78,7 @@ case "$EVENT" in
     *configure*)
         html configure.php
     ;; 
-    *ap*)
+    *wifi*)
         html wlanconf.php
     ;;
     *wlanrestart*)

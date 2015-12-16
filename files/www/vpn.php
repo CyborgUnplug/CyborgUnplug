@@ -35,9 +35,11 @@ if ($vpnup==0) {
     echo "</form>";
 } else if ($vpnup == 1) {
     $ip = file_get_contents('http://wtfismyip.com/text');
+    echo "<br><br>";
     echo "<div class='warning warning3'>";
-    echo "The VPN appears to be running.\n";
+    echo "The VPN is up and running.<br>";
     echo "WiFi and Ethernet clients of Little Snipper tunneled to: ".$ip;
+    echo "Check for yourself <a href='http://whatismyip.com'>here</a>";
     echo "</div>";
     echo "<form method='get' id='stopvpn' action='cgi-bin/config.cgi'>";
     echo "<input name='stopvpn' type='hidden' value='stopvpn'>";
