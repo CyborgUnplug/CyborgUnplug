@@ -1,14 +1,16 @@
 #!/bin/sh                                       
 
-SLEEP=/usr/bin/sleep
-echo 1 > /sys/class/gpio/gpio9/value
+readonly SCRIPTS=/root/scripts
+readonly SLEEP=/usr/bin/sleep
+readonly GPIO=/sys/class/gpio/gpio9
+echo 1 > $GPIO/value
 
 $SLEEP 1
 
 wink() {
-    echo 0 > /sys/class/gpio/gpio9/value
+    echo 0 > $GPIO/value
     $SLEEP $1                             
-    echo 1 > /sys/class/gpio/gpio9/value
+    echo 1 > $GPIO/value
     $SLEEP $2                             
 }
                                                 
@@ -68,4 +70,4 @@ do
             ;;                    
             *)                    
         esac                          
-done < ledfifo  
+done < $SCRIPTS/ledfifo  

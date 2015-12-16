@@ -99,7 +99,6 @@ if ($vpnup==0) {
      }
     }
     if(!empty($_POST['username']) && !empty($_POST['password'])) {
-	echo "yes it is...";
         $data = $_POST['username']."\n".$_POST['password'];
         $fn ='/tmp/keys/'.$filename.'.auth'; 
         $f = fopen($fn, 'w');
@@ -114,7 +113,7 @@ if ($vpnup==0) {
               echo "OpenVPN login data saved.\n";
               //echo "$ret bytes written to auth file";
               echo "</div>";
-	      echo "this is the form data ".$data;
+	      //echo "this is the form data ".$data;
               $authfile=true;
         }
     }
@@ -124,15 +123,15 @@ if ($vpnup==0) {
 
     if (!$conffile == false) {
         if (($authfile === true) && ($conffile === true)) {
-            $_startvpn="1 ".$filename;
+            $_extvpn="1 ".$filename;
         }
         elseif ($conffile === true) {
-            $_startvpn="0 ".$filename;
+            $_extvpn="0 ".$filename;
         }
-        $startvpn=base64_encode($_startvpn);
+        $extvpn=base64_encode($_extvpn);
         
-        echo "<form method='get' id='startvpn' action='cgi-bin/config.cgi'>";
-        echo "<input name='startvpn' type='hidden' value=".$startvpn.">";
+        echo "<form method='get' id='extvpn' action='cgi-bin/config.cgi'>";
+        echo "<input name='extvpn' type='hidden' value=".$extvpn.">";
         echo "<input type='submit' value='Start VPN' class='button'>";
         echo "</form>";
     }

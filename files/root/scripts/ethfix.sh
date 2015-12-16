@@ -1,38 +1,38 @@
 #!/bin/bash
 
-CONFIG=/www/config/
+readonly CONFIG=/www/config/
 
 if [ ! -f $CONFIG/since ]; then
 
-	RANGE=255
-	VENDOR='00:1F:1F' # Edimax
-	VENDOR2='00:17:A5' # Ralink
+	readonly RANGE=255
+	readonly VENDOR='00:1F:1F' # Edimax
+	readonly VENDOR2='00:17:A5' # Ralink
 
 	rangen() {
-		NUM=$RANDOM
+		local NUM=$RANDOM
 		let "NUM %= $RANGE"
-		OCT=$(echo "obase=16;$NUM" | bc)
-		if [ ${#OCT} == 1 ]; then
-		    OCT='0'$OCT
+		local oct=$(echo "obase=16;$NUM" | bc)
+		if [ ${#oct} == 1 ]; then
+		    oct='0'$oct
 		fi
-		echo $OCT
+		echo $oct
 	}
 
-	A=$(rangen)
-	B=$(rangen)
-	C=$(rangen)
-	D=$(rangen)
-	E=$(rangen)
+	a=$(rangen)
+	b=$(rangen)
+	c=$(rangen)
+	d=$(rangen)
+	e=$(rangen)
 
-	ETH0="${VENDOR}:${A}:${B}:${C}"
-	ETH1="${VENDOR}:${A}:${B}:${D}"
-	ETH2="${VENDOR}:${B}:${D}:${A}"
-	WLAN="${VENDOR2}:${A}:${B}:${E}"
+	eth0="${VENDOR}:${a}:${b}:${c}"
+	eth1="${VENDOR}:${a}:${b}:${d}"
+	eth2="${VENDOR}:${b}:${d}:${a}"
+	wlan="${VENDOR2}:${a}:${b}:${e}"
 
-	echo $ETH0 > $CONFIG/eth0mac
-	echo $ETH1 > $CONFIG/eth1mac
-	echo $ETH2 > $CONFIG/eth2mac
-	echo $WLAN > $CONFIG/wlanmac
+	echo $eth0 > $CONFIG/eth0mac
+	echo $eth1 > $CONFIG/eth1mac
+	echo $eth2 > $CONFIG/eth2mac
+	echo $wlan > $CONFIG/wlanmac
 
 fi
 
