@@ -21,16 +21,16 @@
 trap "trap - SIGTERM && kill -- -$$" SIGINT SIGTERM EXIT
 shopt -s nocasematch # Important
 
-LOGS=/www/logs/
-CAPDIR=/tmp
-CONFIG=/www/config
-FRAMES=5 # Number of de-auth frames to send. 10 a good hit/time tradeoff
-NETWORKS='' # Placeholder. Technically redundant.
-MODE=$(cat $CONFIG/mode) 
+readonly LOGS=/www/logs/
+readonly CAPDIR=/tmp
+readonly CONFIG=/www/config
+readonly FRAMES=5 # Number of de-auth frames to send. 10 a good hit/time tradeoff
+readonly NETWORKS='' # Placeholder. Technically redundant.
+readonly MODE=$(cat $CONFIG/mode) 
 
 # Read in the user selected target devices and build the target string.
-SRCT=$(cat $CONFIG/targets | cut -d "," -f 2)
-TARGETS='@('$(echo $SRCT | sed 's/\ /\*\|/g')'*)'
+readonly SRCT=$(cat $CONFIG/targets | cut -d "," -f 2)
+readonly TARGETS='@('$(echo $SRCT | sed 's/\ /\*\|/g')'*)'
 
 # Make the activity page the default site page for connections during detection
 # (only available over Ethernet) 
@@ -48,7 +48,7 @@ sleep 1 # Important
 # mode. We use $NIC to capture rather than the mon0 device created below. This
 # is useful as we can set the channel of $NIC on the fly with iwconfig,
 # automatically setting the channel of the mon0 device used to de-auth in turn.
-NIC=$(iw dev | grep Interface | awk '{ print $2 }')
+readonly NIC=$(iw dev | grep Interface | awk '{ print $2 }')
 ifconfig $NIC down
 iwconfig $NIC mode Monitor
 ifconfig $NIC up
@@ -110,17 +110,17 @@ case "$MODE" in
     *territory*)
         # Override channels with those of target BSSIDs. We have to resource awk
         # twice, due to two cases of uniqueness tested.
-        CHANNELS=($(cat $CONFIG/networks | sort -u | awk 'BEGIN { FS = "," }; { print $NF }' | sort -u | awk '{ print $0 }'))
+        readonly CHANNELS=($(cat $CONFIG/networks | sort -u | awk 'BEGIN { FS = "," }; { print $NF }' | sort -u | awk '{ print $0 }'))
         #CHANNELS=($(cat /www/config/networks | sort -u | awk 'BEGIN { FS = "," }; { print $NF }'))
         # We'll poll for as many seconds as there are networks to guard 
-        POLLTIME=$(wc -l < $CONFIG/networks)
+        readonly POLLTIME=$(wc -l < $CONFIG/networks)
         echo "These are the networks we're watching"
         cat $CONFIG/networks
         # Read in the networks we're watching and build the target string. 
-        SRCN=$(cat /www/config/networks | cut -d "," -f 1)
-        NETWORKS='@('$(echo $SRCN | sed 's/\ /\|/g')')'
+        readonly SRCN=$(cat /www/config/networks | cut -d "," -f 1)
+        readonly NETWORKS='@('$(echo $SRCN | sed 's/\ /\|/g')')'
         channelWalk &
-        CPID=$!
+        readonly CPID=$!
     ;;
     *alarm*)
         # Put things specific to alarm/alert mode here.
@@ -148,23 +148,23 @@ while true;
                     kill -STOP $CPID
                      while read line;
                              do
-                                ARR=($line) # Array from the line
-                                SRC=${ARR[0]}; DST=${ARR[1]}; BSSID=${ARR[2]}; FREQ=${ARR[3]}
-                                echo $SRC $DST $BSSID $FREQ
+                                arr=($line) # Array from the line
+                                src=${arr[0]}; dst=${arr[1]}; bssid=${arr[2]}; freq=${arr[3]}
+                                echo $src $dst $bssid $freq
 
-                                if [ $SRC != $BSSID ]; then
-                                    STA=$SRC
+                                if [ $src != $bssid ]; then
+                                    sta=$src
                                 else 
-                                    STA=$DST 
+                                    sta=$dst 
                                 fi
 
-                                if [[ "$STA" == $TARGETS && "$BSSID" == $NETWORKS && "$MODE" == "territory" ]]; then
+                                if [[ "$sta" == $TARGETS && "$bssid" == $NETWORKS && "$MODE" == "territory" ]]; then
                                         echo $line
                                         deauth
-                                elif [[ ( "$STA" == $TARGETS || "$BSSID" == $TARGETS ) && "$MODE" == "allout" ]]; then
+                                elif [[ ( "$sta" == $TARGETS || "$bssid" == $TARGETS ) && "$MODE" == "allout" ]]; then
                                         deauth
                                 elif [[ "$MODE" == "alarm" ]]; then 
-                                        echo $(date) "detected" $STA "on" $BSSID >> $LOGS/detected
+                                        echo $(date) "detected" $sta "on" $bssid >> $LOGS/detected
                                 else
                                     # Remove redirect during debugging
                                     echo "No targets detected this pair for mode:" $MODE > /dev/null 

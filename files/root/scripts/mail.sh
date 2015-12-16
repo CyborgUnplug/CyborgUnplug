@@ -14,14 +14,14 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>. 
 
-SCRIPTS=/root/scripts
-REMOTE=10.9.8.1
-PORT=20010
-CONFIG=/www/config
-DATE=$(date)
-EMAIL=$1
-SEEN=$2 # devices seen
-BODY="
+readonly SCRIPTS=/root/scripts
+readonly REMOTE=10.9.8.1
+readonly PORT=20010
+readonly CONFIG=/www/config
+readonly DATE=$(date)
+readonly EMAIL=$1
+readonly SEEN=$2 # devices seen
+readonly BODY="
 -------------------------------------------------------------------
 The following devices were detected by Little Snipper at $DATE
 
@@ -39,7 +39,7 @@ Little Snipper
 -------------------------------------------------------------------
 "
 if [ -f $CONFIG/email ]; then
-    ADDR=$(cat $CONFIG/email)
+    readonly ADDR=$(cat $CONFIG/email)
     if [ ! -z $ADDR ]; then
         echo $EMAIL "$BODY" | socat - TCP4:$REMOTE:$PORT
     fi

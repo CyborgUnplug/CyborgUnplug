@@ -14,17 +14,17 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>. 
 
-SCRIPTS=/root/scripts
-BINPATH=/usr/sbin/
-CONFIG=/www/config
-POLLTIME=15
-ETH=eth0.2 # WAN interface
-VPN=89.238.81.42
+readonly SCRIPTS=/root/scripts
+readonly BINPATH=/usr/sbin/
+readonly CONFIG=/www/config
+readonly POLLTIME=15
+readonly ETH=eth0.2 # WAN interface
+readonly VPN=89.238.81.42
 
 while true;
 	do
-		PING=$(ping -c 1 plugunplug.net|grep "1 packets received")
-		if [[ ! -z $PING ]]; then
+		p=$(ping -c 1 plugunplug.net|grep "1 packets received")
+		if [[ ! -z $p ]]; then
             echo online > $CONFIG/networkstate
 		else
 			echo offline > $CONFIG/networkstate

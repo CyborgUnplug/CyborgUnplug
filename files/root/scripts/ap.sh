@@ -14,16 +14,16 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-CONFIG=/www/config
+readonly CONFIG=/www/config
 
 # Derive a unique ESSID from wifi NIC's MAC on first boot
 if [ ! -f $CONFIG/since ]; then
-        SSID=unplug_$(cat $CONFIG/wlanmac | cut -d ':' -f 5-8 | sed 's/://g')
-        echo $SSID > $CONFIG/ssid # Needed for UI later
-	MAC=$(cat $CONFIG/wlanmac)
+    readonly SSID=unplug_$(cat $CONFIG/wlanmac | cut -d ':' -f 5-8 | sed 's/://g')
+    echo $SSID > $CONFIG/ssid # Needed for UI later
+	readonly MAC=$(cat $CONFIG/wlanmac)
 	
 	# Pseudo-randomly generate a channel for our AP
-	RANGE=13
+	readonly RANGE=13
 	CHAN=$RANDOM
 	let "CHAN %= $RANGE"
 	uci set wireless.@wifi-iface[0].ssid=$SSID
@@ -32,7 +32,7 @@ if [ ! -f $CONFIG/since ]; then
 fi
 # Bring up Access Point
 wifi down
-SSID=$(cat $CONFIG/ssid)
+#readonly SSID=$(cat $CONFIG/ssid)
 #ifconfig wlan0 hw ether $(cat $CONFIG/wlanmac)
 uci set wireless.@wifi-iface[0].disabled=0
 uci set wireless.@wifi-iface[0].mode="ap"
@@ -44,8 +44,8 @@ wifi
 # Wait for hostapd to come up before exiting
 while true;
     do
-	HAPD=$(ps | grep [ho]st | awk '{ print $1 }')
-        if [ ! $HAPD ]; then
+        local hapd=$(ps | grep [ho]st | awk '{ print $1 }')
+        if [ ! $hapd ]; then
 	    sleep 1
 	else
 	    echo "AP should be up with name: " $SSID

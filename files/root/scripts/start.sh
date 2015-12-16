@@ -18,12 +18,12 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-SCRIPTS=/root/scripts
-LOGS=/www/logs                               
-CONFIG=/www/config                                                                       
-DATA=/www/data                                             
-POLLTIME=5                                          
-WIFIDEV=radio0                                                             
+readonly SCRIPTS=/root/scripts
+readonly LOGS=/www/logs                               
+readonly CONFIG=/www/config                                                                       
+readonly DATA=/www/data                                             
+readonly POLLTIME=5                                          
+readonly WIFIDEV=radio0                                                             
 
 
 mkdir /tmp/keys
@@ -88,7 +88,7 @@ echo unconfigured > /www/config/vpnstatus
 # Update the date on this file. Acts as a firstboot.
 touch $CONFIG/since
 
-stunnel /etc/stunnel/stunnel.conf
+#stunnel /etc/stunnel/stunnel.conf
 
 # Start the LED blinker
 $SCRIPTS/blink.sh &
@@ -107,6 +107,7 @@ while true;
                 exit                                             
         fi
         if [ -f $CONFIG/vpn ]; then
+                echo "Starting the VPN"
                 $SCRIPTS/vpn.sh
         fi
         if [ -f $CONFIG/setwifi ]; then
