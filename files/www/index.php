@@ -1,6 +1,7 @@
 <?php include 'header.php';?>
 
-	<h1 id="headline">I would like to:</h1>
+	<h1 id="headline">I would like to...</h1>
+    <br><br>
 	<div id="container_start">
 		<form method="get" id="start" action="cgi-bin/config.cgi">
 			<input name="detect" type="submit" value="detect" class='button'>

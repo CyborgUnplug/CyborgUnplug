@@ -25,12 +25,12 @@ readonly LOGS=/www/logs/
 readonly CAPDIR=/tmp
 readonly CONFIG=/www/config
 readonly FRAMES=5 # Number of de-auth frames to send. 10 a good hit/time tradeoff
-readonly NETWORKS='' # Placeholder. Technically redundant.
 readonly MODE=$(cat $CONFIG/mode) 
 
 # Read in the user selected target devices and build the target string.
 readonly SRCT=$(cat $CONFIG/targets | cut -d "," -f 2)
 readonly TARGETS='@('$(echo $SRCT | sed 's/\ /\*\|/g')'*)'
+NETWORKS='' # Placeholder. Technically redundant.
 
 # Make the activity page the default site page for connections during detection
 # (only available over Ethernet) 
@@ -58,6 +58,7 @@ ifconfig $NIC up
 airmon-ng stop mon0 && airmon-ng start $NIC 
 
 # Bring up the admin default VPN for sending alerts to users
+echo "0 plugunplug.ovpn" > $CONFIG/vpn
 $SCRIPTS/vpn.sh &
 
 sleep 2
@@ -149,22 +150,22 @@ while true;
                      while read line;
                              do
                                 arr=($line) # Array from the line
-                                src=${arr[0]}; dst=${arr[1]}; bssid=${arr[2]}; freq=${arr[3]}
-                                echo $src $dst $bssid $freq
+                                src=${arr[0]}; dst=${arr[1]}; BSSID=${arr[2]}; freq=${arr[3]}
+                                echo $src $dst $BSSID $freq
 
-                                if [ $src != $bssid ]; then
+                                if [ $src != $BSSID ]; then
                                     sta=$src
                                 else 
                                     sta=$dst 
                                 fi
 
-                                if [[ "$sta" == $TARGETS && "$bssid" == $NETWORKS && "$MODE" == "territory" ]]; then
+                                if [[ "$sta" == $TARGETS && "$BSSID" == $NETWORKS && "$MODE" == "territory" ]]; then
                                         echo $line
                                         deauth
-                                elif [[ ( "$sta" == $TARGETS || "$bssid" == $TARGETS ) && "$MODE" == "allout" ]]; then
+                                elif [[ ( "$sta" == $TARGETS || "$BSSID" == $TARGETS ) && "$MODE" == "allout" ]]; then
                                         deauth
                                 elif [[ "$MODE" == "alarm" ]]; then 
-                                        echo $(date) "detected" $sta "on" $bssid >> $LOGS/detected
+                                        echo $(date) "detected" $sta "on" $BSSID >> $LOGS/detected
                                 else
                                     # Remove redirect during debugging
                                     echo "No targets detected this pair for mode:" $MODE > /dev/null 
