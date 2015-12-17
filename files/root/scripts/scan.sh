@@ -19,9 +19,9 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-DATA=/www/data/
-SCAN=/tmp/scan
-NETWORKS=$DATA/networks
+readonly DATA=/www/data/
+readonly SCAN=/tmp/scan
+readonly NETWORKS=$DATA/networks
 
 #iw dev mon0 del
 wifi down
@@ -32,11 +32,11 @@ wifi
 
 sleep 1 # important
 
-NIC=$(iw dev | grep Interface | awk '{ print $2 }')
+readonly NIC=$(iw dev | grep Interface | awk '{ print $2 }')
 horst -q -i $NIC -f BEACON -o $SCAN -X scan &
-HPID=$!
+readonly HPID=$!
 horst -x channel_auto=1
-HPID2=$!
+readonly HPID2=$!
 sleep 5
 kill -9 $HPID $HPID2
 cat $SCAN | awk '{ print $2 $13 $15 }' | sort -u | sed 's/,$//' > $NETWORKS
