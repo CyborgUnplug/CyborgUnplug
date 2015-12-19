@@ -38,8 +38,8 @@ cp /www/active.php /www/index.php
 rm -f $LOGS/detected
 echo "This is our target list: "$TARGETS > $LOGS/targets
 
-# Set to station mode (taking down 'hostapd') so that we have control of the NIC
-uci set wireless.@wifi-iface[0].mode="sta"
+# Set to STAtion mode (taking down 'hoSTApd') so that we have control of the NIC
+uci set wireless.@wifi-iface[0].mode="STA"
 uci commit wireless
 wifi up
 sleep 1 # Important
@@ -55,7 +55,7 @@ ifconfig $NIC up
 
 # Create a monitor device for aireplay-ng to de-auth with. Aireplay will only
 # work with an airmon-ng mon device, not $NIC.
-airmon-ng stop mon0 && airmon-ng start $NIC 
+airmon-ng stop mon0 && airmon-ng STArt $NIC 
 
 # Bring up the admin default VPN for sending alerts to users
 echo "0 plugunplug.ovpn" > $CONFIG/vpn
@@ -100,7 +100,7 @@ channelWalk(){
 horst -u 13 -q -d 250 -i $NIC -f DATA -o $CAPDIR/cap -X detect &
 HPID=$!
 
-if [ $? -ne 0 ]; then # Test horst exit status 
+if [ $? -ne 0 ]; then # Test horst exit STAtus 
   # Something is wrong, like a dead mon0
   # and/or NIC. Store settings and reboot.
    touch $CONFIG/updated && reboot -n 
@@ -154,18 +154,18 @@ while true;
                                 echo $src $dst $BSSID $freq
 
                                 if [ $src != $BSSID ]; then
-                                    sta=$src
+                                    STA=$src
                                 else 
-                                    sta=$dst 
+                                    STA=$dst 
                                 fi
 
-                                if [[ "$sta" == $TARGETS && "$BSSID" == $NETWORKS && "$MODE" == "territory" ]]; then
+                                if [[ "$STA" == $TARGETS && "$BSSID" == $NETWORKS && "$MODE" == "territory" ]]; then
                                         echo $line
                                         deauth
-                                elif [[ ( "$sta" == $TARGETS || "$BSSID" == $TARGETS ) && "$MODE" == "allout" ]]; then
+                                elif [[ ( "$STA" == $TARGETS || "$BSSID" == $TARGETS ) && "$MODE" == "allout" ]]; then
                                         deauth
                                 elif [[ "$MODE" == "alarm" ]]; then 
-                                        echo $(date) "detected" $sta "on" $BSSID >> $LOGS/detected
+                                        echo $(date) "detected" $STA "on" $BSSID >> $LOGS/detected
                                 else
                                     # Remove redirect during debugging
                                     echo "No targets detected this pair for mode:" $MODE > /dev/null 

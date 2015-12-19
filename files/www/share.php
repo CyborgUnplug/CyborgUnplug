@@ -26,12 +26,12 @@ include("php_file_tree.php");
             echo "</form>";
         }
         else {
-            echo "<form method='get' id='sharelock' action='cgi-bin/config.cgi'>";
-			echo "<center><input name='sharelock' type='submit' value='Lock visitors to this page' class='button'></center>";
-            echo "</form>";
             echo "<div class='warning warning3'>";
             echo "Devices connected to the network <b>".$ssid."</b> can now download the following files:";
             echo "</div>"; 
+            echo "<form method='get' id='sharelock' action='cgi-bin/config.cgi'>";
+			echo "<center><input name='sharelock' type='submit' value='Lock visitors to this page' class='button'></center>";
+            echo "</form>";
             echo "<div id='container_files'>";
             echo "<form method='get' id='start' action='cgi-bin/config.cgi'>";
             echo "<br>";

@@ -23,7 +23,7 @@ readonly VPN=/root/keys/plugunplug.ovpn
 readonly POLLTIME=5
 readonly GATEWAY=$(route -n | grep UG[^H] | awk '{ print $2 }')
 readonly ETH=eth0.2 # WAN interface
-readonly VPNSERVER= # Cyborg Unplug VPN server IP goes here
+readonly VPNSERVER=123.45.6.78
 
 STATUS=$(cat $CONFIG/vpnstatus)
 TUN=""
@@ -123,9 +123,20 @@ vpnstop() {
 
 routetoggle() {
     if [ "$1" == up ]; then
+        # Add our route
         route add -net $VPNSERVER netmask 255.255.255.255 gw $GATEWAY
+        # Take down the dnsmasq pocess
+        /etc/init.d/dnsmasq stop
+        # IMPORTANT: DNS LEAKS
+        # Bring up dnsmasq with opts pushing all DNS queries to VPN server,
+        # mitigating dangerous leaks
+        dnsmasq -C /var/etc/dnsmasq.conf --dhcp-option=6,10.10.12.1
     else 
         route del -net $VPNSERVER netmask 255.255.255.255 gw $GATEWAY
+        # Take down the dnsmasq pocess
+        /etc/init.d/dnsmasq stop
+        # Bring it up again, with the LAN-wise defaults... 
+        /etc/init.d/dnsmasq start 
     fi 
 }
 
