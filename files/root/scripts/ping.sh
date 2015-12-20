@@ -19,7 +19,7 @@ readonly BINPATH=/usr/sbin/
 readonly CONFIG=/www/config
 readonly POLLTIME=15
 readonly ETH=eth0.2 # WAN interface
-readonly VPN= # remote server IP here
+readonly VPN=123.45.6.78
 
 while true;
 	do
