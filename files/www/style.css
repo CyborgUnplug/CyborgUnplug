@@ -71,15 +71,17 @@
     margin-right: auto ;
 }
 .container_status{
+
     width: auto;
 	padding-left: 5%;
+    padding-top: 4px;
 	padding-right: 5%;
-	height: 10px;
+	height: 15px;
 	margin-top: 5px!important;
 	margin-bottom: 5px!important;
-	background: #ececec;
-    /*border: 1px solid #AAA;*/
+	background: #333;
     font-size: .5em;
+    color: #00ff00;
 	text-align: center;
 }
 .device{
@@ -453,11 +455,15 @@ html[xmlns] .slides {display: block;}
 	padding: 15px; 
 	padding-top: 12px;
 	margin: 0px; 
-	font-size: 2.1em;
+	font-size: 1.2em;
 	line-height: 1.3em;
 	font-weight: 400;
 	border-radius: 2px;
 }
+.warning a {
+    text-decoration: underline;
+    color: #ffffff; 
+} 
 .warning2{ 
 	background: #82cc51; 
 }
@@ -465,6 +471,7 @@ html[xmlns] .slides {display: block;}
 	margin-top: 15px!important;
 	margin-bottom: 15px!important;
 	background: #82cc51; 
+    font-size: 1.2em;
 }
 .stdout{ 
 	margin-top: 15px!important;

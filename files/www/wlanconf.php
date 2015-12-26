@@ -2,7 +2,7 @@
 
     <h1 id="headline">Configure The Wireless LAN</h1>
      <div id="container_general">
-      <form enctype="multipart/form-data" action="wlan.php" method="post">
+      <form enctype="multipart/form-data" action="wlanset.php" method="post">
         <br><br>
         Set new Access Point name (ESSID): 
         <input name="ssid" type="text" placeholder="network name" />

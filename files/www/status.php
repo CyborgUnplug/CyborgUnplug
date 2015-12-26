@@ -19,12 +19,13 @@ GeoIP status updates end-to-end encrypted */
                 curl_setopt($ch,CURLOPT_CONNECTTIMEOUT,$timeout);
                 curl_setopt($ch,CURLOPT_CAINFO,'/etc/stunnel/server.crt');
                 echo "<b>ESSID</b> ".$ssid."<b>Status</b> ONLINE "; 
-                $vpn='config/vpn';
-                if (file_exists($vpn)) {
-                    echo "<b>Tunneled through</b> ";
+                $vpnstatus = fopen("config/vpnstatus", "r");
+                $h=fgets($vpnstatus);
+                if (preg_match('/up/', $h) == 1) {
+                    echo "<b>Tunneled via</b> ";
                 } 
                 else {
-                    echo "<b>Routed through</b> ";
+                    echo "<b>Routed via</b> ";
                 }
                 curl_exec($ch);
                 //echo "unplug SSID: ".$ssid."Status: ONLINE. Tunneled through:".curl_exec($ch);

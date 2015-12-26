@@ -68,7 +68,7 @@ vpnstart () {
                     else
                         echo "Failed to reach remote host, bailing out..."
                         vpnstop
-                        #return 1 
+                        return 1 
                     fi
                 else
                     echo "tun/tap device is up"
@@ -76,12 +76,12 @@ vpnstart () {
                     #ntpd -q -n -p 0.openwrt.pool.ntp.org & # don't daemonise, quit after setting
                     echo "This is STARTED: " $STARTED
                     $SCRIPTS/blink.sh vpn
-                    #return 0 
+                    return 0 
                 fi
         done
         echo "OpenVPN process died, bailing out..."
         vpnstop
-        #return 1
+        return 1
     fi
 }
 
@@ -126,7 +126,7 @@ routetoggle() {
         # Add our route
         route add -net $VPNSERVER netmask 255.255.255.255 gw $GATEWAY
         # Take down the dnsmasq pocess
-        /etc/init.d/dnsmasq stop
+        killall dnsmasq
         # IMPORTANT: DNS LEAKS
         # Bring up dnsmasq with opts pushing all DNS queries to VPN server,
         # mitigating dangerous leaks

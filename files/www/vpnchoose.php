@@ -3,9 +3,8 @@
 <h1 id="headline">Choose A VPN</h1>
  <div id="container_general">
     <br>
-        <form method='get' id='vpnconf' action='cgi-bin/config.cgi'>
-        <input name='conf' type='hidden' value='vpnconf'>
-        <input type='submit' value='Configure new VPN' class='button'>
+        <form action="vpnconf.php">
+            <input type='submit' value='configure new vpn' class='button'>
         </form>
     <br>
     <div id="container_caption">

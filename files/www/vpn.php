@@ -18,7 +18,7 @@ if (file_exists($fn)) {
         else if (preg_match('/down/', $g) == 1) {
             $vpnup=-1;
         }
-        //else if (preg_match('/stopped/', $g) == 1) {
+        //else if (preg_match('/stop/', $g) == 1) {
         //    $vpnup=-2;
         //}
     }
@@ -29,9 +29,8 @@ if ($vpnup==0) {
     echo "Trying to connect to server...\n";
     echo "<img src='img/loading.gif'>";
     echo "</div>";
-    echo "<form method='get' id='checkvpn' action='cgi-bin/config.cgi'>";
-    echo "<input name='checkvpn' type='hidden' value='checkvpn'>";
-    echo "<input type='submit' value='Refresh' class='button'>";
+    echo "<form action='vpn.php'>"; 
+    echo "<input name='refresh' type='submit' class='button' value='refresh'>";
     echo "</form>";
 } else if ($vpnup == 1) {
     $url = 'https://plugunplug.net/geoip/yourip.php';
@@ -41,14 +40,22 @@ if ($vpnup==0) {
     curl_setopt($ch, CURLOPT_HEADER, 0); 
     curl_setopt($ch,CURLOPT_URL, $url);
     curl_setopt($ch,CURLOPT_CONNECTTIMEOUT,$timeout);
-    $output = curl_exec($ch);
-    curl_close($ch);
-    echo "<br><br>";
+    curl_setopt($ch,CURLOPT_CAINFO,'/etc/stunnel/server.crt');
+    echo "<br>";
     echo "<div class='warning warning3'>";
-    echo "The VPN is up and running.<br>";
-    echo "WiFi and Ethernet clients of Little Snipper tunneled to: ".$output;
-    echo "Check for yourself <a href='http://whatismyip.com'>here</a>";
+    echo "<center>";
+    echo "VPN is up, now tunneled via <br>";
+    curl_exec($ch);
+    curl_close($ch);
+    echo "<br>Check at <a href='http://checkip.com'>checkip.com</a>";
+    echo "</center>";
     echo "</div>";
+    echo "<div class='warning'>";
+    echo "<center>";
+    echo "Existing devices connected to Little Snipper should now reconnect<br>";
+    echo "</center>";
+    echo "</div>";
+    echo "<br>";
     echo "<form method='get' id='stopvpn' action='cgi-bin/config.cgi'>";
     echo "<input name='stopvpn' type='hidden' value='stopvpn'>";
     echo "<input type='submit' value='Stop VPN' class='button'>";
