@@ -5,8 +5,6 @@ readonly SLEEP=/usr/bin/sleep
 readonly GPIO=/sys/class/gpio/gpio9
 echo 1 > $GPIO/value
 
-$SLEEP 1
-
 wink() {
     echo 0 > $GPIO/value
     $SLEEP $1                             
@@ -23,7 +21,7 @@ target() {
         done                                            
 }                                                       
                                                         
-default_on() {                                          
+idle() {                                          
     while true;                                     
         do                                          
             wink .1 .25 
@@ -33,7 +31,7 @@ default_on() {
         done      
 }                              
 
-vpnup() {
+vpn() {
     while true;                                     
         do                                          
             wink .1 3
@@ -42,32 +40,27 @@ vpnup() {
             $SLEEP 3                             
         done      
 }
-
-default_on &
-PID=$!        
                                                     
-while true;                                          
-do                                                   
-    read line;                                   
-        case "$line" in                      
-            *1*)                 
-                kill -9 $PID 
-                echo "target" 
-                target &      
-                PID=$!        
-            ;;                    
-            *2*)                  
-                kill -9 $PID  
-                echo "default"
-                default_on &
-                PID=$!
-            ;;                    
-            *3*)                  
-                kill -9 $PID  
-                echo "vpnup"
-                vpnup &
-                PID=$!
-            ;;                    
-            *)                    
-        esac                          
-done < $SCRIPTS/ledfifo  
+killold() {
+    PID=$(ps | grep [blin]k.sh | awk '{ print $1 }' | head -n 1)
+    kill -9 $PID
+}
+
+case "$1" in                      
+    *target*)                 
+        killold
+        echo "target" 
+        target &      
+    ;;                    
+    *idle*)                  
+        killold
+        echo "idle"
+        idle &
+    ;;                    
+    *vpn*)                  
+        killold
+        echo "vpnup"
+        vpn &
+    ;;                    
+    *)                    
+esac                          

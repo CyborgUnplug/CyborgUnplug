@@ -31,7 +31,18 @@
 			});
 		});
 	</script>
+<script> 
+    var auto_refresh = setInterval(
+    function()
+    {
+        $('#status').fadeOut('slow').load('status.php').fadeIn("slow");
+    }, 5000);
+</script>
+
 </head>
 <body>
 	<div id="container">
+        <div id="status" class="container_status"></div>
+        <center>
 		<img src="img/logo.png" alt="unplug" title="" width="510" height="166" id="logo" />
+        </center>

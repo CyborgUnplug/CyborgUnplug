@@ -34,19 +34,25 @@ if ($vpnup==0) {
     echo "<input type='submit' value='Refresh' class='button'>";
     echo "</form>";
 } else if ($vpnup == 1) {
-    $ip = file_get_contents('http://wtfismyip.com/text');
+    $url = 'https://plugunplug.net/geoip/yourip.php';
+    $ch = curl_init();
+    $timeout = 5;
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+    curl_setopt($ch, CURLOPT_HEADER, 0); 
+    curl_setopt($ch,CURLOPT_URL, $url);
+    curl_setopt($ch,CURLOPT_CONNECTTIMEOUT,$timeout);
+    $output = curl_exec($ch);
+    curl_close($ch);
     echo "<br><br>";
     echo "<div class='warning warning3'>";
     echo "The VPN is up and running.<br>";
-    echo "WiFi and Ethernet clients of Little Snipper tunneled to: ".$ip;
+    echo "WiFi and Ethernet clients of Little Snipper tunneled to: ".$output;
     echo "Check for yourself <a href='http://whatismyip.com'>here</a>";
     echo "</div>";
     echo "<form method='get' id='stopvpn' action='cgi-bin/config.cgi'>";
     echo "<input name='stopvpn' type='hidden' value='stopvpn'>";
     echo "<input type='submit' value='Stop VPN' class='button'>";
     echo "</form>";
-
-
     echo "<form method='get' id='checkvpn' action='cgi-bin/config.cgi'>";
     echo "<input name='checkvpn' type='hidden' value='checkvpn'>";
     echo "<input type='submit' value='Check VPN' class='button'>";
@@ -104,7 +110,7 @@ if ($vpnup==0) {
         $data = $_POST['username']."\n".$_POST['password'];
         $fn ='/tmp/keys/'.$filename.'.auth'; 
         $f = fopen($fn, 'w');
-	$ret = fwrite($f, $data);
+        $ret = fwrite($f, $data);
         fclose($f); 
         if($ret === false) {
             die('There was an error writing this file');

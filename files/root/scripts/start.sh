@@ -49,11 +49,6 @@ block umount; block mount
 # Setup GPIO for indicator LED
 #$SCRIPTS/gpio.sh
 
-if [ ! -f $SCRIPTS/ledfifo ]; then 
-    mkfifo $SCRIPTS/ledfifo
-fi
-
-
 # Scanning is done with a randomly generated NIC (TY mac80211!)
 # The scan.sh script brings up the wireless NIC for us and sets 
 # it in Monitor mode.
@@ -91,7 +86,7 @@ touch $CONFIG/since
 #stunnel /etc/stunnel/stunnel.conf
 
 # Start the LED blinker
-$SCRIPTS/blink.sh &
+$SCRIPTS/blink.sh idle 
 
 # Start the pinger
 $SCRIPTS/ping.sh &

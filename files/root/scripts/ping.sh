@@ -19,13 +19,13 @@ readonly BINPATH=/usr/sbin/
 readonly CONFIG=/www/config
 readonly POLLTIME=15
 readonly ETH=eth0.2 # WAN interface
-readonly VPN=123.45.6.78
 
 while true;
 	do
+        #LOC=$(wget http://getcitydetails.geobytes.com/GetCityDetails?fqcn=123.45.67.8 -O - | awk -F'fqcn":"|","geobyteslatit' '{print $2}')
 		p=$(ping -c 1 plugunplug.net|grep "1 packets received")
 		if [[ ! -z $p ]]; then
-            echo online > $CONFIG/networkstate
+            echo online "Routed through" > $CONFIG/networkstate
 		else
 			echo offline > $CONFIG/networkstate
 		fi

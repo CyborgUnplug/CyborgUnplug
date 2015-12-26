@@ -1,6 +1,8 @@
 <?php include 'header.php';?>
 
+    <center>
 	<h1 id="headline">I would like to...</h1>
+    </center>
     <br><br>
 	<div id="container_start">
 		<form method="get" id="start" action="cgi-bin/config.cgi">
