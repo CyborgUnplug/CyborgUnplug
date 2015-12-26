@@ -70,6 +70,18 @@
     margin-left: 10% ;
     margin-right: auto ;
 }
+.container_status{
+    width: auto;
+	padding-left: 5%;
+	padding-right: 5%;
+	height: 10px;
+	margin-top: 5px!important;
+	margin-bottom: 5px!important;
+	background: #ececec;
+    /*border: 1px solid #AAA;*/
+    font-size: .5em;
+	text-align: center;
+}
 .device{
 	
 }

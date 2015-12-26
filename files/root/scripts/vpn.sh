@@ -23,7 +23,7 @@ readonly VPN=/root/keys/plugunplug.ovpn
 readonly POLLTIME=5
 readonly GATEWAY=$(route -n | grep UG[^H] | awk '{ print $2 }')
 readonly ETH=eth0.2 # WAN interface
-readonly VPNSERVER=123.45.6.78
+readonly VPNSERVER=12.34.56.78
 
 STATUS=$(cat $CONFIG/vpnstatus)
 TUN=""
@@ -75,7 +75,7 @@ vpnstart () {
                     #echo "Updating date"
                     #ntpd -q -n -p 0.openwrt.pool.ntp.org & # don't daemonise, quit after setting
                     echo "This is STARTED: " $STARTED
-                    echo 3 > $SCRIPTS/ledfifo
+                    $SCRIPTS/blink.sh vpn
                     #return 0 
                 fi
         done
@@ -117,7 +117,7 @@ vpnstop() {
     #rm -f $EXTVPN/*
     routetoggle down
     echo unconfigured > $CONFIG/vpnstatus
-    echo 2 > $SCRIPTS/ledfifo 
+    $SCRIPTS/blink.sh vpn
     rm $CONFIG/vpn
 }
 
