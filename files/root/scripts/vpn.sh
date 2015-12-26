@@ -21,7 +21,6 @@ readonly EXTVPN=/tmp/keys # chmod'd root-only read/write
 readonly LOG=/var/log/openvpn.log # only used for debugging
 readonly VPN=/root/keys/plugunplug.ovpn
 readonly POLLTIME=5
-readonly GATEWAY=$(route -n | grep UG[^H] | awk '{ print $2 }')
 readonly ETH=eth0.2 # WAN interface
 readonly VPNSERVER=12.34.56.78
 
@@ -48,9 +47,9 @@ vpnstart () {
                 # We need to call this function here as can't seem to be done
                 # with --push directive in OpenVPN server side; the local gateway
                 # is not known to the server.
-                routetoggle up
                 $BINPATH/openvpn --config $VPN --up-restart --up "/root/scripts/up.sh" --down "/root/scripts/down.sh" --script-security 2 > /dev/null &
                 echo "Started Unplug VPN"
+                routetoggle up
             else
                 $BINPATH/openvpn --config $EXTVPN/$arg2 --up-restart --up "/root/scripts/up.sh" --down "/root/scripts/down.sh" --script-security 2 > /dev/null &
             fi
@@ -122,19 +121,21 @@ vpnstop() {
 }
 
 routetoggle() {
+    /etc/init.d/dnsmasq stop
+    GATEWAY=$(route -n | grep UG[^H] | awk '{ print $2 }')
     if [ "$1" == up ]; then
         # Add our route
-        route add -net $VPNSERVER netmask 255.255.255.255 gw $GATEWAY
         # Take down the dnsmasq pocess
-        killall dnsmasq
         # IMPORTANT: DNS LEAKS
         # Bring up dnsmasq with opts pushing all DNS queries to VPN server,
         # mitigating dangerous leaks
         dnsmasq -C /var/etc/dnsmasq.conf --dhcp-option=6,10.10.12.1
+        sleep 1
+        route add -net $VPNSERVER netmask 255.255.255.255 gw $GATEWAY
+        sleep 1
     else 
         route del -net $VPNSERVER netmask 255.255.255.255 gw $GATEWAY
         # Take down the dnsmasq pocess
-        /etc/init.d/dnsmasq stop
         # Bring it up again, with the LAN-wise defaults... 
         /etc/init.d/dnsmasq start 
     fi 
