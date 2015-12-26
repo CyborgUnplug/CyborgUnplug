@@ -46,7 +46,7 @@
 
 
  		<div class='warning warning3'>
-			Unplug & re-plug to re-configure.
+			Unplug/replug to re-configure.
 		</div>
 
          <li>
@@ -54,8 +54,6 @@
             <div id='reports' class='page'>
                 <form id="reports"> 
                     <div class="config_container">
-	                    
-
 	                    <div id="reports_container">
 							 <?php
                                 function getDeviceName($mac){

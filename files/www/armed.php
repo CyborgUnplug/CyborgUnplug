@@ -2,10 +2,11 @@
 
     <h1 id="headline"></h1>
 	<div class='warning warning2'>
-		Please standby while we apply the settings.
-		<img src="img/loading.gif" alt="" title="" class="loading" width="10" height="10" />
+		Please standby while we apply the settings...<img src="img/loading.gif" alt="" title="" class="loading" width="10" height="10" />
 		<br/>
-		Unplug and re-plug to re-configure.
+		Unplug and re-plug to re-configure. You will no longer be able
+to connect to the device wirelessly while it is in the armed state.
+
 	</div>
 
 <?php include 'footer.php';?>
