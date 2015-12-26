@@ -17,6 +17,3 @@ you're flashing the wr710n firmware currently.
 [http://plugunplug.net](http://plugunplug.net)
 
 ![](https://plugunplug.net/img/site-banner.jpg)
-<center>
-<img src="https://plugunplug.net/img/home.jpg">
-</center>
