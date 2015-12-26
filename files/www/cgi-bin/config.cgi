@@ -45,9 +45,6 @@ html() {
 }
 
 case "$EVENT" in
-    *detect*)
-        html detect.php
-    ;; 
     *encrypt*)
         if [ $(cat $CONFIG/vpnstatus) == "unconfigured" ]; then
             rm -f $UPLOAD/*
@@ -55,9 +52,6 @@ case "$EVENT" in
         elif [ -f $CONFIG/vpn ]; then
             html vpn.php
         fi
-    ;; 
-    *share)
-        html share.php
     ;; 
     *sharerefresh*)
         block umount
@@ -75,12 +69,6 @@ case "$EVENT" in
         sleep 1
         html share.php
     ;; 
-    *configure*)
-        html configure.php
-    ;; 
-    *wifi*)
-        html wlanconf.php
-    ;;
     *wlanrestart*)
         touch $CONFIG/setwifi
         html wlanrestart.php
@@ -107,9 +95,6 @@ case "$EVENT" in
         sleep 1
         html vpn.php
     ;;    
-    *vpnconf*)
-        html vpnconf.php
-    ;;
 	*extvpn*)
         readonly vpnargs=$(echo $EVENT | cut -d "=" -f 2 | sed -e 's/%3D/=/g' | base64 -d)
         echo $vpnargs > $CONFIG/vpn
@@ -119,18 +104,18 @@ case "$EVENT" in
         sleep 1
         html vpn.php
 	;;
-	*checkvpn*)
-        html vpn.php
-	;;
 	*stopvpn*)
         echo stop > $CONFIG/vpnstatus
         sleep 3 # grace time for PID to exit fully 
-        html vpnconf.php
+        html vpn.php
 	;;
 	*newvpn*)
         echo unconfigured > $CONFIG/vpnstatus
         html vpnchoose.php
 	;;
+    *checkvpn*)
+        html vpn.php #we need a full refresh to call the checking code in vpn.php
+    ;;
 	*finish1*)
 		echo $EVENT | cut -d "=" -f 2 | sed -e 's/%3D/=/g' -e 's/\ //g' | base64 -d  > $CONFIG/networks
         html finish.php

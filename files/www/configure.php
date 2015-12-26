@@ -1,15 +1,18 @@
 <?php include 'header.php';?>
 
+    <center>
 	<h1 id="headline">Configure Little Snipper</h1>
-    <br><br>
+    </center>
+    <br>
 	<div id="container_general">
-		<form method="get" id="start" action="cgi-bin/config.cgi">
-			<input name="access point" type="submit" value="wifi" class='button'>
-            <br><br>
+        <form action="wlan.php">
+			<input name="wifi" type="submit" value="wifi" class='button'>
+        </form>
+        <form action="update.php">
 			<input name="updates" type="submit" value="updates" class='button'>
-            <br><br>
+        </form>
+        <form action="alerts.php">
 			<input name="alerts" type="submit" value="alerts" class='button'>
-            <br><br>
         </form>
 	</div>
 <?php include 'footer.php';?>

@@ -42,7 +42,12 @@
 </head>
 <body>
 	<div id="container">
-        <div id="status" class="container_status"></div>
+        <div id="status" class="container_status">
+        Awaiting status...
+        </div>
         <center>
+        <br>
+        <a href="index.php">
 		<img src="img/logo.png" alt="unplug" title="" width="510" height="166" id="logo" />
+        </a>
         </center>

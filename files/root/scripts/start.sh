@@ -73,6 +73,7 @@ if [ ! -f $CONFIG/updated ]; then
     rm -f $LOGS/detected                                           
 fi
 
+chown nobody:nogroup /www/config/vpnstatus
 echo unconfigured > /www/config/vpnstatus
 
 # Disable wifi (incl hostapd) for the next boot as we want to 
