@@ -6,7 +6,10 @@ if (file_exists($fn)) {
     $f = fopen("config/vpnstatus", "r");
     $g=fgets($f);                                                                                                                              
     if ($g) {
-        if (preg_match('/unconfigured/', $g) == 1) {
+        if (preg_match('/down/', $g) == 1) {
+            $vpnup=3;
+        }
+        else if (preg_match('/unconfigured/', $g) == 1) {
             $vpnup=2;
         }
         else if (preg_match('/up/', $g) == 1) {
@@ -15,16 +18,13 @@ if (file_exists($fn)) {
         else if (preg_match('/start/', $g) == 1) {
             $vpnup=0;
         }
-        else if (preg_match('/down/', $g) == 1) {
-            $vpnup=-1;
-        }
         //else if (preg_match('/stop/', $g) == 1) {
         //    $vpnup=-2;
         //}
     }
 }
 fclose($f);
-if ($vpnup==0) {
+if ($vpnup == 0) {
     echo "<div class='warning warning3'>";
     echo "Trying to connect to server...\n";
     echo "<img src='img/loading.gif'>";
@@ -64,7 +64,7 @@ if ($vpnup==0) {
     echo "<input name='checkvpn' type='hidden' value='checkvpn'>";
     echo "<input type='submit' value='Check VPN' class='button'>";
     echo "</form>";
-} else if ($vpnup==-1) {
+} else if ($vpnup == 3) {
     echo "<div class='warning'>";
     echo "The VPN is not running\n";
     echo "</div>";

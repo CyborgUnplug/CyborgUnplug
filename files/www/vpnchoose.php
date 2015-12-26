@@ -1,6 +1,8 @@
 <?php include 'header.php';?>
 
+<center>
 <h1 id="headline">Choose A VPN</h1>
+</center>
  <div id="container_general">
     <br>
         <form action="vpnconf.php">
@@ -22,6 +24,7 @@
         Routes through Germany<br>
         Undetectable VPN traffic<br>
         No P2P traffic<br>
+        No DNS leaks (same nameservers as VPN host)
     </div>
 
   </div>

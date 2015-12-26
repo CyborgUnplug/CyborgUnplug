@@ -1,4 +1,4 @@
-#!/bin/sh                                       
+#!/bin/bash                                       
 
 readonly SCRIPTS=/root/scripts
 readonly SLEEP=/usr/bin/sleep
@@ -15,35 +15,35 @@ wink() {
 target() {                                      
     while true;                             
         do  
-            wink 1 1
-            wink 1  1                                  
-            $SLEEP 3
+            wink .05 .1 
+            wink .05 .1
+            wink .05 .1
+            $SLEEP 10
         done                                            
 }                                                       
                                                         
-idle() {                                          
+vpn() {                                          
     while true;                                     
         do                                          
-            wink .1 .25 
-            wink .1 .25
-            $SLEEP 1
+            wink .05 .1 
+            wink .05 .1
+            $SLEEP 10
 	    
         done      
 }                              
 
-vpn() {
+idle() {
     while true;                                     
         do                                          
-            wink .1 3
-            wink .1 3
-            wink .1 3
-            $SLEEP 3                             
+            wink .05 10
         done      
 }
                                                     
 killold() {
-    PID=$(ps | grep [blin]k.sh | awk '{ print $1 }' | head -n 1)
-    kill -9 $PID
+    PID=($(ps | grep [blin]k.sh | awk '{ print $1 }'))
+    if [ ${#PID} -gt 1 ]; then
+        kill -9 ${PID[0]}
+    fi
 }
 
 case "$1" in                      
