@@ -40,7 +40,7 @@ html() {
     echo Content-type: text/html
     echo
     echo '<html>'
-    echo '<meta http-equiv="Refresh" content="1; url=http://10.10.10.1/'"$1"'">'
+    echo '<meta http-equiv="Refresh" content="1; url=/'"$1"'">'
     echo '</html>'
 }
 
