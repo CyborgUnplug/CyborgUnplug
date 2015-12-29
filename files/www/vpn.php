@@ -52,7 +52,7 @@ if ($vpnup == 0) {
     echo "</div>";
     echo "<div class='warning'>";
     echo "<center>";
-    echo "Existing devices connected to Little Snipper should now reconnect<br>";
+    echo "Devices already connected to Little Snipper should now reconnect<br>";
     echo "</center>";
     echo "</div>";
     echo "<br>";
