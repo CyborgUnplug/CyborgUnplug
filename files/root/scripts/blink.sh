@@ -41,24 +41,24 @@ idle() {
                                                     
 killold() {
     PID=($(ps | grep [blin]k.sh | awk '{ print $1 }'))
-    if [ ${#PID} -gt 1 ]; then
+    echo ${PID[@]}
+    if [ ${#PID[@]} -gt 2 ]; then
         kill -9 ${PID[0]}
     fi
 }
 
+killold
+
 case "$1" in                      
     *target*)                 
-        killold
         echo "target" 
         target &      
     ;;                    
     *idle*)                  
-        killold
         echo "idle"
         idle &
     ;;                    
     *vpn*)                  
-        killold
         echo "vpnup"
         vpn &
     ;;                    
