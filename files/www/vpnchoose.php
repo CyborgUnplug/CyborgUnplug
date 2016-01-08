@@ -4,7 +4,6 @@
 <h1 id="headline">Choose A VPN</h1>
 </center>
  <div id="container_general">
-    <br>
         <form action="vpnconf.php">
             <input type='submit' value='configure new vpn' class='button'>
         </form>
@@ -24,7 +23,7 @@
         Routes through Germany<br>
         Undetectable VPN traffic<br>
         No P2P traffic<br>
-        No DNS leaks (same nameservers as VPN host)
+        No DNS leaks (same DNS as VPN host)
     </div>
 
   </div>

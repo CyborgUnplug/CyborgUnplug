@@ -1,6 +1,6 @@
 <?php include 'header.php';?>
 
-	<h1 id="headline">Select devices to unplug</h1>
+	<h1 id="headline">Select devices to detect</h1>
 	<div id="container_devices">
 		
 		<form method="get" id="devices" action="cgi-bin/config.cgi">

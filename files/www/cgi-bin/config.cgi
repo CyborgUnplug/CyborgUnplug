@@ -45,6 +45,10 @@ html() {
 }
 
 case "$EVENT" in
+    *registered*)
+        cp $SITE/index.php.conf $SITE/index.php
+        html index.php
+    ;;
     *encrypt*)
         if [ $(cat $CONFIG/vpnstatus) == "unconfigured" ]; then
             rm -f $UPLOAD/*

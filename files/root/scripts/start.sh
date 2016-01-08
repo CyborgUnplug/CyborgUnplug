@@ -59,19 +59,6 @@ cat $DATA/networks
 
 # Bring up the AP
 $SCRIPTS/wifi.sh
- 
-# Copy our config site page to index.php                              
-cp /www/index.php.conf /www/index.php                                 
-                                                                   
-if [ ! -f $CONFIG/updated ]; then                               
-    rm -f $CONFIG/armed                            
-    rm -f $CONFIG/networks        
-    rm -f $CONFIG/targets
-    rm -f $CONFIG/mode                                 
-    rm -f $CONFIG/vpn
-    rm -f $CONFIG/startvpn
-    rm -f $LOGS/detected                                           
-fi
 
 chown nobody:nogroup /www/config/vpnstatus
 echo unconfigured > /www/config/vpnstatus
@@ -81,7 +68,32 @@ echo unconfigured > /www/config/vpnstatus
 #uci set wireless.@wifi-iface[0].disabled=1
 #uci commit
 
-# Update the date on this file. Acts as a firstboot.
+if [ ! -f $CONFIG/since ]; then
+    /etc/init.d/cron enable 
+    cp /www/start.php /www/index.php                                 
+    echo "<br>"
+    echo "<center>"
+    echo "<footer>"
+    echo "<hr>"                 >  /www/footer.php
+    echo "Model: international | id: " $(cat $CONFIG/wlanmac | sed 's/://g')      >> /www/footer.php 
+    echo "</footer>"
+    echo "</center>"
+    echo "</div></body></html>" >> /www/footer.php
+else
+    # Copy our config site page to index.php                              
+    cp /www/index.php.conf /www/index.php                                 
+    if [ ! -f $CONFIG/updated ]; then                               
+        rm -f $CONFIG/armed                            
+        rm -f $CONFIG/networks        
+        rm -f $CONFIG/targets
+        rm -f $CONFIG/mode                                 
+        rm -f $CONFIG/vpn
+        rm -f $CONFIG/startvpn
+        rm -f $LOGS/detected                                           
+    fi
+fi
+
+# Update the date on this file. Also acts as a firstboot.
 touch $CONFIG/since
 
 #stunnel /etc/stunnel/stunnel.conf
@@ -92,6 +104,7 @@ $SCRIPTS/blink.sh idle
 # Start the pinger
 $SCRIPTS/ping.sh &
 
+/etc/init.d/cron start
 
 while true;   
     do        

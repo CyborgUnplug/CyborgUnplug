@@ -25,7 +25,8 @@ if (! isset($_POST['email']) ) {
                 echo "Email data saved.\nYou're now ready to start using Little Snipper";
                 echo "</div>";
                 echo "<div>";
-                echo "<form method='get' id='index' action='index.php'>";
+                echo "<form method='get' id='registered' action='cgi-bin/config.cgi'>";
+                echo "<input name='registered' type='hidden' value='registered'>";
                 echo "<input type='submit' value='Go' class='button'>";
                 echo "</form>";
                 echo "</div>";

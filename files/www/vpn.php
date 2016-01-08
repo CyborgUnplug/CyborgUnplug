@@ -26,12 +26,14 @@ if (file_exists($fn)) {
 fclose($f);
 if ($vpnup == 0) {
     echo "<div class='warning warning3'>";
-    echo "Trying to connect to server...\n";
+    echo "Connecting to server...\n";
     echo "<img src='img/loading.gif'>";
     echo "</div>";
     echo "<form action='vpn.php'>"; 
     echo "<input name='refresh' type='submit' class='button' value='refresh'>";
     echo "</form>";
+    $secondsWait = 5;
+    echo '<meta http-equiv="refresh" content="'.$secondsWait.'">';
 } else if ($vpnup == 1) {
     $url = 'https://plugunplug.net/geoip/yourip.php';
     $ch = curl_init();
@@ -52,7 +54,7 @@ if ($vpnup == 0) {
     echo "</div>";
     echo "<div class='warning'>";
     echo "<center>";
-    echo "Devices already connected to Little Snipper should now reconnect<br>";
+    echo "Devices connected before VPN was active should immediately reconnect<br>";
     echo "</center>";
     echo "</div>";
     echo "<br>";
@@ -128,7 +130,7 @@ if ($vpnup == 0) {
               echo "OpenVPN login data saved.\n";
               //echo "$ret bytes written to auth file";
               echo "</div>";
-	      //echo "this is the form data ".$data;
+              //echo "this is the form data ".$data;
               $authfile=true;
         }
     }
