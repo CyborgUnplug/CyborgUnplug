@@ -55,6 +55,7 @@
 	text-align: left;
     margin-left: auto ;
     margin-right: auto ;
+     vertical-align: middle; 
 }
 #container_files{
 	width:80%; 
@@ -126,7 +127,7 @@
   		margin-bottom: 0px!important;
   	}
   	.warning{
-  		font-size: 1.4em!important;
+  		font-size: 1.2em!important;
   		margin-top: 25px!important;
   		margin-bottom: -15px!important;
   	}
@@ -156,7 +157,8 @@ html, button, input, select, textarea {
 	font-smoothing: antialiased;
 	text-shadow: 1px 1px 1px rgba(0,0,0,0.004);}
 
-body { margin: 0; font-size: 13px; line-height: 1.6; color: #555 }
+body {   margin: 0; font-size: 13px; line-height: 1.6; color: #555 }
+	
 
 a { color: #0078CF; font-weight: normal;
 	cursor: pointer;  text-decoration: none;
@@ -366,12 +368,18 @@ h1 a:hover,h2 a:hover,h3 a:hover,h4 a:hover,h5 a:hover,h6 a:hover{color:#0078CF;
 
 /* -- FOOTER
 ------------------------------------------------------------- */
-footer  { color: #555; margin-bottom: 7em; }
+footer  { 
+   color: #555; 
+   position:relative;
+   bottom:0;
+   width:85%;
+   height:60px;   /* Height of the footer */
+}
+
 footer nav ul { float: right; overflow: hidden; }
 footer a {color: #999;}
 footer li { float: left; margin-right: 1em; padding-right: 1em; border-right: 1px solid #DDD; font-size: 0.8em; }
 footer li:last-child { margin-right: 0; padding-right: 0; border-right: none; }
-.up a { display: block; text-align: center; margin: 0 auto; }
 
 
 /* -- HOME-PAGE
@@ -451,7 +459,7 @@ html[xmlns] .slides {display: block;}
 .warning { 
 	background: #ce5252; 
 	color: white;
-	text-align: left; 
+	text-align: center; 
 	padding: 15px; 
 	padding-top: 12px;
 	margin: 0px; 

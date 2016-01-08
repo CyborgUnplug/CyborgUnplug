@@ -1,6 +1,6 @@
 <?php include 'header.php';?>
 
-    <h1 id="headline">Configure The Wireless LAN</h1>
+    <h1 id="headline">Configure The WiFi LAN</h1>
      <div id="container_general">
       <form enctype="multipart/form-data" action="wlanset.php" method="post">
         <br><br>

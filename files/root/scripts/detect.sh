@@ -21,6 +21,7 @@
 trap "trap - SIGTERM && kill -- -$$" SIGINT SIGTERM EXIT
 shopt -s nocasematch # Important
 
+readonly SCRIPTS=/root/scripts
 readonly LOGS=/www/logs/
 readonly CAPDIR=/tmp
 readonly CONFIG=/www/config
@@ -30,6 +31,7 @@ readonly MODE=$(cat $CONFIG/mode)
 # Read in the user selected target devices and build the target string.
 readonly SRCT=$(cat $CONFIG/targets | cut -d "," -f 2)
 readonly TARGETS='@('$(echo $SRCT | sed 's/\ /\*\|/g')'*)'
+readonly EMAIL=$(cat $CONFIG/email)
 NETWORKS='' # Placeholder. Technically redundant.
 
 # Make the activity page the default site page for connections during detection
@@ -38,11 +40,15 @@ cp /www/active.php /www/index.php
 rm -f $LOGS/detected
 echo "This is our target list: "$TARGETS > $LOGS/targets
 
+airmon-ng stop mon0 
+
 # Set to station mode (taking down 'hostapd') so that we have control of the NIC
+wifi down
 uci set wireless.@wifi-iface[0].mode="sta"
+uci set wireless.@wifi-iface[0].disabled="0"
 uci commit wireless
 wifi up
-sleep 1 # Important
+sleep 3 # Important
 
 # Extract and define a variable for our wireless NIC and bring it up in Monitor
 # mode. We use $NIC to capture rather than the mon0 device created below. This
@@ -52,29 +58,48 @@ readonly NIC=$(iw dev | grep Interface | awk '{ print $2 }')
 ifconfig $NIC down
 iwconfig $NIC mode Monitor
 ifconfig $NIC up
+sleep 3 # Important
 
 # Create a monitor device for aireplay-ng to de-auth with. Aireplay will only
 # work with an airmon-ng mon device, not $NIC.
-airmon-ng stop mon0 && airmon-ng start $NIC 
+airmon-ng start $NIC 
+sleep 3 # Important
 
 # Bring up the admin default VPN for sending alerts to users
+
 echo "0 plugunplug.ovpn" > $CONFIG/vpn
 $SCRIPTS/vpn.sh &
 
-sleep 2
+alert() {
+    if [[ $(cat $CONFIG/networkstate) == "online" ]]; then
+        echo "Alerting Unplug owner"
+        device=$(cat /www/data/devices | grep ${STA:0:8} | cut -d ',' -f 1)
+        $SCRIPTS/alert.sh $EMAIL $device $STA &
+    else
+        echo "Can't send alert. Unplug not online"
+    fi
+    # Log this for the report page
+    echo $(date) "de-authed device" $device "with MAC addr" $STA "on" $BSSID >> $LOGS/detected
+}
 
 deauth() {
     echo "Target found."
-    # Pause airodump-ng and set the channel
-    # We can set the channel of $NIC and mon0 at once as $NIC is in Monitor mode
+    # Pause horst and set the channel
+    if [[ "$MODE" == "allout" || "$MODE" == "alarm" ]]; then
+        horst -x channel_auto=0
+    fi
     horst -x pause
-    iwconfig $NIC freq $FREQ"000000"
-    sleep 1
-    # Log this for the report page
-    echo $(date) "de-authed" $STA "on" $BSSID >> $LOGS/detected
+    # We can set the channel of $NIC and mon0 at once as $NIC is in Monitor mode
+    iwconfig $NIC freq $freq"000000"
+    sleep 2
+    iwconfig | grep Frequency
     # Do the de-auth
     echo "De-authing: " "$STA" " from " "$BSSID"
     aireplay-ng -0 $FRAMES -a $BSSID -c $STA mon0 
+    alert
+    if [[ "$MODE" == "allout" || "$MODE" == "alarm" ]]; then
+        horst -x channel_auto=1
+    fi
     horst -x resume
     # Reset MAC vars 
     STA=ff:ff:ff:ff:ff:ff
@@ -97,7 +122,7 @@ channelWalk(){
 
 # Start horst with upper channel limit of 13 in quiet mode and a command hook
 # for remote control (-X). Has to be backgrounded.
-horst -u 13 -q -d 250 -i $NIC -f DATA -o $CAPDIR/cap -X detect &
+horst -u 13 -q -d 250 -i $NIC -f DATA -o $CAPDIR/cap -X &
 HPID=$!
 
 if [ $? -ne 0 ]; then # Test horst exit status 
@@ -121,7 +146,7 @@ case "$MODE" in
         readonly SRCN=$(cat /www/config/networks | cut -d "," -f 1)
         readonly NETWORKS='@('$(echo $SRCN | sed 's/\ /\|/g')')'
         channelWalk &
-        readonly CPID=$!
+        CPID=$!
     ;;
     *alarm*)
         # Put things specific to alarm/alert mode here.
@@ -146,26 +171,28 @@ while true;
             # pairs need to be extraced and matched separately.
             cat $CAPDIR/cap | awk '{ print $2 $3 $4 $11 }' | sed 's/,/\ /g' | sort -u > $CAPDIR/pairs
             if [ -f $CAPDIR/pairs ]; then
-                    kill -STOP $CPID
-                     while read line;
+                    if [ "$MODE" == "territory" ]; then
+                        kill -STOP $CPID
+                    fi
+                    while read line;
                              do
                                 arr=($line) # Array from the line
                                 src=${arr[0]}; dst=${arr[1]}; BSSID=${arr[2]}; freq=${arr[3]}
                                 echo $src $dst $BSSID $freq
-
                                 if [ $src != $BSSID ]; then
                                     STA=$src
                                 else 
                                     STA=$dst 
                                 fi
-
                                 if [[ "$STA" == $TARGETS && "$BSSID" == $NETWORKS && "$MODE" == "territory" ]]; then
-                                        echo $line
                                         deauth
                                 elif [[ ( "$STA" == $TARGETS || "$BSSID" == $TARGETS ) && "$MODE" == "allout" ]]; then
+                                        echo "This is freq at time of deauth" $freq
                                         deauth
                                 elif [[ "$MODE" == "alarm" ]]; then 
-                                        echo $(date) "detected" $STA "on" $BSSID >> $LOGS/detected
+                                        # Log this for the report page
+                                        echo $(date) "de-authed" $STA "on" $BSSID >> $LOGS/detected
+                                        alert
                                 else
                                     # Remove redirect during debugging
                                     echo "No targets detected this pair for mode:" $MODE > /dev/null 
@@ -174,7 +201,9 @@ while true;
             echo "Removing temporary files."
             rm -f $CAPDIR/pairs $CAPDIR/channels 
             horst -x pause
-            kill -CONT $CPID
+            if [ "$MODE" == "territory" ]; then
+                kill -STOP $CPID
+            fi
             rm -f $CAPDIR/cap
             horst -x outfile=$CAPDIR/cap
             horst -x resume 

@@ -18,7 +18,7 @@ GeoIP status updates end-to-end encrypted */
                 curl_setopt($ch,CURLOPT_URL, $url);
                 curl_setopt($ch,CURLOPT_CONNECTTIMEOUT,$timeout);
                 curl_setopt($ch,CURLOPT_CAINFO,'/etc/stunnel/server.crt');
-                echo "<b>ESSID</b> ".$ssid."<b>Status</b> ONLINE "; 
+                echo $ssid."<b>Status</b> ONLINE "; 
                 $vpnstatus = fopen("config/vpnstatus", "r");
                 $h=fgets($vpnstatus);
                 if (preg_match('/up/', $h) == 1) {
@@ -32,7 +32,7 @@ GeoIP status updates end-to-end encrypted */
                 curl_close($ch);
             }
             else if (preg_match('/offline/', $g) == 1) {
-                echo "<b>SSID</b> ".$ssid."<b>Status</b> OFFLINE";
+                echo $ssid."<b>Status</b> OFFLINE";
             }
         }
     }

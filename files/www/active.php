@@ -1,10 +1,11 @@
 <?php include 'header.php';?>
 
-    <h1 id="headline" style="color:#82cc51;">Device is Active</h1>
+    <center>
+    <h1 id="headline" style="color:#82cc51;">The detector is active</h1>
 	
 	<ul class='toggle-view'>
         <li>
-            <a href='#devices' class='navLink'><h4 class='toggle-title'>Detected Devices</h4></a>
+            <a href='#devices' class='navLink'><h4 class='toggle-title'>devices to detect</h4></a>
             <div id='devices' class='page'>
                 <form id="devices"> 
                     <div class="config_container">
@@ -24,7 +25,7 @@
             </div>
         </li>
         <li>
-            <a href='#networks' class='navLink'><h4 class='toggle-title'>Protected Networks</h4></a>
+            <a href='#networks' class='navLink'><h4 class='toggle-title'>networks to watch</h4></a>
             <div id='networks' class='page'>
                 <form id="networks"> 
                     <div class="config_container">
@@ -46,11 +47,12 @@
 
 
  		<div class='warning warning3'>
-			Unplug/replug to re-configure.
+			Unplug/replug to re-configure
 		</div>
-
-         <li>
-            <a href='#reports' class='navLink'><h4 class='toggle-title'>Reports</h4></a>
+        </center>
+            <center>
+            <a href='#reports' class='navLink'><h4 class='toggle-title'>reports</h4></a>
+            </center>
             <div id='reports' class='page'>
                 <form id="reports"> 
                     <div class="config_container">
@@ -109,7 +111,6 @@
                     </div>
                 </form>
             </div>
-        </li>
     </ul>
     
 

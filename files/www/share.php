@@ -10,7 +10,9 @@ include("php_file_tree.php");
         <script src="php_file_tree.js" type="text/javascript"></script>
     </head>
     <body>
+    <center>
 	<h1 id="headline">Share files wirelessly</h1>
+    </center>
 		<?php
         $f = fopen("config/ssid", "r");
         $ssid = fgets($f);
@@ -19,7 +21,7 @@ include("php_file_tree.php");
         if (file_exists($g)){
             echo "<br>";
             echo "<div class='warning warning3'>";
-            echo "Insert USB stick to share files.";
+            echo "Insert USB stick to start sharing";
             echo "</div>"; 
             echo "<form method='get' id='sharerefresh' action='cgi-bin/config.cgi'>";
 			echo "<center><input name='sharerefresh' type='submit' value='Refresh' class='button'></center>";
