@@ -31,8 +31,9 @@ readonly MODE=$(cat $CONFIG/mode)
 # Read in the user selected target devices and build the target string.
 readonly SRCT=$(cat $CONFIG/targets | cut -d "," -f 2)
 readonly TARGETS='@('$(echo $SRCT | sed 's/\ /\*\|/g')'*)'
-readonly EMAIL=$(cat $CONFIG/email)
-NETWORKS='' # Placeholder. Technically redundant.
+
+networks='' # Placeholder. Technically redundant.
+lastseen=0
 
 # Make the activity page the default site page for connections during detection
 # (only available over Ethernet) 
@@ -41,6 +42,7 @@ rm -f $LOGS/detected
 echo "This is our target list: "$TARGETS > $LOGS/targets
 
 airmon-ng stop mon0 
+killall horst
 
 # Set to station mode (taking down 'hostapd') so that we have control of the NIC
 wifi down
@@ -67,19 +69,25 @@ sleep 3 # Important
 
 # Bring up the admin default VPN for sending alerts to users
 
-echo "0 plugunplug.ovpn" > $CONFIG/vpn
-$SCRIPTS/vpn.sh &
+#echo "0 plugunplug.ovpn" > $CONFIG/vpn
+#$SCRIPTS/vpn.sh &
 
 alert() {
-    if [[ $(cat $CONFIG/networkstate) == "online" ]]; then
-        echo "Alerting Unplug owner"
-        device=$(cat /www/data/devices | grep ${STA:0:8} | cut -d ',' -f 1)
-        $SCRIPTS/alert.sh $EMAIL $device $STA &
-    else
-        echo "Can't send alert. Unplug not online"
+    now=$(date +'%s')
+    # Send alerts no more than once every 5mins (to avoid spamming)
+    delta=$(echo $now-$lastseen | bc) 
+    lastseen=$now
+    if [ $delta -gt 360 ]; then
+        if [[ $(cat $CONFIG/networkstate) == "online" ]]; then
+            echo "Alerting Unplug owner"
+            device=$(cat /www/data/devices | grep ${target:0:8} | cut -d ',' -f 1)
+            $SCRIPTS/alert.sh $device $target &
+        else
+            echo "Can't send alert. Unplug not online"
+        fi
+        # Log this for the report page
+        echo $(date) "de-authed device" $device "with MAC addr" $target "on" $BSSID >> $LOGS/detected
     fi
-    # Log this for the report page
-    echo $(date) "de-authed device" $device "with MAC addr" $STA "on" $BSSID >> $LOGS/detected
 }
 
 deauth() {
@@ -144,7 +152,7 @@ case "$MODE" in
         cat $CONFIG/networks
         # Read in the networks we're watching and build the target string. 
         readonly SRCN=$(cat /www/config/networks | cut -d "," -f 1)
-        readonly NETWORKS='@('$(echo $SRCN | sed 's/\ /\|/g')')'
+        readonly networks='@('$(echo $SRCN | sed 's/\ /\|/g')')'
         channelWalk &
         CPID=$!
     ;;
@@ -171,7 +179,7 @@ while true;
             # pairs need to be extraced and matched separately.
             cat $CAPDIR/cap | awk '{ print $2 $3 $4 $11 }' | sed 's/,/\ /g' | sort -u > $CAPDIR/pairs
             if [ -f $CAPDIR/pairs ]; then
-                    if [ "$MODE" == "territory" ]; then
+                    if [[ "$MODE" == "territory" ]]; then
                         kill -STOP $CPID
                     fi
                     while read line;
@@ -179,23 +187,29 @@ while true;
                                 arr=($line) # Array from the line
                                 src=${arr[0]}; dst=${arr[1]}; BSSID=${arr[2]}; freq=${arr[3]}
                                 echo $src $dst $BSSID $freq
-                                if [ $src != $BSSID ]; then
+                                if [[ $src != $BSSID ]]; then
                                     STA=$src
                                 else 
                                     STA=$dst 
                                 fi
-                                if [[ "$STA" == $TARGETS && "$BSSID" == $NETWORKS && "$MODE" == "territory" ]]; then
+
+                                if [[ "$MODE" == "territory" && "$STA" == $TARGETS && "$BSSID" == $networks ]]; then
+                                        target=$STA
                                         deauth
-                                elif [[ ( "$STA" == $TARGETS || "$BSSID" == $TARGETS ) && "$MODE" == "allout" ]]; then
-                                        echo "This is freq at time of deauth" $freq
+                                elif [[ "$STA" == $TARGETS ]]; then
+                                    target=$STA
+                                    if [[ "$MODE" == "allout" ]]; then
                                         deauth
-                                elif [[ "$MODE" == "alarm" ]]; then 
-                                        # Log this for the report page
-                                        echo $(date) "de-authed" $STA "on" $BSSID >> $LOGS/detected
+                                    else
                                         alert
-                                else
-                                    # Remove redirect during debugging
-                                    echo "No targets detected this pair for mode:" $MODE > /dev/null 
+                                    fi
+                                elif [[ "$BSSID" == $TARGETS ]]; then
+                                    target=$BSSID
+                                    if [[ "$MODE" == "allout" ]]; then
+                                        deauth
+                                    else
+                                        alert
+                                    fi
                                 fi
                         done < $CAPDIR/pairs #EOF
             echo "Removing temporary files."
