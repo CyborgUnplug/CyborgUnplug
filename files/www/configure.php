@@ -5,13 +5,13 @@
     </center>
     <br>
 	<div id="container_general">
-        <form action="wlan.php">
+        <form action="wlanconf.php">
 			<input name="wifi" type="submit" value="wifi" class='button'>
         </form>
-        <form action="update.php">
+        <form action="updateconf.php">
 			<input name="updates" type="submit" value="updates" class='button'>
         </form>
-        <form action="alerts.php">
+        <form action="alertsconf.php">
 			<input name="alerts" type="submit" value="alerts" class='button'>
         </form>
 	</div>

@@ -18,7 +18,7 @@ target() {
             wink .05 .1 
             wink .05 .1
             wink .05 .1
-            $SLEEP 10
+            $SLEEP 5
         done                                            
 }                                                       
                                                         
@@ -27,7 +27,7 @@ vpn() {
         do                                          
             wink .05 .1 
             wink .05 .1
-            $SLEEP 10
+            $SLEEP 5
 	    
         done      
 }                              
@@ -35,7 +35,7 @@ vpn() {
 idle() {
     while true;                                     
         do                                          
-            wink .05 10
+            wink .05 5
         done      
 }
                                                     

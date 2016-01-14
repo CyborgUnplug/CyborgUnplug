@@ -26,13 +26,11 @@ readonly LOGS=/www/logs/
 readonly CAPDIR=/tmp
 readonly CONFIG=/www/config
 readonly FRAMES=5 # Number of de-auth frames to send. 10 a good hit/time tradeoff
-readonly MODE=$(cat $CONFIG/mode) 
 
 # Read in the user selected target devices and build the target string.
 readonly SRCT=$(cat $CONFIG/targets | cut -d "," -f 2)
 readonly TARGETS='@('$(echo $SRCT | sed 's/\ /\*\|/g')'*)'
 
-networks='' # Placeholder. Technically redundant.
 lastseen=0
 
 # Make the activity page the default site page for connections during detection
@@ -85,96 +83,22 @@ alert() {
             echo "Can't send alert. Unplug not online"
         fi
         # Log this for the report page
-        if [[ "$MODE" != "alarm" ]]; then
-            echo $(date) "detected and de-authed device" "$device" "with MAC addr" $target >> $LOGS/detected
-        else
-            echo $(date) "detected device" "$device" "with MAC addr" $target >> $LOGS/detected
-        fi
+        echo $(date) "detected device" "$device" "with MAC addr" $target >> $LOGS/detected
     fi
-}
-
-deauth() {
-    echo "Target found."
-    # Pause horst and set the channel
-    if [[ "$MODE" == "allout" || "$MODE" == "alarm" ]]; then
-        horst -x channel_auto=0
-    fi
-    horst -x pause
-    # We can set the channel of $NIC and mon0 at once as $NIC is in Monitor mode
-    iwconfig $NIC freq $freq"000000"
-    sleep 2
-    iwconfig | grep Frequency
-    # Do the de-auth
-    echo "De-authing: " "$STA" " from " "$BSSID"
-    aireplay-ng -0 $FRAMES -a $BSSID -c $STA mon0 
-    alert
-    if [[ "$MODE" == "allout" ]]; then
-        horst -x channel_auto=1
-    fi
-    horst -x resume
-    # Reset MAC vars 
-    STA=ff:ff:ff:ff:ff:ff
-    BSSID=ff:ff:ff:ff:ff:ff
-}
-
-channelWalk(){
-    # This is only for Territory mode as horst already has a random walk for all
-    # channels
-    trap "exit" INT
-    while true;
-        do 
-            for c in ${CHANNELS[@]}
-                do
-                    horst -x channel=$c
-                    sleep 1
-                done
-        done
 }
 
 # Start horst with upper channel limit of 13 in quiet mode and a command hook
 # for remote control (-X). Has to be backgrounded.
 horst -u 13 -q -d 250 -i $NIC -f DATA -o $CAPDIR/cap -X &
-HPID=$!
 
-if [ $? -ne 0 ]; then # Test horst exit status 
-  # Something is wrong, like a dead mon0
-  # and/or NIC. Store settings and reboot.
-   touch $CONFIG/updated && reboot -n 
-fi
-#horst -x channel_auto=1
+POLLTIME=13 # Seconds we wait for capture to find STA/BSSID pairs
+horst -x channel_auto=1
 
-case "$MODE" in 
-    *territory*)
-        # Override channels with those of target BSSIDs. We have to resource awk
-        # twice, due to two cases of uniqueness tested.
-        readonly CHANNELS=($(cat $CONFIG/networks | sort -u | awk 'BEGIN { FS = "," }; { print $NF }' | sort -u | awk '{ print $0 }'))
-        #CHANNELS=($(cat /www/config/networks | sort -u | awk 'BEGIN { FS = "," }; { print $NF }'))
-        # We'll poll for as many seconds as there are networks to guard 
-        readonly POLLTIME=$(wc -l < $CONFIG/networks)
-        echo "These are the networks we're watching"
-        cat $CONFIG/networks
-        # Read in the networks we're watching and build the target string. 
-        readonly SRCN=$(cat /www/config/networks | cut -d "," -f 1)
-        readonly networks='@('$(echo $SRCN | sed 's/\ /\|/g')')'
-        channelWalk &
-        CPID=$!
-    ;;
-    *alarm*)
-        # Put things specific to alarm/alert mode here.
-        POLLTIME=13 # Seconds we wait for capture to find STA/BSSID pairs
-        horst -x channel_auto=1
-    ;;
-    *allout*)
-        # Put things specific to allout mode here.
-        POLLTIME=13 # Seconds we wait for capture to find STA/BSSID pairs
-        horst -x channel_auto=1
-    ;;
-    *)                    
-esac
+COUNT=0
 
-while true;
+while [ $COUNT -lt 6 ];
         do
-            echo "//------------------------------------------------------->"
+            echo "//--------------------* $COUNT * ----------------------------------->"
             echo "Sleeping for " $POLLTIME " and writing capture log"
             sleep $POLLTIME
             # Sort associated clients into temporary pairing files. Channels are
@@ -182,9 +106,6 @@ while true;
             # pairs need to be extraced and matched separately.
             cat $CAPDIR/cap | awk '{ print $2 $3 $4 $11 }' | sed 's/,/\ /g' | sort -u > $CAPDIR/pairs
             if [ -f $CAPDIR/pairs ]; then
-                    if [[ "$MODE" == "territory" ]]; then
-                        kill -STOP $CPID
-                    fi
                     while read line;
                              do
                                 arr=($line) # Array from the line
@@ -196,34 +117,32 @@ while true;
                                     STA=$dst 
                                 fi
 
-                                if [[ "$MODE" == "territory" && "$STA" == $TARGETS && "$BSSID" == $networks ]]; then
-                                        target=$STA
-                                        deauth
-                                elif [[ "$STA" == $TARGETS ]]; then
+                                if [[ "$STA" == $TARGETS ]]; then
                                     target=$STA
-                                    if [[ "$MODE" == "allout" ]]; then
-                                        deauth
-                                    else
-                                        alert
-                                    fi
+                                    alert
                                 elif [[ "$BSSID" == $TARGETS ]]; then
                                     target=$BSSID
-                                    if [[ "$MODE" == "allout" ]]; then
-                                        deauth
-                                    else
-                                        alert
-                                    fi
+                                    alert
                                 fi
                         done < $CAPDIR/pairs #EOF
+            let 'COUNT += 1'
             echo "Removing temporary files."
             rm -f $CAPDIR/pairs $CAPDIR/channels 
             horst -x pause
-            if [ "$MODE" == "territory" ]; then
-                kill -CONT $CPID
-            fi
             rm -f $CAPDIR/cap
             horst -x outfile=$CAPDIR/cap
             horst -x resume 
         fi
 done
 
+echo NULL > $CONFIG/mode
+cp /www/index.php.conf /www/index.php
+killall openvpn vpn.sh
+echo unconfigured > $CONFIG/vpnstatus
+rm -f $CONFIG/armed
+# Set back to AP mode 
+wifi down
+uci set wireless.@wifi-iface[0].mode="ap"
+uci set wireless.@wifi-iface[0].disabled="0"
+uci commit wireless
+wifi up

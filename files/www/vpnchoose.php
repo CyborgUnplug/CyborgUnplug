@@ -16,7 +16,7 @@
     <hr>
         <form method='get' id='unplugvpn' action='cgi-bin/config.cgi'>
         <input name='unplugvpn' type='hidden' value='unplugvpn'>
-        <input type='submit' value='Use the Unplug VPN' class='button'>
+        <input type='submit' value='use the Unplug VPN' class='button'>
         </form>
     <br>
     <div id="container_caption">

@@ -372,8 +372,8 @@ footer  {
    color: #555; 
    position:relative;
    bottom:0;
-   width:85%;
-   height:60px;   /* Height of the footer */
+   width:100%;
+   height:20px;   /* Height of the footer */
 }
 
 footer nav ul { float: right; overflow: hidden; }
@@ -506,6 +506,7 @@ html[xmlns] .slides {display: block;}
 	margin-bottom: 2px;
 	font-size: 1.3em;
 	cursor: default;
+    text-align: center;
 }
 .reports_entry:hover{
 	color: black;
@@ -655,7 +656,7 @@ label.css-label {
 }
 
 .btn {
-	text-align: left;
+	text-align: center;
 	background: #ff3d3d;
 	background-image: -webkit-linear-gradient(top, #ff3d3d, #d93434);
 	background-image: -moz-linear-gradient(top, #ff3d3d, #d93434);
@@ -744,6 +745,7 @@ label.css-label {
     position: relative; }
 .toggle-title {
 	padding: 0.38em 1em;
+	text-align: center;
 }
 .toggle-title-detail {
     font-size: 0.8em;

@@ -15,16 +15,20 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>. 
 
 readonly SCRIPTS=/root/scripts
-readonly REMOTE=10.9.8.1
-readonly PORT=20010
+readonly REMOTE=10.10.12.1
+readonly PORT=25
 readonly CONFIG=/www/config
 readonly DATE=$(date)
-readonly EMAIL=$1
-readonly DEVICE=$2 # devices seen
-readonly MAC=$3 # device MAC addr
-readonly BODY="
+readonly DEVICE=$1 # devices seen
+readonly MAC=$2 # device MAC addr
+
+echo $DEVICE $MAC
+
+readonly BODY="Subject: Cyborg Unplug Alert
 -------------------------------------------------------------------
-The following devices were detected by Little Snipper at $DATE
+The following devices were detected by Little Snipper at:
+
+$DATE
 
 $DEVICE with Hardware Address: $MAC 
 
@@ -42,7 +46,7 @@ Little Snipper
 if [ -f $CONFIG/email ]; then
     readonly ADDR=$(cat $CONFIG/email)
     if [ ! -z $ADDR ]; then
-        echo "$BODY" | msmtp -t $EMAIL -f "alerts@vpn.plugunplug.net"
+        echo "$BODY" | msmtp -t $ADDR -f "alerts@vpn.plugunplug.net"
     fi
 else 
     echo "no email address configured."

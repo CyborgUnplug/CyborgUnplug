@@ -30,7 +30,6 @@ readonly UPLOAD=/tmp/keys
 
 set $EVENT
 #EVENT=${EVENT/=*/} 
-#echo $EVENT > event.log 
 env > environment
 
 # Remove each time script is invoked to disarm in case the user goes back
@@ -91,7 +90,13 @@ case "$EVENT" in
 	;;
 	*mode3*)
 		echo alarm > $CONFIG/mode
-        html allout.php
+		cat $DATA/networks > $CONFIG/networks
+        html finish.php
+	;;
+	*mode4*)
+		echo sweep > $CONFIG/mode
+		cat $DATA/networks > $CONFIG/networks
+        html finish.php
 	;;
     *unplugvpn*)
         echo "0 plugunplug.ovpn" > $CONFIG/vpn
@@ -136,6 +141,19 @@ case "$EVENT" in
 		sleep 2
         html active.php
 	;;
+    *autoupdate*)
+        update=$(echo "$EVENT" | cut -d '=' -f 2)
+        if [[ "$update" == "disabled" ]]; then
+            #comment out the update line in crontab
+            sed -i 's@^.*update.sh$@#&@g' /etc/crontabs/root 
+        elif [[ "$update" == "enabled" ]]; then
+            #uncomment the update line in crontab
+            sed -i 's@^#.*update.sh$@&@g' /etc/crontabs/root
+        fi
+    ;;
+    *updatenow*)
+        $SCRIPTS/update.sh 1 
+    ;;
 	*)
 esac
 IFS=$OLDIFS

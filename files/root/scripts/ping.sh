@@ -25,7 +25,7 @@ while true;
         #LOC=$(wget http://getcitydetails.geobytes.com/GetCityDetails?fqcn=123.45.67.8 -O - | awk -F'fqcn":"|","geobyteslatit' '{print $2}')
 		p=$(ping -c 1 plugunplug.net|grep "1 packets received")
 		if [[ ! -z $p ]]; then
-            echo online "Routed through" > $CONFIG/networkstate
+            echo online > $CONFIG/networkstate
 		else
 			echo offline > $CONFIG/networkstate
 		fi
