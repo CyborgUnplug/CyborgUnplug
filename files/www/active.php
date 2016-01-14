@@ -1,58 +1,47 @@
-<?php include 'header.php';?>
+<?php include 'header-no-status.php';?>
 
     <center>
-    <h1 id="headline" style="color:#82cc51;">The detector is active</h1>
-	
+    <?php 
+        $f = fopen("config/mode", "r");
+        $g=fgets($f);                                                                                                                              
+        if ($g) {
+            if (preg_match('/sweep/', $g) == 1) {
+                echo "<h1 id='headline'>Sweeping for devices...</h1>";
+                echo "<br>";
+                echo "<div class='warning warning3'>";
+                echo "A sweep should take a little over 80 seconds. During this time your WiFi connection to Little Snipper will go down. Reconnect and refresh this page in a couple of minutes to read a report.<br>In the interim, check your email for alerts.";
+                echo "</div>";
+            }
+            else if (preg_match('/NULL/', $g) == 1) {
+                echo "<h1 id='headline'>Sweep complete...</h1>";
+                echo "<br>";
+                echo "<div class='warning'>";
+                echo "View report below and/or check email for alerts<br>";
+                echo "</div>";
+                echo "<br>";
+                echo "<form action='index.php'>";
+			    echo "<input name='detect' type='submit' value='return to main menu' class='button'>";
+                echo "</form>";
+            }
+            else {
+                echo "<h1 id='headline'>The detector is active</h1>";
+                echo "<div class='warning'>";
+                echo "WiFi access disabled during detection<br>";
+                echo "Alerts sent by email<br>";
+                echo "Connect by Ethernet to read reports on device<br>";
+                echo "</div>";
+                echo "<br>";
+                echo "<div class='warning warning3'>";
+                echo "Unplug/replug to re-configure<br>";
+                echo "</div>";
+            }
+        }
+    ?>
+        <br>
+        </center>
 	<ul class='toggle-view'>
         <li>
-            <a href='#devices' class='navLink'><h4 class='toggle-title'>devices to detect</h4></a>
-            <div id='devices' class='page'>
-                <form id="devices"> 
-                    <div class="config_container">
-                        <?php
-                           $f = fopen("config/targets", "r");
-                            while(!feof($f)) { 
-                                $g=fgets($f);
-                                if ($g) {
-                        	    $parts=explode(',',$g);
-                                    echo "$parts[0]<br/>";
-                                }
-                            }
-                            fclose($f);
-                        ?> 
-                    </div>
-                </form>
-            </div>
-        </li>
-        <li>
-            <a href='#networks' class='navLink'><h4 class='toggle-title'>networks to watch</h4></a>
-            <div id='networks' class='page'>
-                <form id="networks"> 
-                    <div class="config_container">
-                        <?php
-                            $f = fopen("config/networks", "r");
-                            while(!feof($f)) {
-                                $g=fgets($f);
-                                if ($g) {
-                                    $parts=explode(',',$g);
-                                    echo "$parts[1]<br/>";
-                                }
-                            }
-                            fclose($f);
-                        ?>
-                    </div>
-                </form>
-            </div>
-        </li>
-
-
- 		<div class='warning warning3'>
-			Unplug/replug to re-configure
-		</div>
-        </center>
-            <center>
             <a href='#reports' class='navLink'><h4 class='toggle-title'>reports</h4></a>
-            </center>
             <div id='reports' class='page'>
                 <form id="reports"> 
                     <div class="config_container">
@@ -99,8 +88,8 @@
                                         $part2 = explode(" ",$part[1]);
                                         $mac1 = getDeviceName($part2[2]);
                                         $mac2 = getDeviceName($part2[4]);
-                                        $returnText = $part[0] . " - " . $part2[1] . " <strong>" . $mac1 . "</strong> " . $part2[3] . " <strong>" . $mac2 . "</strong>";
-                                        echo "<div class='reports_entry'>$returnText</div>";
+                                        $returnText = $part[0] . "<br> ------ " . $part2[1] . " <strong>" . $mac1 . "</strong> " . $part2[3] . " <strong>" . $mac2 . "</strong>";
+                                        echo "<div class='reports_entry'><br><center>$returnText</center></div>";
                                     }
                                 }
                                 fclose($f);
@@ -111,6 +100,7 @@
                     </div>
                 </form>
             </div>
+        </li>
     </ul>
     
 

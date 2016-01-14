@@ -19,6 +19,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 readonly SCRIPTS=/root/scripts
+readonly UPDIR=/root/update
 readonly LOGS=/www/logs                               
 readonly CONFIG=/www/config                                                                       
 readonly DATA=/www/data                                             
@@ -33,6 +34,14 @@ chmod go-rw /tmp/keys
 # Fix the eth0-no-MAC issue. 
 # TODO: fix it permanently!
 $SCRIPTS/ethfix.sh
+
+if [ -f $CONFIG/updated ]; then                               
+    echo "updating..." 
+    # run the update script now
+    $UPDIR/update-weekly.sh
+    rm -f $CONFIG/updated
+    reboot
+fi
 
 #Start networking
 /etc/init.d/network start
@@ -68,29 +77,25 @@ echo unconfigured > /www/config/vpnstatus
 #uci set wireless.@wifi-iface[0].disabled=1
 #uci commit
 
+if [ ! -f $CONFIG/email ]; then
+    cp /www/start.php /www/index.php                                 
+fi
+
 if [ ! -f $CONFIG/since ]; then
     /etc/init.d/cron enable 
-    cp /www/start.php /www/index.php                                 
-    echo "<br>"
-    echo "<center>"
-    echo "<footer>"
-    echo "<hr>"                 >  /www/footer.php
+    echo "<center><footer><hr>" >  /www/footer.php
     echo "Model: international | id: " $(cat $CONFIG/wlanmac | sed 's/://g')      >> /www/footer.php 
-    echo "</footer>"
-    echo "</center>"
-    echo "</div></body></html>" >> /www/footer.php
+    echo "</footer></center></div></body></html>" >> /www/footer.php
 else
     # Copy our config site page to index.php                              
     cp /www/index.php.conf /www/index.php                                 
-    if [ ! -f $CONFIG/updated ]; then                               
-        rm -f $CONFIG/armed                            
-        rm -f $CONFIG/networks        
-        rm -f $CONFIG/targets
-        rm -f $CONFIG/mode                                 
-        rm -f $CONFIG/vpn
-        rm -f $CONFIG/startvpn
-        rm -f $LOGS/detected                                           
-    fi
+    rm -f $CONFIG/armed                            
+    rm -f $CONFIG/networks        
+    rm -f $CONFIG/targets
+    rm -f $CONFIG/mode                                 
+    rm -f $CONFIG/vpn
+    rm -f $CONFIG/startvpn
+    rm -f $LOGS/detected                                           
 fi
 
 # Update the date on this file. Also acts as a firstboot.
@@ -109,11 +114,16 @@ $SCRIPTS/ping.sh &
 while true;   
     do        
         if [ -f $CONFIG/armed ]; then
+                MODE=$(cat $CONFIG/mode)
                 sleep 5 # Grace time for final configuration page to load
-                echo "Starting detector..."
-                $SCRIPTS/detect.sh &
-                rm -f $CONFIG/updated # remove if it exists
-                exit                                             
+                if [[ "$MODE" == "sweep" ]]; then
+                    echo "Doing a sweep..."
+                    $SCRIPTS/sweep.sh # This script exists on its own 
+                else
+                    echo "Starting detector..."
+                    $SCRIPTS/detect.sh &
+                    exit                                             
+                fi
         fi
         if [ -f $CONFIG/vpn ]; then
                 echo "Starting the VPN"

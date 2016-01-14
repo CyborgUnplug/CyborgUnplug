@@ -1,9 +1,15 @@
 <?php include 'header.php';?>
 
-    <h1 id="headline">Configure The WiFi LAN</h1>
+    <center>
+    <h1 id="headline">Configure WiFi</h1>
+    </center>
      <div id="container_general">
+	<div class='warning'>
+    If you forget your new password you'll need to connect to the LAN port over
+ethernet cable, then visit 10.10.11.1 in
+the browser to change it
+	</div>
       <form enctype="multipart/form-data" action="wlanset.php" method="post">
-        <br><br>
         Set new Access Point name (ESSID): 
         <input name="ssid" type="text" placeholder="network name" />
         <br><br>

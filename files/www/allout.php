@@ -1,6 +1,8 @@
 <?php include 'header.php';?>
 
+    <center>
     <h1 id="headline">All Out Mode</h1>
+    </center>
 	<div class='warning'>
 		NOTE that using All Out Mode may not be legal in your jurisdiction as it broadly disrupts any network connection from
 		any of the devices you've prohibited.

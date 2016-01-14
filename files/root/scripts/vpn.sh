@@ -22,7 +22,7 @@ readonly LOG=/var/log/openvpn.log # only used for debugging
 readonly VPN=/root/keys/plugunplug.ovpn
 readonly POLLTIME=5
 readonly ETH=eth0.2 # WAN interface
-readonly VPNSERVER=12.23.45.67
+readonly VPNSERVER=89.238.81.42
 
 STATUS=$(cat $CONFIG/vpnstatus)
 TUN=""

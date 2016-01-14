@@ -1,10 +1,12 @@
 <?php include 'header.php';?>
 
+    <center>
     <h1 id="headline">Review Settings</h1>
-    
+    </center>
+    <br>
     <ul class='toggle-view'>
         <li>
-            <a href='#devices' class='navLink'><h4 class='toggle-title'>Devices to detect</h4></a>
+            <a href='#devices' class='navLink'><h4 class='toggle-title'>devices to detect</h4></a>
             <div id='devices' class='page'>
                 <form id="devices"> 
                     <div class="config_container">
@@ -25,7 +27,7 @@
         </li>
    
         <li>
-            <a href='#networks' class='navLink'><h4 class='toggle-title'>Networks to protect</h4></a>
+            <a href='#networks' class='navLink'><h4 class='toggle-title'>networks to watch</h4></a>
             <div id='networks' class='page'>
                 <form id="networks"> 
                     <div class="config_container">

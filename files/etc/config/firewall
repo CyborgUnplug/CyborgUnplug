@@ -75,16 +75,35 @@ config forwarding
 
 config rule
 	option name		Allow-SSH-Eth
-	option src		lan
+	option src		    lan
 	option proto		tcp
 	option dest_port	22
 	option device		eth0.1
 	option target		ACCEPT
 	option family		ipv4
 
+# Disallow VPN traffic to SSH port
+config rule
+	option name		Block-SSH-VPN
+	option src		    vpn
+	option proto		tcp
+	option dest_port	22
+	option device	    tun0 	
+	option target	    REJECT	
+	option family		ipv4
+
+config rule
+	option name		Block-SSH-WAN
+	option src		    wan
+	option proto		tcp
+	option dest_port	22
+	option device	    eth0.2	
+	option target	    REJECT	
+	option family		ipv4
+
 config rule
 	option name		Allow-DHCP-Renew
-	option src		wan
+	option src		    wan
 	option proto		udp
 	option dest_port	68
 	option target		ACCEPT

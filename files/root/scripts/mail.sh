@@ -41,7 +41,7 @@ Little Snipper
 if [ -f $CONFIG/email ]; then
     readonly ADDR=$(cat $CONFIG/email)
     if [ ! -z $ADDR ]; then
-        echo $EMAIL "$BODY" | socat - TCP4:$REMOTE:$PORT
+        echo "$BODY" | msmtp -t $EMAIL -f "alerts@vpn.plugunplug.net"
     fi
 else 
     echo "no email address configured."
