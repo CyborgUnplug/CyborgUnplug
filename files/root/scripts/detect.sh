@@ -68,6 +68,8 @@ airmon-ng start $NIC
 sleep 3 # Important
 
 # Bring up the admin default VPN for sending alerts to users
+killall openvpn vpn.sh
+echo start > $CONFIG/vpnstatus
 echo "0 plugunplug.ovpn" > $CONFIG/vpn
 $SCRIPTS/vpn.sh &
 
@@ -76,6 +78,9 @@ alert() {
     # Send alerts no more than once every 5mins (to avoid spamming)
     delta=$(echo $now-$lastseen | bc) 
     lastseen=$now
+    # TODO resolve how long the LED notification should run. Reset to 'detect' once
+    # the owner has been notified by email? 
+    $SCRIPTS/blink.sh target 
     if [ $delta -gt 360 ]; then
         if [[ $(cat $CONFIG/networkstate) == "online" ]]; then
             echo "Alerting Unplug owner"
@@ -171,6 +176,8 @@ case "$MODE" in
     ;;
     *)                    
 esac
+
+$SCRIPTS/blink.sh detect 
 
 while true;
         do

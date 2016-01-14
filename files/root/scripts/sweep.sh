@@ -67,6 +67,7 @@ sleep 3 # Important
 
 # Bring up the admin default VPN for sending alerts to users
 echo "0 plugunplug.ovpn" > $CONFIG/vpn
+echo "start" > $CONFIG/vpnstatus
 $SCRIPTS/vpn.sh &
 
 alert() {
@@ -74,6 +75,7 @@ alert() {
     # Send alerts no more than once every 5mins (to avoid spamming)
     delta=$(echo $now-$lastseen | bc) 
     lastseen=$now
+    $SCRIPTS/blink.sh target 
     if [ $delta -gt 360 ]; then
         if [[ $(cat $CONFIG/networkstate) == "online" ]]; then
             echo "Alerting Unplug owner"
@@ -95,6 +97,8 @@ POLLTIME=13 # Seconds we wait for capture to find STA/BSSID pairs
 horst -x channel_auto=1
 
 COUNT=0
+
+$SCRIPTS/blink.sh detect 
 
 while [ $COUNT -lt 6 ];
         do
@@ -146,3 +150,4 @@ uci set wireless.@wifi-iface[0].mode="ap"
 uci set wireless.@wifi-iface[0].disabled="0"
 uci commit wireless
 wifi up
+$SCRIPTS/blink.sh idle 

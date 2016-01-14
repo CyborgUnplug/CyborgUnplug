@@ -21,6 +21,8 @@ readonly RANGE=300
 readonly NOW=$1
 readonly URL="https://plugunplug.net/update/update-weekly.sh"
 
+REBOOT=0
+
 if [ -f $CONFIG/networkstate ]; then
     if [[ $(cat $CONFIG/networkstate) == "online" ]]; then
         cd $UPDIR
@@ -30,6 +32,8 @@ if [ -f $CONFIG/networkstate ]; then
             let "number %= $RANGE"
             echo sleeping for $number
             sleep $number
+        else
+            REBOOT=1
         fi
         # We verify file integrity with GnuPG (a la Debian package signing) so
         # no need for https://
@@ -44,6 +48,10 @@ if [ -f $CONFIG/networkstate ]; then
                 echo "Appears to be trustworthy..."	
                 touch $CONFIG/updated
                 chmod +x update-weekly.sh # just in case
+        fi
+        if [ $REBOOT -ne 0 ]; then
+            /sbin/reboot 
+            echo "Rebooting to apply updates..."
         fi
     fi
 fi
