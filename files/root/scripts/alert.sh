@@ -33,11 +33,12 @@ $DATE
 
 $DEVICE with Hardware Address: $MAC 
 
-Please note this is not hard evidence that device(s) are there as 
-someone you could be using a spoofed MAC (hardware) address, 
-resulting in it coming up in our scans. 
+Please note this is not hard evidence that the above device was present; 
+there is always a small chance someone is using a spoofed MAC (hardware) 
+address, resulting in it coming up in our scans. 
 
-Nonetheless, it's cause for concern and we thought you should know.
+Nonetheless, it's certainly a cause for concern and we thought you 
+should know.
 
 Kind regards,
 
