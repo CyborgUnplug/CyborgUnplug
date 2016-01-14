@@ -1,6 +1,8 @@
 <?php include 'header.php';?>
 
+    <center>
 	<h1 id="headline">Select devices to detect</h1>
+    </center>
 	<div id="container_devices">
 		
 		<form method="get" id="devices" action="cgi-bin/config.cgi">

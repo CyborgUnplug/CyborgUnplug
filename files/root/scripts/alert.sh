@@ -25,6 +25,7 @@ readonly MAC=$2 # device MAC addr
 echo $DEVICE $MAC
 
 readonly BODY="Subject: Cyborg Unplug Alert
+From: alerts@vpn.plugunplug.net
 -------------------------------------------------------------------
 The following devices were detected by Little Snipper at:
 
@@ -46,7 +47,7 @@ Little Snipper
 if [ -f $CONFIG/email ]; then
     readonly ADDR=$(cat $CONFIG/email)
     if [ ! -z $ADDR ]; then
-        echo "$BODY" | msmtp -t $ADDR -f "alerts@vpn.plugunplug.net"
+        echo "$BODY" | msmtp --read-envelope-from -t "$ADDR"
     fi
 else 
     echo "no email address configured."

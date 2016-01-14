@@ -32,7 +32,7 @@
                 echo "</div>";
                 echo "<br>";
                 echo "<div class='warning warning3'>";
-                echo "Unplug/replug to re-configure<br>";
+                echo "To reconfigure, unplug/replug Little Snipper<br>";
                 echo "</div>";
             }
         }

@@ -150,9 +150,12 @@ case "$EVENT" in
             #uncomment the update line in crontab
             sed -i 's@^#.*update.sh$@&@g' /etc/crontabs/root
         fi
+        sleep 1
+        html updateconf.php 
     ;;
     *updatenow*)
-        $SCRIPTS/update.sh 1 
+        $SCRIPTS/update.sh 1 >> /dev/null &
+        html updatenow.php 
     ;;
 	*)
 esac

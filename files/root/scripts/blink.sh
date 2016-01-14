@@ -11,8 +11,15 @@ wink() {
     echo 1 > $GPIO/value
     $SLEEP $2                             
 }
-                                                
+
 target() {                                      
+    while true;                             
+        do  
+            wink 1 1 
+        done                                            
+}                                                       
+
+detect() {                                      
     while true;                             
         do  
             wink .05 .1 

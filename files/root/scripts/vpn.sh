@@ -116,7 +116,7 @@ vpnstop() {
     #rm -f $EXTVPN/*
     routetoggle down
     echo unconfigured > $CONFIG/vpnstatus
-    $SCRIPTS/blink.sh vpn
+    $SCRIPTS/blink.sh idle 
     rm $CONFIG/vpn
 }
 

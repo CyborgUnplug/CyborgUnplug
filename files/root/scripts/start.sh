@@ -114,6 +114,8 @@ $SCRIPTS/ping.sh &
 while true;   
     do        
         if [ -f $CONFIG/armed ]; then
+                # We start the VPN manually in detect.sh and sweep.sh for 
+                # privately dispatching alerts by email 
                 MODE=$(cat $CONFIG/mode)
                 sleep 5 # Grace time for final configuration page to load
                 if [[ "$MODE" == "sweep" ]]; then
@@ -125,7 +127,7 @@ while true;
                     exit                                             
                 fi
         fi
-        if [ -f $CONFIG/vpn ]; then
+        if [[ -f $CONFIG/vpn && ! -f $CONFIG/armed ]]; then
                 echo "Starting the VPN"
                 $SCRIPTS/vpn.sh
         fi
