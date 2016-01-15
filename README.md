@@ -9,6 +9,8 @@ firmware for the TPLink WR710N (Atheros ar71xx). It is based on
 Builder. The target was the European 8Mb Flash model. It will not run on
 anything smaller.
 
+![](https://github.com/JulianOliver/CyborgUnplug/blob/master/images/wr710n.jpg)
+
 This is similar but not as polished as the firmware shipping on the sold rt5350f
 _Little Snipper_ Cyborg Unplug model; intended for the more experienced
 developer to play with and improve. It has no notification system (requiring an
