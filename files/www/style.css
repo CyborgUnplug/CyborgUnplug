@@ -35,11 +35,55 @@
 	transform: translate3d(0,0,0);
 }
 
+#container_general{
+	width:100%; 
+	padding-left:0%;
+	text-align: left;
+    margin-left: auto ;
+    margin-right: auto ;
+}
+
 #container_devices{
 	width:100%; 
 	margin:0px; 
 	padding:0px;
 	text-align: left;
+}
+#container_start{
+	width:100%; 
+	padding-left:0%;
+	text-align: left;
+    margin-left: auto ;
+    margin-right: auto ;
+     vertical-align: middle; 
+}
+#container_files{
+	width:80%; 
+	padding-left:20%;
+	padding-right:0%;
+	text-align: left;
+	background-color: #f7f7f7;
+}
+#container_caption{
+	width:95%; 
+	padding-left:0%;
+	text-align: left;
+    margin-left: 10% ;
+    margin-right: auto ;
+}
+.container_status{
+
+    width: auto;
+	padding-left: 5%;
+    padding-top: 4px;
+	padding-right: 5%;
+	height: 15px;
+	margin-top: 5px!important;
+	margin-bottom: 5px!important;
+	background: #333;
+    font-size: .5em;
+    color: #00ff00;
+	text-align: center;
 }
 .device{
 	
@@ -83,7 +127,7 @@
   		margin-bottom: 0px!important;
   	}
   	.warning{
-  		font-size: 1.4em!important;
+  		font-size: 1.2em!important;
   		margin-top: 25px!important;
   		margin-bottom: -15px!important;
   	}
@@ -113,7 +157,8 @@ html, button, input, select, textarea {
 	font-smoothing: antialiased;
 	text-shadow: 1px 1px 1px rgba(0,0,0,0.004);}
 
-body { margin: 0; font-size: 13px; line-height: 1.6; color: #555 }
+body {   margin: 0; font-size: 13px; line-height: 1.6; color: #555 }
+	
 
 a { color: #0078CF; font-weight: normal;
 	cursor: pointer;  text-decoration: none;
@@ -181,7 +226,7 @@ input, select, textarea {
 	color: #777;
 	font-size: 1em;
 	padding: 1em;
-	width:60%;
+	width:100%;
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	-ms-box-sizing: border-box;
@@ -197,13 +242,61 @@ input:hover, textarea:hover, input:focus, textarea:focus,input:active, textarea:
 input[type="text"],textarea{cursor: text;}
 input[type="radio"], input[type="checkbox"] { display: inline; width:auto; height: auto; margin-right: 1em; }
 input[type="checkbox"] + label, input[type="radio"] + label { display: inline;}
-input[type="file"]{ border: none;}
+
+
+label.upload input[type="file"] {
+    position: fixed;
+    top: -1000px;
+}
+
+/***** Example custom styling *****/
+.upload {
+    border: 0px solid #AAA;
+    padding: 0px;
+    width: 81%;
+    margin: 0px;
+    text-align: center;
+    background: #DDD;
+    display: inline-block;
+    margin-left: auto ;
+    margin-right: auto ;
+}
+.upload:hover {
+    background: #CCC;
+}
+.upload:active {
+    background: #CCF;
+}
+.upload :invalid + span {
+    color: red;
+}
+.upload :valid + span {
+    color: red;
+}
 input[type="date"]{ width: auto;}
 select {height: auto;}
 /* Placeholders */
-::-webkit-input-placeholder { color: #BBB;}
-:-moz-placeholder {color: #BBB;}
-:-ms-input-placeholder {color: #BBB;}
+
+::-webkit-input-placeholder {
+   color: red;
+	font-size: 1.1em;
+    text-align: center
+}
+:-moz-placeholder { /* Firefox 18- */
+   color: red;  
+	font-size: 1.1em;
+    text-align: center
+}
+::-moz-placeholder {  /* Firefox 19+ */
+   color: red;  
+	font-size: 1.1em;
+    text-align: center
+}
+:-ms-input-placeholder {  
+   color: red;  
+	font-size: 1.1em;
+    text-align: center
+}
 /* validate.js */
 label.error { color: #0078CF; margin: 0.5em 0 0 0.5em; font-weight: normal; font-style: italic; }
 
@@ -275,12 +368,18 @@ h1 a:hover,h2 a:hover,h3 a:hover,h4 a:hover,h5 a:hover,h6 a:hover{color:#0078CF;
 
 /* -- FOOTER
 ------------------------------------------------------------- */
-footer  { color: #555; margin-bottom: 7em; }
+footer  { 
+   color: #555; 
+   position:relative;
+   bottom:0;
+   width:100%;
+   height:20px;   /* Height of the footer */
+}
+
 footer nav ul { float: right; overflow: hidden; }
 footer a {color: #999;}
 footer li { float: left; margin-right: 1em; padding-right: 1em; border-right: 1px solid #DDD; font-size: 0.8em; }
 footer li:last-child { margin-right: 0; padding-right: 0; border-right: none; }
-.up a { display: block; text-align: center; margin: 0 auto; }
 
 
 /* -- HOME-PAGE
@@ -360,15 +459,19 @@ html[xmlns] .slides {display: block;}
 .warning { 
 	background: #ce5252; 
 	color: white;
-	text-align: left; 
+	text-align: center; 
 	padding: 15px; 
 	padding-top: 12px;
 	margin: 0px; 
-	font-size: 2.1em;
+	font-size: 1.2em;
 	line-height: 1.3em;
 	font-weight: 400;
 	border-radius: 2px;
 }
+.warning a {
+    text-decoration: underline;
+    color: #ffffff; 
+} 
 .warning2{ 
 	background: #82cc51; 
 }
@@ -376,6 +479,12 @@ html[xmlns] .slides {display: block;}
 	margin-top: 15px!important;
 	margin-bottom: 15px!important;
 	background: #82cc51; 
+    font-size: 1.2em;
+}
+.stdout{ 
+	margin-top: 15px!important;
+	margin-bottom: 15px!important;
+	background: #222; 
 }
 
 #reports_container{
@@ -397,6 +506,7 @@ html[xmlns] .slides {display: block;}
 	margin-bottom: 2px;
 	font-size: 1.3em;
 	cursor: default;
+    text-align: center;
 }
 .reports_entry:hover{
 	color: black;
@@ -546,7 +656,7 @@ label.css-label {
 }
 
 .btn {
-	text-align: left;
+	text-align: center;
 	background: #ff3d3d;
 	background-image: -webkit-linear-gradient(top, #ff3d3d, #d93434);
 	background-image: -moz-linear-gradient(top, #ff3d3d, #d93434);
@@ -635,6 +745,7 @@ label.css-label {
     position: relative; }
 .toggle-title {
 	padding: 0.38em 1em;
+	text-align: center;
 }
 .toggle-title-detail {
     font-size: 0.8em;
@@ -664,5 +775,91 @@ label.css-label {
     color: #ddd;
     margin-right: 1em; 
 }
-            
+.php-file-tree {
+	font-family: "Open sans", "Helvetica Neue", "HelveticaNeue", Helvetica, Arial, sans-serif;
+	font-size: 12px;
+	letter-spacing: 1px;	line-height: 1.5;
+}
 
+	.php-file-tree A {
+		color: #000000;
+		text-decoration: none;
+	}
+	
+	.php-file-tree A:hover {
+		color: #666666;
+	}
+
+	.php-file-tree .open {
+		font-style: italic;
+	}
+	
+	.php-file-tree .closed {
+		font-style: normal;
+	}
+	
+	.php-file-tree .pft-directory {
+		list-style-image: url(dir_img/directory.png);
+	}
+	
+	/* Default file */
+	.php-file-tree LI.pft-file { list-style-image: url(dir_img/file.png); }
+	/* Additional file types */
+	.php-file-tree LI.ext-3gp { list-style-image: url(dir_img/film.png); }
+	.php-file-tree LI.ext-afp { list-style-image: url(dir_img/code.png); }
+	.php-file-tree LI.ext-afpa { list-style-image: url(dir_img/code.png); }
+	.php-file-tree LI.ext-asp { list-style-image: url(dir_img/code.png); }
+	.php-file-tree LI.ext-aspx { list-style-image: url(dir_img/code.png); }
+	.php-file-tree LI.ext-avi { list-style-image: url(dir_img/film.png); }
+	.php-file-tree LI.ext-bat { list-style-image: url(dir_img/application.png); }
+	.php-file-tree LI.ext-bmp { list-style-image: url(dir_img/picture.png); }
+	.php-file-tree LI.ext-c { list-style-image: url(dir_img/code.png); }
+	.php-file-tree LI.ext-cfm { list-style-image: url(dir_img/code.png); }
+	.php-file-tree LI.ext-cgi { list-style-image: url(dir_img/code.png); }
+	.php-file-tree LI.ext-com { list-style-image: url(dir_img/application.png); }
+	.php-file-tree LI.ext-cpp { list-style-image: url(dir_img/code.png); }
+	.php-file-tree LI.ext-css { list-style-image: url(dir_img/css.png); }
+	.php-file-tree LI.ext-doc { list-style-image: url(dir_img/doc.png); }
+	.php-file-tree LI.ext-exe { list-style-image: url(dir_img/application.png); }
+	.php-file-tree LI.ext-gif { list-style-image: url(dir_img/picture.png); }
+	.php-file-tree LI.ext-fla { list-style-image: url(dir_img/flash.png); }
+	.php-file-tree LI.ext-h { list-style-image: url(dir_img/code.png); }
+	.php-file-tree LI.ext-htm { list-style-image: url(dir_img/html.png); }
+	.php-file-tree LI.ext-html { list-style-image: url(dir_img/html.png); }
+	.php-file-tree LI.ext-jar { list-style-image: url(dir_img/java.png); }
+	.php-file-tree LI.ext-jpg { list-style-image: url(dir_img/picture.png); }
+	.php-file-tree LI.ext-jpeg { list-style-image: url(dir_img/picture.png); }
+	.php-file-tree LI.ext-js { list-style-image: url(dir_img/script.png); }
+	.php-file-tree LI.ext-lasso { list-style-image: url(dir_img/code.png); }
+	.php-file-tree LI.ext-log { list-style-image: url(dir_img/txt.png); }
+	.php-file-tree LI.ext-m4p { list-style-image: url(dir_img/music.png); }
+	.php-file-tree LI.ext-mov { list-style-image: url(dir_img/film.png); }
+	.php-file-tree LI.ext-mp3 { list-style-image: url(dir_img/music.png); }
+	.php-file-tree LI.ext-mp4 { list-style-image: url(dir_img/film.png); }
+	.php-file-tree LI.ext-mpg { list-style-image: url(dir_img/film.png); }
+	.php-file-tree LI.ext-mpeg { list-style-image: url(dir_img/film.png); }
+	.php-file-tree LI.ext-ogg { list-style-image: url(dir_img/music.png); }
+	.php-file-tree LI.ext-pcx { list-style-image: url(dir_img/picture.png); }
+	.php-file-tree LI.ext-pdf { list-style-image: url(dir_img/pdf.png); }
+	.php-file-tree LI.ext-php { list-style-image: url(dir_img/php.png); }
+	.php-file-tree LI.ext-png { list-style-image: url(dir_img/picture.png); }
+	.php-file-tree LI.ext-ppt { list-style-image: url(dir_img/ppt.png); }
+	.php-file-tree LI.ext-psd { list-style-image: url(dir_img/psd.png); }
+	.php-file-tree LI.ext-pl { list-style-image: url(dir_img/script.png); }
+	.php-file-tree LI.ext-py { list-style-image: url(dir_img/script.png); }
+	.php-file-tree LI.ext-rb { list-style-image: url(dir_img/ruby.png); }
+	.php-file-tree LI.ext-rbx { list-style-image: url(dir_img/ruby.png); }
+	.php-file-tree LI.ext-rhtml { list-style-image: url(dir_img/ruby.png); }
+	.php-file-tree LI.ext-rpm { list-style-image: url(dir_img/linux.png); }
+	.php-file-tree LI.ext-ruby { list-style-image: url(dir_img/ruby.png); }
+	.php-file-tree LI.ext-sql { list-style-image: url(dir_img/db.png); }
+	.php-file-tree LI.ext-swf { list-style-image: url(dir_img/flash.png); }
+	.php-file-tree LI.ext-tif { list-style-image: url(dir_img/picture.png); }
+	.php-file-tree LI.ext-tiff { list-style-image: url(dir_img/picture.png); }
+	.php-file-tree LI.ext-txt { list-style-image: url(dir_img/txt.png); }
+	.php-file-tree LI.ext-vb { list-style-image: url(dir_img/code.png); }
+	.php-file-tree LI.ext-wav { list-style-image: url(dir_img/music.png); }
+	.php-file-tree LI.ext-wmv { list-style-image: url(dir_img/film.png); }
+	.php-file-tree LI.ext-xls { list-style-image: url(dir_img/xls.png); }
+	.php-file-tree LI.ext-xml { list-style-image: url(dir_img/code.png); }
+	.php-file-tree LI.ext-zip { list-style-image: url(dir_img/zip.png); }

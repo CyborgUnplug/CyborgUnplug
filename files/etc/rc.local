@@ -7,6 +7,6 @@
 
 cd /root/scripts/
 
-./start.sh
+./start.sh &
 
 exit 0

@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# Cyborg Unplug main start script for the TL-WR710. Invoked from /etc/rc.local
-# on each boot.
+# Cyborg Unplug main start script for RT5350f LittleSnipper. Invoked from
+# /etc/rc.local on each boot.
 #
 # Copyright (C) 2015 Julian Oliver
 #
@@ -18,60 +18,126 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-SCRIPTS=/root/scripts
-LOGS=/www/logs                               
-CONFIG=/www/config                                                                       
-DATA=/www/data                                             
-POLLTIME=5                                          
-WIFIDEV=radio0                                                             
+readonly SCRIPTS=/root/scripts
+readonly UPDIR=/root/update
+readonly LOGS=/www/logs                               
+readonly CONFIG=/www/config                                                                       
+readonly DATA=/www/data                                             
+readonly POLLTIME=5                                          
+readonly WIFIDEV=radio0                                                             
 
-sleep 10
 
-echo "Scanning for networks..."
-$SCRIPTS/scan.sh               
-echo "Found the following.."
-cat $DATA/networks
- 
-# Derive a unique ESSID from the internal NIC
-SSID=unplug_$(ifconfig -a | grep eth1 | cut -d ':' -f 5-8 | sed 's/://g')
- 
-# Bring up Access Point
-wifi down $WIFIDEV
-uci set wireless.@wifi-iface[0].mode="ap"
-uci set wireless.@wifi-iface[0].ssid=$SSID
-uci commit wireless
-echo "Bringing up AP..."
-wifi
- 
-echo "AP should be up with name: " $SSID
+mkdir /tmp/keys
+mkdir /tmp/config
+# only readable by owner 
+chmod go-rw /tmp/keys
 
-sleep 5                                                                       
-# NIC names seem to change when taking wifi radio's up and down
-NIC=$(iw dev | grep Interface | awk '{ print $2 }')
-#ifconfig $NIC up                 
- 
-# Copy our config site page to index.php                              
-cp /www/index.php.conf /www/index.php                                 
-                                                                   
-#wifi up $WIFIDEV                    
-NIC=$(iw dev | grep Interface | awk '{ print $2 }')
-                                                                 
-if [ ! -f $CONFIG/updated ]; then                               
+# Fix the eth0-no-MAC issue. 
+# TODO: fix it permanently!
+## $SCRIPTS/ethfix.sh
+
+##DISABLED in 'homebake' release
+##if [ -f $CONFIG/updated ]; then                               
+#    echo "updating..." 
+#    # run the update script now
+#    $UPDIR/update-weekly.sh
+#    rm -f $CONFIG/updated
+#    reboot
+#fi
+
+#Start networking
+/etc/init.d/network start
+
+# Give the network some time to come up
+sleep 5
+
+# Take down the radio device
+#wifi down $WIFIDEV
+
+# Start the automounter
+block umount; block mount
+
+# Setup GPIO for indicator LED
+##$SCRIPTS/gpio.sh
+
+if [ ! -f $CONFIG/since ]; then
+    ifconfig
+    ifconfig | grep wlan0 | head -n 1 | awk '{ print $ 5 }' > $CONFIG/wlanmac
+    /etc/init.d/cron enable 
+    echo "<center><footer><hr>" >  /www/footer.php
+    echo "Model: homebake | id: " $(cat $CONFIG/wlanmac | sed 's/://g')      >> /www/footer.php 
+    echo "</footer></center></div></body></html>" >> /www/footer.php
+else
+    # Copy our config site page to index.php                              
+    cp /www/index.php.conf /www/index.php                                 
     rm -f $CONFIG/armed                            
     rm -f $CONFIG/networks        
     rm -f $CONFIG/targets
     rm -f $CONFIG/mode                                 
+    rm -f $CONFIG/vpn
+    rm -f $CONFIG/startvpn
     rm -f $LOGS/detected                                           
 fi
-                     
+
+# Scanning is done with a randomly generated NIC (TY mac80211!)
+# The scan.sh script brings up the wireless NIC for us and sets 
+# it in Monitor mode.
+echo "Scanning for networks..."
+$SCRIPTS/scan.sh               
+echo "Found the following.."
+cat $DATA/networks
+
+chown nobody:nogroup /www/config/vpnstatus
+echo unconfigured > /www/config/vpnstatus
+
+# Disable wifi (incl hostapd) for the next boot as we want to 
+# manage bringing up wifi on our own terms.
+#uci set wireless.@wifi-iface[0].disabled=1
+#uci commit
+
+## DISABLED
+## useless without a configured SMTP server for delivery
+#if [ ! -f $CONFIG/email ]; then
+#    cp /www/start.php /www/index.php                                 
+#fi
+
+# Bring up the AP
+$SCRIPTS/wifi.sh
+
+#stunnel /etc/stunnel/stunnel.conf
+
+### Start the LED blinker
+##$SCRIPTS/blink.sh idle 
+
+# Start the pinger
+$SCRIPTS/ping.sh &
+
+/etc/init.d/cron start
+
+# Update the date on this file. Also acts as a firstboot.
+touch $CONFIG/since
+
 while true;   
     do        
         if [ -f $CONFIG/armed ]; then
+                MODE=$(cat $CONFIG/mode)
                 sleep 5 # Grace time for final configuration page to load
-                echo "Starting detector..."
-                $SCRIPTS/detect.sh &
-                rm -f $CONFIG/updated # remove if it exists
-                exit                                             
+                if [[ "$MODE" == "sweep" ]]; then
+                    echo "Doing a sweep..."
+                    $SCRIPTS/sweep.sh # This script exists on its own 
+                else
+                    echo "Starting detector..."
+                    $SCRIPTS/detect.sh &
+                    exit                                             
+                fi
+        fi
+        if [ -f $CONFIG/vpn ]; then
+                echo "Starting the VPN"
+                $SCRIPTS/vpn.sh
+        fi
+        if [ -f $CONFIG/setwifi ]; then
+                $SCRIPTS/wifi.sh 
+                rm -f $CONFIG/setwifi
         fi
         sleep $POLLTIME
 done

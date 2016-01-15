@@ -13,6 +13,13 @@ config zone
 	option output		ACCEPT
 	option forward		ACCEPT
 
+config zone 
+        option name             wifi
+        list   network          'wifi'
+        option input            ACCEPT
+        option output           ACCEPT
+        option forward          ACCEPT
+
 config zone
 	option name		wan
 	list   network		'wan'
@@ -23,15 +30,80 @@ config zone
 	option masq		1
 	option mtu_fix		1
 
+config zone
+	option name vpn
+	option input ACCEPT
+	option output ACCEPT
+	option forward ACCEPT
+	option masq 1
+	option network 'vpn0 vpn1'
+
 config forwarding
 	option src		lan
 	option dest		wan
 
+config forwarding
+	option src		wifi
+	option dest		wan
+
+config forwarding
+        option src        lan
+        option dest       wifi 
+
+config forwarding
+        option src        wifi
+        option dest       lan 
+
+config forwarding
+	option src	 	lan	
+	option dest		vpn
+
+config forwarding
+	option src		vpn
+	option dest		lan
+
+config forwarding
+	option src		wifi
+	option dest		vpn
+
+config forwarding
+        option src              vpn 
+        option dest             wifi
+
 # We need to accept udp packets on port 68,
 # see https://dev.openwrt.org/ticket/4108
+
+config rule
+	option name		Allow-SSH-Eth
+	option src		    lan
+	option proto		tcp
+	option dest_port	22
+	option device		eth1
+	option target		ACCEPT
+	option family		ipv4
+
+# Disallow VPN traffic to SSH port
+config rule
+	option name		Block-SSH-VPN
+	option src		    vpn
+	option proto		tcp
+	option dest_port	22
+	option device	    tun0 	
+	option target	    REJECT	
+	option family		ipv4
+
+config rule
+	option name		Block-SSH-WAN
+	option src		    wan
+	option proto		tcp
+	option dest_port	22
+	option device	    eth0	
+	option target	    REJECT	
+	option family		ipv4
+
 config rule
 	option name		Allow-DHCP-Renew
-	option src		wan
+	option src		    wan
 	option proto		udp
 	option dest_port	68
 	option target		ACCEPT
@@ -48,57 +120,57 @@ config rule
 
 # Allow DHCPv6 replies
 # see https://dev.openwrt.org/ticket/10381
-config rule
-	option name		Allow-DHCPv6
-	option src		wan
-	option proto		udp
-	option src_ip		fe80::/10
-	option src_port		547
-	option dest_ip		fe80::/10
-	option dest_port	546
-	option family		ipv6
-	option target		ACCEPT
+#config rule
+#	option name		Allow-DHCPv6
+#	option src		wan
+#	option proto		udp
+#	option src_ip		fe80::/10
+#	option src_port		547
+#	option dest_ip		fe80::/10
+#	option dest_port	546
+#	option family		ipv6
+#	option target		ACCEPT
 
 # Allow essential incoming IPv6 ICMP traffic
-config rule
-	option name		Allow-ICMPv6-Input
-	option src		wan
-	option proto	icmp
-	list icmp_type		echo-request
-	list icmp_type		echo-reply
-	list icmp_type		destination-unreachable
-	list icmp_type		packet-too-big
-	list icmp_type		time-exceeded
-	list icmp_type		bad-header
-	list icmp_type		unknown-header-type
-	list icmp_type		router-solicitation
-	list icmp_type		neighbour-solicitation
-	list icmp_type		router-advertisement
-	list icmp_type		neighbour-advertisement
-	option limit		1000/sec
-	option family		ipv6
-	option target		ACCEPT
+#config rule
+#	option name		Allow-ICMPv6-Input
+#	option src		wan
+#	option proto	icmp
+#	list icmp_type		echo-request
+#	list icmp_type		echo-reply
+#	list icmp_type		destination-unreachable
+#	list icmp_type		packet-too-big
+#	list icmp_type		time-exceeded
+#	list icmp_type		bad-header
+#	list icmp_type		unknown-header-type
+#	list icmp_type		router-solicitation
+#	list icmp_type		neighbour-solicitation
+#	list icmp_type		router-advertisement
+#	list icmp_type		neighbour-advertisement
+#	option limit		1000/sec
+#	option family		ipv6
+#	option target		ACCEPT
 
 # Allow essential forwarded IPv6 ICMP traffic
-config rule
-	option name		Allow-ICMPv6-Forward
-	option src		wan
-	option dest		*
-	option proto		icmp
-	list icmp_type		echo-request
-	list icmp_type		echo-reply
-	list icmp_type		destination-unreachable
-	list icmp_type		packet-too-big
-	list icmp_type		time-exceeded
-	list icmp_type		bad-header
-	list icmp_type		unknown-header-type
-	option limit		1000/sec
-	option family		ipv6
-	option target		ACCEPT
+#config rule
+#	option name		Allow-ICMPv6-Forward
+#	option src		wan
+#	option dest		*
+#	option proto		icmp
+#	list icmp_type		echo-request
+#	list icmp_type		echo-reply
+#	list icmp_type		destination-unreachable
+#	list icmp_type		packet-too-big
+#	list icmp_type		time-exceeded
+#	list icmp_type		bad-header
+#	list icmp_type		unknown-header-type
+#	option limit		1000/sec
+#	option family		ipv6
+#	option target		ACCEPT
 
 # include a file with users custom iptables rules
-#config include
-#	option path /etc/firewall.user
+config include
+	option path /etc/firewall.user
 
 
 ### EXAMPLE CONFIG SECTIONS
@@ -175,38 +247,3 @@ config rule
 #	option dest_ip	194.25.2.129
 #	option dest_port	120
 #	option proto	tcp
-
-#Allow Tor Bridge incoming for censored users
-#config rule
-#        option src wan
-#        option proto tcp
-#        option dest_port 443
-#        option target ACCEPT
-
-#config zone
-#        option name     transtor
-#        option input    REJECT
-#        option output   ACCEPT
-#        option forward  REJECT
-#        option syn_flood 1
-#        option conntrack 1 #this setting is mandatory
-
-# Allow Transparent clients the ability to DHCP an address
-# XXX TODO: Audit this to ensure it doesn't leak UDP port 67 to the net!
-#config rule
-#        option src              transtor
-#        option proto            udp
-#        option dest_port        67
-#        option target           ACCEPT
-# Tor transparent-proxy-port (set in /etc/tor/torrc)
-#config rule
-#        option src              transtor
-#        option proto            tcp
-#        option dest_port        9040
-#        option target           ACCEPT
-# Tor DNS-proxy-port (set in /etc/tor/torrc)
-#config rule
-#        option src              transtor
-#        option proto            udp
-#        option dest_port        9053
-#        option target           ACCEPT
