@@ -13,7 +13,7 @@ anything smaller.
 
 If you don't want to build, just [grab the
 firmware](https://github.com/JulianOliver/CyborgUnplug/blob/wr710n/bin/cyborg-unplug-wr710n.bin)
-and flash it on right away.
+and flash it on right away using the web interface (see INSTALL, below).
 
 This release is similar but not as polished as the firmware shipping on the
 for-sale rt5350f [Little Snipper](https://plugunplug.net/) Cyborg Unplug
