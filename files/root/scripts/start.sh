@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# Cyborg Unplug main start script for RT5350f LittleSnipper. Invoked from
-# /etc/rc.local on each boot.
+# Cyborg Unplug main start script for WR710N "homebake" firmware release.
+# Invoked from /etc/rc.local on each boot.
 #
 # Copyright (C) 2015 Julian Oliver
 #

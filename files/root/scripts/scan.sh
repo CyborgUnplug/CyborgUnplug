@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# Cyborg Unplug scan script for RT5350f LittleSnipper. Scans for networks and writes out
-# the important stuff for each all on one line.
+# Cyborg Unplug scan script for WR710N "homebake" firmware release.  Scans for
+# networks and writes out the important stuff for each all on one line.
 #
 # Copyright (C) 2015 Julian Oliver
 #

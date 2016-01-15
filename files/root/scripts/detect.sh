@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# Cyborg Unplug detector script for RT5350f LittleSnipper. Detects and de-auths
-# user-selected target devices resourced from /www/config/. 
+# Cyborg Unplug detector script for WR710N "homebake" firmware release.  Detects
+# and de-auths user-selected target devices resourced from /www/config/. 
 # 
 # Copyright (C) 2015 Julian Oliver 
 # 

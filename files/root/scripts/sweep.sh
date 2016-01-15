@@ -1,7 +1,9 @@
 #!/bin/bash
 
-# Cyborg Unplug detector script for RT5350f LittleSnipper. Detects and de-auths
-# user-selected target devices resourced from /www/config/. 
+# Cyborg Unplug sweep script. Detects user-selected target devices resourced
+# from /www/config/ and notifies the unplug owner via the email alerts system. 
+# This is currently unused in the wr710n branch, but left here in case someone
+# wants to get it working with their own SMTP server (see alert.sh).
 # 
 # Copyright (C) 2015 Julian Oliver 
 # 
