@@ -11,15 +11,12 @@ anything smaller.
 
 This is similar but not as polished as the firmware shipping on the sold rt5350f
 _Little Snipper_ Cyborg Unplug model; intended for the more experienced
-developer to play with and improve. It has less targets at the time of writing,
-no smartphone notification system, no Tor transparent proxy and a disabled
-update routine (easily enabled). These components/aspects will be refined for
-the _Little Snipper_ and possibly folded back into this branch at a later date.
+developer to play with and improve. It has no notification system (requiring an
+SMTP mail relay host), no free VPN service and has a disabled update routine
+(use the firmware posted here, instead). 
 
-All of the code in *root/scripts*, *www/cgi-bin* was written by [Julian
-Oliver](http://julianoliver.com) with the PHP (UI code) in *www/* written by both
-Julian Oliver and [Samim Winiger](http://samim.io) and is made available here
-under the [General Public License](https://www.gnu.org/copyleft/gpl.html) (Version 3 or later).
+All code is made available here under the [General Public
+License](https://www.gnu.org/copyleft/gpl.html) (Version 3 or later).
 
 The *files/etc* has been included as it contains many original OpenWrt files
 modified to get things working. It was easier just to throw in the whole dir.
@@ -27,12 +24,15 @@ modified to get things working. It was easier just to throw in the whole dir.
 ABOUT CYBORG UNPLUG
 ------------------
 
-Cyborg Unplug is an anti wireless (WiFi) surveillance system for the home, hotel
-and workplace. It detects and kicks selected devices known to pose a risk to
-personal privacy from local wireless networks, breaking uploads and streams.
+Cyborg Unplug is a privacy appliance for the home, hotel and workplace. It
+detects and optionally disconnects (outside US only) selected devices known to
+pose a risk to personal privacy, stopping streams of image, video and audio data
+to the Internet (or the car outside). 
 
-Rather than functioning as a jammer, it targets devices selectively and as such
-is gentle on spectra.
+Using a Virtual Private Network, this little plug also encrypts your Internet
+traffic, locking out spies along the route. It can also be used to easily and
+privately share files on a USB stick with others on the same network. No extra
+software is required on your phone, tablet or laptop.
 
 Visit the project page [here](https://plugunplug.net).
 
@@ -72,9 +72,9 @@ USE
 ---
 
 Once it has rebooted pick up a smartphone, tablet or laptop and look for a
-network beginning with the word _unplug_, followed with 6 alphanumeric
-characters. Those last 6 characters match the last six of the device's MAC
-address - helpful when identifying one Unplug among many. 
+network beginning with the word _unplug_, followed by 4 alphanumeric characters.
+Those last 4 characters match the last four of the device's MAC address -
+helpful when identifying one Unplug among many. 
 
 Connect to the network using the (deliberately unimaginative) password:
     
@@ -123,15 +123,14 @@ turn:
 
     passwd
 
-Now change the WiFi key (must be between 8 and 63 chars long):
+To change the WiFi key, ESSID and Channel, connect to the device with your
+phone/tablet/laptop and visit the _configure_ menu in the home screen.
+
+Alternatively, you can ssh in and:
 
     uci set wireless.@wifi-iface[0].key="yourKeyH3r3"
-    uci commit
-    exit & reboot -n
-
-To change the ESSID of your Unplug, type:
-
     uci set wireless.@wifi-iface[0].SSID="AnotherESSID"
+    uci set wireless.@wifi-iface[0].channel=8
     uci commit
     exit & reboot -n
 
