@@ -10,7 +10,6 @@ Builder. The target was the European 8Mb Flash model. It will not run on
 anything smaller. 
 
 ![](https://github.com/JulianOliver/CyborgUnplug/blob/wr710n/images/wr710n.jpg)
-![](https://github.com/JulianOliver/CyborgUnplug/blob/master/images/ui/main_status-360.png)
 
 If you don't want to build, just [grab the
 firmware](https://github.com/JulianOliver/CyborgUnplug/blob/wr710n/bin/cyborg-unplug-wr710n.bin)
@@ -90,7 +89,9 @@ Connect to the network using the (deliberately unimaginative) password:
 
 You will be granted an IP in the 10.10.10.0-255 range. Either type
 _littlesnipper_ or _http://10.10.10.1_ in the URL bar of your browser to be
-taken to the configuration page.
+taken to the configuration page, which looks like this:
+
+![](https://github.com/JulianOliver/CyborgUnplug/blob/master/images/ui/main_status-360.png)
 
 NOTE: If no configuration is done using the browser interface, the Unplug
 defaults to being a nice little wireless router - just plug it into a router
