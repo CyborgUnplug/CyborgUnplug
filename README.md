@@ -10,6 +10,7 @@ Builder. The target was the European 8Mb Flash model. It will not run on
 anything smaller. 
 
 ![](https://github.com/JulianOliver/CyborgUnplug/blob/wr710n/images/wr710n.jpg)
+![](https://github.com/JulianOliver/CyborgUnplug/blob/master/images/ui/main_status-360.png)
 
 If you don't want to build, just [grab the
 firmware](https://github.com/JulianOliver/CyborgUnplug/blob/wr710n/bin/cyborg-unplug-wr710n.bin)
