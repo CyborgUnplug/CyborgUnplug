@@ -27,7 +27,7 @@ readonly POLLTIME=5
 readonly WIFIDEV=radio0                                                             
 
 
-mkdir /tmp/keys
+mkdir /tmp/{keys,config}
 # only readable by owner 
 chmod go-rw /tmp/keys
 
@@ -69,8 +69,8 @@ cat $DATA/networks
 # Bring up the AP
 $SCRIPTS/wifi.sh
 
-chown nobody:nogroup /www/config/vpnstatus
-echo unconfigured > /www/config/vpnstatus
+chown nobody:nogroup $CONFIG/vpnstatus
+echo unconfigured > $CONFIG/vpnstatus
 
 # Disable wifi (incl hostapd) for the next boot as we want to 
 # manage bringing up wifi on our own terms.
@@ -94,7 +94,7 @@ else
     rm -f $CONFIG/targets
     rm -f $CONFIG/mode                                 
     rm -f $CONFIG/vpn
-    rm -f $CONFIG/startvpn
+    rm -f $CONFIG/setwifi
     rm -f $LOGS/detected                                           
 fi
 

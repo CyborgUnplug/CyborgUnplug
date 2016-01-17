@@ -118,6 +118,7 @@ vpnstop() {
     echo unconfigured > $CONFIG/vpnstatus
     $SCRIPTS/blink.sh idle 
     rm $CONFIG/vpn
+    exit
 }
 
 routetoggle() {
