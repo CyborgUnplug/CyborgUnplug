@@ -81,19 +81,10 @@ case "$EVENT" in
         html mode.php
 	;;
 	*mode1*)
-		echo territory > $CONFIG/mode
-        html territorial.php
-	;;
-	*mode2*)
-		echo allout > $CONFIG/mode
-        html allout.php
-	;;
-	*mode3*)
-		echo alarm > $CONFIG/mode
-		cat $DATA/networks > $CONFIG/networks
+		echo continuous > $CONFIG/mode
         html finish.php
 	;;
-	*mode4*)
+	*mode2*)
 		echo sweep > $CONFIG/mode
 		cat $DATA/networks > $CONFIG/networks
         html finish.php

@@ -1,7 +1,12 @@
 #!/bin/bash
 
-# Cyborg Unplug detector script for RT5350f LittleSnipper. Detects and de-auths
-# user-selected target devices resourced from /www/config/. 
+# Cyborg Unplug detector script for RT5350f LittleSnipper. Detects user-selected
+# target devices resourced from /www/config/. 
+#
+# NOTE: This is the USA version of the script and so does no
+# de-authing/disconnection. That feature is solely for the 'international'
+# version. It has no 'territory' or 'allout' mode, just pure detection and
+# reporting.
 # 
 # Copyright (C) 2015 Julian Oliver 
 # 
@@ -89,51 +94,8 @@ alert() {
         else
             echo "Can't send alert. Unplug not online"
         fi
-        # Log this for the report page
-        if [[ "$MODE" != "alarm" ]]; then
-            echo $(date) "detected and de-authed device" "$device" "with MAC addr" $target >> $LOGS/detected
-        else
-            echo $(date) "detected device" "$device" "with MAC addr" $target >> $LOGS/detected
-        fi
+        echo $(date) "detected device" "$device" "with MAC addr" $target >> $LOGS/detected
     fi
-}
-
-deauth() {
-    echo "Target found."
-    # Pause horst and set the channel
-    if [[ "$MODE" == "allout" || "$MODE" == "alarm" ]]; then
-        horst -x channel_auto=0
-    fi
-    horst -x pause
-    # We can set the channel of $NIC and mon0 at once as $NIC is in Monitor mode
-    iwconfig $NIC freq $freq"000000"
-    sleep 2
-    iwconfig | grep Frequency
-    # Do the de-auth
-    echo "De-authing: " "$STA" " from " "$BSSID"
-    aireplay-ng -0 $FRAMES -a $BSSID -c $STA mon0 
-    alert
-    if [[ "$MODE" == "allout" ]]; then
-        horst -x channel_auto=1
-    fi
-    horst -x resume
-    # Reset MAC vars 
-    STA=ff:ff:ff:ff:ff:ff
-    BSSID=ff:ff:ff:ff:ff:ff
-}
-
-channelWalk(){
-    # This is only for Territory mode as horst already has a random walk for all
-    # channels
-    trap "exit" INT
-    while true;
-        do 
-            for c in ${CHANNELS[@]}
-                do
-                    horst -x channel=$c
-                    sleep 1
-                done
-        done
 }
 
 # Start horst with upper channel limit of 13 in quiet mode and a command hook
@@ -146,36 +108,9 @@ if [ $? -ne 0 ]; then # Test horst exit status
   # and/or NIC. Store settings and reboot.
    touch $CONFIG/updated && reboot -n 
 fi
-#horst -x channel_auto=1
 
-case "$MODE" in 
-    *territory*)
-        # Override channels with those of target BSSIDs. We have to resource awk
-        # twice, due to two cases of uniqueness tested.
-        readonly CHANNELS=($(cat $CONFIG/networks | sort -u | awk 'BEGIN { FS = "," }; { print $NF }' | sort -u | awk '{ print $0 }'))
-        #CHANNELS=($(cat /www/config/networks | sort -u | awk 'BEGIN { FS = "," }; { print $NF }'))
-        # We'll poll for as many seconds as there are networks to guard 
-        readonly POLLTIME=$(wc -l < $CONFIG/networks)
-        echo "These are the networks we're watching"
-        cat $CONFIG/networks
-        # Read in the networks we're watching and build the target string. 
-        readonly SRCN=$(cat /www/config/networks | cut -d "," -f 1)
-        readonly networks='@('$(echo $SRCN | sed 's/\ /\|/g')')'
-        channelWalk &
-        CPID=$!
-    ;;
-    *alarm*)
-        # Put things specific to alarm/alert mode here.
-        POLLTIME=13 # Seconds we wait for capture to find STA/BSSID pairs
-        horst -x channel_auto=1
-    ;;
-    *allout*)
-        # Put things specific to allout mode here.
-        POLLTIME=13 # Seconds we wait for capture to find STA/BSSID pairs
-        horst -x channel_auto=1
-    ;;
-    *)                    
-esac
+POLLTIME=13 # Seconds we wait for capture to find STA/BSSID pairs
+horst -x channel_auto=1
 
 $SCRIPTS/blink.sh detect 
 
@@ -189,45 +124,29 @@ while true;
             # pairs need to be extraced and matched separately.
             cat $CAPDIR/cap | awk '{ print $2 $3 $4 $11 }' | sed 's/,/\ /g' | sort -u > $CAPDIR/pairs
             if [ -f $CAPDIR/pairs ]; then
-                    if [[ "$MODE" == "territory" ]]; then
-                        kill -STOP $CPID
-                    fi
-                    while read line;
-                             do
-                                arr=($line) # Array from the line
-                                src=${arr[0]}; dst=${arr[1]}; BSSID=${arr[2]}; freq=${arr[3]}
-                                echo $src $dst $BSSID $freq
-                                if [[ $src != $BSSID ]]; then
-                                    STA=$src
-                                else 
-                                    STA=$dst 
-                                fi
+                while read line;
+                         do
+                            arr=($line) # Array from the line
+                            src=${arr[0]}; dst=${arr[1]}; BSSID=${arr[2]}; freq=${arr[3]}
+                            echo $src $dst $BSSID $freq
+                            if [[ $src != $BSSID ]]; then
+                                STA=$src
+                            else 
+                                STA=$dst 
+                            fi
 
-                                if [[ "$MODE" == "territory" && "$STA" == $TARGETS && "$BSSID" == $networks ]]; then
-                                        target=$STA
-                                        deauth
-                                elif [[ "$STA" == $TARGETS ]]; then
-                                    target=$STA
-                                    if [[ "$MODE" == "allout" ]]; then
-                                        deauth
-                                    else
-                                        alert
-                                    fi
-                                elif [[ "$BSSID" == $TARGETS ]]; then
-                                    target=$BSSID
-                                    if [[ "$MODE" == "allout" ]]; then
-                                        deauth
-                                    else
-                                        alert
-                                    fi
-                                fi
-                        done < $CAPDIR/pairs #EOF
+                            if [[ "$STA" == $TARGETS ]]; then
+                                target=$STA
+                            elif [[ "$BSSID" == $TARGETS ]]; then
+                                target=$BSSID
+                            fi
+
+                            alert
+
+                    done < $CAPDIR/pairs #EOF
             echo "Removing temporary files."
             rm -f $CAPDIR/pairs $CAPDIR/channels 
             horst -x pause
-            if [ "$MODE" == "territory" ]; then
-                kill -CONT $CPID
-            fi
             rm -f $CAPDIR/cap
             horst -x outfile=$CAPDIR/cap
             horst -x resume 
