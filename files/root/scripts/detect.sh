@@ -82,15 +82,17 @@ alert() {
     now=$(date +'%s')
     # Send alerts no more than once every 5mins (to avoid spamming)
     delta=$(echo $now-$lastseen | bc) 
-    lastseen=$now
+    lastseen=$(echo $now-$delta | bc)
     # TODO resolve how long the LED notification should run. Reset to 'detect' once
     # the owner has been notified by email? 
     $SCRIPTS/blink.sh target 
-    if [ $delta -gt 360 ]; then
+    echo "This is delta: "$delta
+    if [ $delta -gt 300 ]; then
         if [[ $(cat $CONFIG/networkstate) == "online" ]]; then
             echo "Alerting Unplug owner"
             device=$(cat /www/data/devices | grep -i ${target:0:8} | cut -d ',' -f 1)
             $SCRIPTS/alert.sh "$device" $target &
+            lastseen=$now
         else
             echo "Can't send alert. Unplug not online"
         fi
@@ -137,11 +139,12 @@ while true;
 
                             if [[ "$STA" == $TARGETS ]]; then
                                 target=$STA
+                                alert
                             elif [[ "$BSSID" == $TARGETS ]]; then
                                 target=$BSSID
+                                alert
                             fi
 
-                            alert
 
                     done < $CAPDIR/pairs #EOF
             echo "Removing temporary files."

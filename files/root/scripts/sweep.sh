@@ -70,6 +70,8 @@ echo "0 plugunplug.ovpn" > $CONFIG/vpn
 echo "start" > $CONFIG/vpnstatus
 $SCRIPTS/vpn.sh &
 
+$SCRIPTS/blink.sh detect 
+
 alert() {
     now=$(date +'%s')
     # Send alerts no more than once every 5mins (to avoid spamming)
@@ -142,6 +144,7 @@ done
 echo NULL > $CONFIG/mode
 cp /www/index.php.conf /www/index.php
 killall openvpn vpn.sh
+rm -f $CONFIG/vpn
 echo unconfigured > $CONFIG/vpnstatus
 rm -f $CONFIG/armed
 # Set back to AP mode 
