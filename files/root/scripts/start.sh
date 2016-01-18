@@ -84,7 +84,7 @@ fi
 if [ ! -f $CONFIG/since ]; then
     /etc/init.d/cron enable 
     echo "<center><footer><hr>" >  /www/footer.php
-    echo "Model: international | id: " $(cat $CONFIG/wlanmac | sed 's/://g')      >> /www/footer.php 
+    echo "Model: USA | id: " $(cat $CONFIG/wlanmac | sed 's/://g')      >> /www/footer.php 
     echo "</footer></center></div></body></html>" >> /www/footer.php
 else
     # Copy our config site page to index.php                              
