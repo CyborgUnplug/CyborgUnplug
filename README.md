@@ -2,9 +2,11 @@
 
 ![](https://plugunplug.net/img/site-banner.jpg)
 
-Cyborg Unplug firmware files for the sold 16M SPI flash, 32M RAM RT5350f target
-_Little Snipper_.  Please see the _wr710n_ branch for the 'homebake' DIY Atheros
-target (currently TP-Link WR710N).
+Cyborg Unplug firmware files for the retail 16M SPI flash, 32M RAM RT5350f
+_USA-destined_ edition of _Little Snipper_. Unlike the International version (due
+to changing FCC regulations in mid-2015) this firmware does not have the ability
+to deauthenticate WiFi clients. We spent a huge amount on legal fees trying to
+resolve this and, well, here's a branch to tell the tale.
 
 This firmware builds on OpenWrt BARRIER BREAKER (Bleeding Edge).
 
@@ -21,13 +23,3 @@ privately share files on a USB stick with others on the same network. No extra
 software is required on your phone, tablet or laptop.
 
 Visit the project page [here](http://plugunplug.net).
-
-## BRANCH DIFFERENCES
-
-Note the _wr710n_ branch is lagging behind _master_ due to differences in
-hardware and features such as the free SSL sheathed VPN service, automatic
-firmware updates and private email alerts/notification system. These are only
-available with Little Snipper hardware sold due to the work involved, alongside
-the financial and administrative costs of having thousands of people on the
-project VPN.
-
