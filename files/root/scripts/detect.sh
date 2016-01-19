@@ -28,12 +28,18 @@ readonly CONFIG=/www/config
 readonly FRAMES=5 # Number of de-auth frames to send. 10 a good hit/time tradeoff
 readonly MODE=$(cat $CONFIG/mode) 
 
+# For allout and alert modes. Determines time spent capturing, in seconds.
+# Higher values = lower anxiety = less regular alerts/deauths Will eventually be
+# user-editable through UI
+readonly ANXIETY=13
+
 # Read in the user selected target devices and build the target string.
 readonly SRCT=$(cat $CONFIG/targets | cut -d "," -f 2)
 readonly TARGETS='@('$(echo $SRCT | sed 's/\ /\*\|/g')'*)'
 
 networks='' # Placeholder. Technically redundant.
-lastseen=0
+seen=()
+apid=0
 
 # Make the activity page the default site page for connections during detection
 # (only available over Ethernet) 
@@ -74,27 +80,57 @@ echo "0 plugunplug.ovpn" > $CONFIG/vpn
 $SCRIPTS/vpn.sh &
 
 alert() {
+    tmail=false
     now=$(date +'%s')
-    # Send alerts no more than once every 5mins (to avoid spamming)
-    delta=$(echo $now-$lastseen | bc) 
-    lastseen=$now
     # TODO resolve how long the LED notification should run. Reset to 'detect' once
     # the owner has been notified by email? 
     $SCRIPTS/blink.sh target 
-    if [ $delta -gt 360 ]; then
-        if [[ $(cat $CONFIG/networkstate) == "online" ]]; then
+    # Have we already seen this target? 
+    if [[ ! " ${seen[@]} " =~ "$target" ]]; then
+        # Add target to array, with last seen seconds set to now
+        tt=$target"|"$now
+        seen=(${seen[@]} $tt)
+        tmail=true
+    else
+        # No associative arrays in this version of bash. 
+        # Can't return index on match. Have to iterate
+        for index in $(seq 0 $((${#seen[@]}-1))); do
+            # Calculate last seen delta
+            tdelta=$(($now - ${seen[$index]/$target|/}))
+            # Send alerts no more than once every 5mins (to avoid spamming)
+            if [[ $tdelta -gt 300 ]]; then
+                # Remove old entry from array
+                unset seen[$index]
+                tmail=true
+            else
+                # Don't send alert this round as device was just seen
+                tmail=false
+            fi
+            echo "this is tdelta: "$tdelta
+        done
+    fi
+    if [[ $(cat $CONFIG/networkstate) == "online" ]]; then
+        if [ "$tmail" = true ]; then
             echo "Alerting Unplug owner"
             device=$(cat /www/data/devices | grep -i ${target:0:8} | cut -d ',' -f 1)
+            # in case a stuck pid, from last time
+            if [[ $apid != 0 ]]; then
+                kill -9 $apid 
+            fi
             $SCRIPTS/alert.sh "$device" $target &
+            apid=$! # new PID 
         else
-            echo "Can't send alert. Unplug not online"
+            echo "Device seen in the last 5 minutes, not alerting owner"
         fi
-        # Log this for the report page
-        if [[ "$MODE" != "alarm" ]]; then
-            echo $(date) "detected and de-authed device" "$device" "with MAC addr" $target >> $LOGS/detected
-        else
-            echo $(date) "detected device" "$device" "with MAC addr" $target >> $LOGS/detected
-        fi
+    else
+        echo "Can't send alert. Unplug not online"
+    fi
+    # Log this for the report page. We log all reports here, regardless of
+    # sighting frequency
+    if [[ "$MODE" != "alarm" ]]; then
+        echo $(date) "detected and de-authed device" "$device" "with MAC addr" $target >> $LOGS/detected
+    else
+        echo $(date) "detected device" "$device" "with MAC addr" $target >> $LOGS/detected
     fi
 }
 
@@ -136,20 +172,19 @@ channelWalk(){
         done
 }
 
-# Start horst with upper channel limit of 13 in quiet mode and a command hook
-# for remote control (-X). Has to be backgrounded.
-horst -u 13 -q -d 250 -i $NIC -f DATA -o $CAPDIR/cap -X &
-HPID=$!
 
-if [ $? -ne 0 ]; then # Test horst exit status 
+#if [ $? -ne 0 ]; then # Test horst exit status 
   # Something is wrong, like a dead mon0
   # and/or NIC. Store settings and reboot.
-   touch $CONFIG/updated && reboot -n 
-fi
-#horst -x channel_auto=1
+#   touch $CONFIG/updated && reboot -n 
+#fi
 
 case "$MODE" in 
     *territory*)
+        # In territory mode, we're only concerned if an unwanted device joins
+        # our network, so just filter for association, auth and data packets. 
+        horst -u 13 -q -i $NIC -f ASSOC -f AUTH -f DATA -o $CAPDIR/cap -X &
+        HPID=$!
         # Override channels with those of target BSSIDs. We have to resource awk
         # twice, due to two cases of uniqueness tested.
         readonly CHANNELS=($(cat $CONFIG/networks | sort -u | awk 'BEGIN { FS = "," }; { print $NF }' | sort -u | awk '{ print $0 }'))
@@ -165,13 +200,22 @@ case "$MODE" in
         CPID=$!
     ;;
     *alarm*)
+        # In alarm mode, we're looking for the pure presence of a device, and
+        # so watch for any packets from the target(s) - probe, data or otherwise
+        horst -u 13 -q -i $NIC -o $CAPDIR/cap -X &
+        HPID=$!
         # Put things specific to alarm/alert mode here.
-        POLLTIME=13 # Seconds we wait for capture to find STA/BSSID pairs
+        POLLTIME=$ANXIETY # Seconds we wait for capture to find STA/BSSID pairs
         horst -x channel_auto=1
     ;;
     *allout*)
+        # In allout mode we're looking for activity of the device on any
+        # network in our presence, de-authing it in turn. Data packets are what
+        # we need to filter for
+        horst -u 13 -q -i $NIC -f DATA -o $CAPDIR/cap -X &
+        HPID=$!
         # Put things specific to allout mode here.
-        POLLTIME=13 # Seconds we wait for capture to find STA/BSSID pairs
+        POLLTIME=$ANXIETY # Seconds we wait for capture to find STA/BSSID pairs
         horst -x channel_auto=1
     ;;
     *)                    
