@@ -31,7 +31,7 @@ readonly FRAMES=5 # Number of de-auth frames to send. 10 a good hit/time tradeof
 readonly SRCT=$(cat $CONFIG/targets | cut -d "," -f 2)
 readonly TARGETS='@('$(echo $SRCT | sed 's/\ /\*\|/g')'*)'
 
-lastseen=0
+seen=()
 
 # Make the activity page the default site page for connections during detection
 # (only available over Ethernet) 
@@ -71,12 +71,12 @@ echo "start" > $CONFIG/vpnstatus
 $SCRIPTS/vpn.sh &
 
 alert() {
-    now=$(date +'%s')
-    # Send alerts no more than once every 5mins (to avoid spamming)
-    delta=$(echo $now-$lastseen | bc) 
-    lastseen=$now
     $SCRIPTS/blink.sh target 
-    if [ $delta -gt 360 ]; then
+    # This is a quick sweep, so check to see if targets are already in the array
+    # of seen devices to avoid spamming
+    if [[ " ${seen[@]} " =~ "$target" ]]; then
+        echo "Target already seen, not reporting"
+    else  
         if [[ $(cat $CONFIG/networkstate) == "online" ]]; then
             echo "Alerting Unplug owner"
             device=$(cat /www/data/devices | grep -i ${target:0:8} | cut -d ',' -f 1)
@@ -87,6 +87,8 @@ alert() {
         # Log this for the report page
         echo $(date) "detected device" "$device" "with MAC addr" $target >> $LOGS/detected
     fi
+    # Add target to the target array for check next round
+    seen=(${seen[@]} $target)
 }
 
 # Start horst with upper channel limit of 13 in quiet mode and a command hook
@@ -120,7 +122,6 @@ while [ $COUNT -lt 6 ];
                                 else 
                                     STA=$dst 
                                 fi
-
                                 if [[ "$STA" == $TARGETS ]]; then
                                     target=$STA
                                     alert
@@ -142,6 +143,7 @@ done
 echo NULL > $CONFIG/mode
 cp /www/index.php.conf /www/index.php
 killall openvpn vpn.sh
+rm -f $CONFIG/vpn
 echo unconfigured > $CONFIG/vpnstatus
 rm -f $CONFIG/armed
 # Set back to AP mode 
