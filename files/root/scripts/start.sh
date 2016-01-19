@@ -77,18 +77,19 @@ echo unconfigured > $CONFIG/vpnstatus
 #uci set wireless.@wifi-iface[0].disabled=1
 #uci commit
 
-if [ ! -f $CONFIG/email ]; then
-    cp /www/start.php /www/index.php                                 
-fi
-
 if [ ! -f $CONFIG/since ]; then
+    cp /www/start.php /www/index.php                                 
     /etc/init.d/cron enable 
     echo "<center><footer><hr>" >  /www/footer.php
-    echo "Model: USA| id: " $(cat $CONFIG/wlanmac | sed 's/://g')      >> /www/footer.php 
+    echo "Model: USA | id: " $(cat $CONFIG/wlanmac | sed 's/://g')      >> /www/footer.php 
     echo "</footer></center></div></body></html>" >> /www/footer.php
 else
-    # Copy our config site page to index.php                              
-    cp /www/index.php.conf /www/index.php                                 
+    if [ ! -f $CONFIG/email ]; then
+        cp /www/start.php /www/index.php                                 
+    else
+        # Copy our config site page to index.php                              
+        cp /www/index.php.conf /www/index.php                                 
+    fi
     rm -f $CONFIG/armed                            
     rm -f $CONFIG/networks        
     rm -f $CONFIG/targets

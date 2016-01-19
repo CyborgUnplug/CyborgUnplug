@@ -31,7 +31,7 @@ readonly FRAMES=5 # Number of de-auth frames to send. 10 a good hit/time tradeof
 readonly SRCT=$(cat $CONFIG/targets | cut -d "," -f 2)
 readonly TARGETS='@('$(echo $SRCT | sed 's/\ /\*\|/g')'*)'
 
-lastseen=0
+seen=()
 
 # Make the activity page the default site page for connections during detection
 # (only available over Ethernet) 
@@ -73,27 +73,35 @@ $SCRIPTS/vpn.sh &
 $SCRIPTS/blink.sh detect 
 
 alert() {
-    now=$(date +'%s')
-    # Send alerts no more than once every 5mins (to avoid spamming)
-    delta=$(echo $now-$lastseen | bc) 
-    lastseen=$now
+    tmail=false
+    # TODO resolve how long the LED notification should run. Reset to 'detect' once
+    # the owner has been notified by email? 
     $SCRIPTS/blink.sh target 
-    if [ $delta -gt 360 ]; then
+    # Have we already seen this target? 
+    if [[ ! " ${seen[@]} " =~ "$target" ]]; then
+        # Add target to array
+        seen=(${seen[@]} $target)
+        tmail=true
+    else
+        tmail=false
+    fi
+    if [ "$tmail" = true ]; then
         if [[ $(cat $CONFIG/networkstate) == "online" ]]; then
             echo "Alerting Unplug owner"
             device=$(cat /www/data/devices | grep -i ${target:0:8} | cut -d ',' -f 1)
             $SCRIPTS/alert.sh "$device" $target &
+            # Log this for the report page
+            echo $(date) "detected device" "$device" "with MAC addr" $target >> $LOGS/detected
         else
             echo "Can't send alert. Unplug not online"
         fi
-        # Log this for the report page
-        echo $(date) "detected device" "$device" "with MAC addr" $target >> $LOGS/detected
     fi
 }
 
 # Start horst with upper channel limit of 13 in quiet mode and a command hook
 # for remote control (-X). Has to be backgrounded.
-horst -u 13 -q -d 250 -i $NIC -f DATA -o $CAPDIR/cap -X &
+#horst -u 13 -q -d 250 -i $NIC -f DATA -o $CAPDIR/cap -X &
+horst -u 13 -q -i $NIC -o $CAPDIR/cap -X &
 
 POLLTIME=13 # Seconds we wait for capture to find STA/BSSID pairs
 horst -x channel_auto=1

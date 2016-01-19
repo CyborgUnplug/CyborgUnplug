@@ -38,7 +38,8 @@ readonly SRCT=$(cat $CONFIG/targets | cut -d "," -f 2)
 readonly TARGETS='@('$(echo $SRCT | sed 's/\ /\*\|/g')'*)'
 
 networks='' # Placeholder. Technically redundant.
-lastseen=0
+seen=()
+apid=0
 
 # Make the activity page the default site page for connections during detection
 # (only available over Ethernet) 
@@ -79,37 +80,65 @@ echo "0 plugunplug.ovpn" > $CONFIG/vpn
 $SCRIPTS/vpn.sh &
 
 alert() {
+    tmail=false
     now=$(date +'%s')
-    # Send alerts no more than once every 5mins (to avoid spamming)
-    delta=$(echo $now-$lastseen | bc) 
-    lastseen=$(echo $now-$delta | bc)
     # TODO resolve how long the LED notification should run. Reset to 'detect' once
     # the owner has been notified by email? 
     $SCRIPTS/blink.sh target 
-    echo "This is delta: "$delta
-    if [ $delta -gt 300 ]; then
-        if [[ $(cat $CONFIG/networkstate) == "online" ]]; then
+    # Have we already seen this target? 
+    if [[ ! " ${seen[@]} " =~ "$target" ]]; then
+        # Add target to array, with last seen seconds set to now
+        tt=$target"|"$now
+        seen=(${seen[@]} $tt)
+        tmail=true
+    else
+        # No associative arrays in this version of bash. 
+        # Can't return index on match. Have to iterate
+        for index in $(seq 0 $((${#seen[@]}-1))); do
+            # Calculate last seen delta
+            tdelta=$(($now - ${seen[$index]/$target|/}))
+            # Send alerts no more than once every 5mins (to avoid spamming)
+            if [[ $tdelta -gt 300 ]]; then
+                # Remove old entry from array
+                unset seen[$index]
+                tmail=true
+            else
+                # Don't send alert this round as device was just seen
+                tmail=false
+            fi
+            echo "this is tdelta: "$tdelta
+        done
+    fi
+    if [[ $(cat $CONFIG/networkstate) == "online" ]]; then
+        if [ "$tmail" = true ]; then
             echo "Alerting Unplug owner"
             device=$(cat /www/data/devices | grep -i ${target:0:8} | cut -d ',' -f 1)
+            # in case a stuck pid, from last time
+            if [[ $apid != 0 ]]; then
+                kill -9 $apid 
+            fi
             $SCRIPTS/alert.sh "$device" $target &
-            lastseen=$now
+            apid=$! # new PID 
+            # Log this for the report page 
+            echo $(date) "detected device" "$device" "with MAC addr" $target >> $LOGS/detected
         else
-            echo "Can't send alert. Unplug not online"
+            echo "Device seen in the last 5 minutes, not alerting owner"
         fi
-        echo $(date) "detected device" "$device" "with MAC addr" $target >> $LOGS/detected
+    else
+        echo "Can't send alert. Unplug not online"
     fi
 }
 
 # Start horst with upper channel limit of 13 in quiet mode and a command hook
-# for remote control (-X). Has to be backgrounded.
-horst -u 13 -q -d 250 -i $NIC -f DATA -o $CAPDIR/cap -X &
+# for remote control (-X). Has to be backgrounded. We look for any traffic
+horst -u 13 -q -i $NIC -o $CAPDIR/cap -X &
 HPID=$!
 
-if [ $? -ne 0 ]; then # Test horst exit status 
-  # Something is wrong, like a dead mon0
-  # and/or NIC. Store settings and reboot.
-   touch $CONFIG/updated && reboot -n 
-fi
+#if [ $? -ne 0 ]; then # Test horst exit status 
+#  # Something is wrong, like a dead mon0
+#  # and/or NIC. Store settings and reboot.
+#   touch $CONFIG/updated && reboot -n 
+#fi
 
 POLLTIME=13 # Seconds we wait for capture to find STA/BSSID pairs
 horst -x channel_auto=1

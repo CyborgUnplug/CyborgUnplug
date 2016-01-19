@@ -87,7 +87,6 @@ vpnstart () {
 vpncheck () {
     # VPNPID=$(ps | grep [open]vpn | awk '{ print $1 }') # PID not reliable, zombie procs
     TUN=$(ifconfig | grep -e tun -e tap)
-    echo $TUN
     if [ -z "$TUN" ]; then
         echo "VPN is down, do stuff here...."
         # VPN was in use, so take down WAN NIC immediately, to avoid leaks
@@ -99,7 +98,6 @@ vpncheck () {
     else
         # do test ping here
         echo "VPN status is: " $(cat $CONFIG/vpnstatus)
-        echo "tun/tap is up"
         #cat /www/config/vpnstatus
     fi
 }
