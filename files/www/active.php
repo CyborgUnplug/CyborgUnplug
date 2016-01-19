@@ -8,8 +8,8 @@
             if (preg_match('/sweep/', $g) == 1) {
                 echo "<h1 id='headline'>Sweeping for devices...</h1>";
                 echo "<br>";
-                echo "<div class='warning warning3'>";
-                echo "A sweep should take a little over 80 seconds. During this time your WiFi connection to Little Snipper will go down. Reconnect and refresh this page in a couple of minutes to read a report.<br>In the interim, check your email for alerts.";
+                echo "<div class='warning'>";
+                echo "A sweep should take a little over 80 seconds. During this time your WiFi connection to Little Snipper will go down. Reconnect and refresh this page in a couple of minutes to read a report.<br>In the interim, check email for alerts.";
                 echo "</div>";
             }
             else if (preg_match('/NULL/', $g) == 1) {

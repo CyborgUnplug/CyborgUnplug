@@ -30,7 +30,7 @@ if (file_exists($fn)) {
              we won't use it for anything else!";
              echo "</center>";
              echo "<br><br>";
-             echo "<input name='email' type='text' placeholder='jack@nsa.gov' />";
+             echo "<input name='email' type='text' placeholder='you@yourdomain.com' />";
              echo "<br><br>";
              echo "<input type='submit' value='save' />";
              echo "</form>";
