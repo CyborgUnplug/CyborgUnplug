@@ -174,7 +174,7 @@ channelWalk(){
 #if [ $? -ne 0 ]; then # Test horst exit status 
   # Something is wrong, like a dead mon0
   # and/or NIC. Store settings and reboot.
-#   touch $CONFIG/updated && reboot -n 
+#   reboot -n 
 #fi
 
 case "$MODE" in 

@@ -1,1 +1,1 @@
-0 0 * * 7 bash /root/scripts/update.sh 0
+0 0 * * * bash /root/scripts/update.sh 0
