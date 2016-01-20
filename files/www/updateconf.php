@@ -28,14 +28,14 @@
                             echo "<br>";
                             echo "<form method='get' id='autoupdate' action='cgi-bin/config.cgi'>";
                             echo "<input name='autoupdate' type='hidden'value='disabled'>";
-                            echo "<input type='submit' value='disabled' class='button'>";
+                            echo "<input type='submit' value='disable' class='button'>";
                             echo "</form>";
                         } else {
                             echo "<center><h3>Auto updates are disabled</h3></center>";
                             echo "<br>";
                             echo "<form method='get' id='autoupdate' action='cgi-bin/config.cgi'>";
                             echo "<input name='autoupdate' type='hidden'value='enabled'>";
-                            echo "<input type='submit' value='enabled' class='button'>";
+                            echo "<input type='submit' value='enable' class='button'>";
                             echo "</form>";
                         }
                     }

@@ -136,10 +136,12 @@ case "$EVENT" in
         update=$(echo "$EVENT" | cut -d '=' -f 2)
         if [[ "$update" == "disabled" ]]; then
             #comment out the update line in crontab
-            sed -i 's@^.*update.sh$@#&@g' /etc/crontabs/root 
+            sed -i '/update/ s/^/#/' /etc/crontabs/root                                                                                                        
+            echo disabled > $CONFIG/autoupdate
         elif [[ "$update" == "enabled" ]]; then
             #uncomment the update line in crontab
-            sed -i 's@^#.*update.sh$@&@g' /etc/crontabs/root
+            sed -i '/^#.*update.*/ s/^#//' /etc/crontabs/root
+            echo enabled > $CONFIG/autoupdate
         fi
         sleep 1
         html updateconf.php 
