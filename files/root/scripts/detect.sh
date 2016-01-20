@@ -119,18 +119,16 @@ alert() {
             fi
             $SCRIPTS/alert.sh "$device" $target &
             apid=$! # new PID 
+            if [[ "$MODE" != "alarm" ]]; then
+                echo $(date) "detected and de-authed device" "$device" "with MAC addr" $target >> $LOGS/detected
+            else
+                echo $(date) "detected device" "$device" "with MAC addr" $target >> $LOGS/detected
+            fi
         else
             echo "Device seen in the last 5 minutes, not alerting owner"
         fi
     else
         echo "Can't send alert. Unplug not online"
-    fi
-    # Log this for the report page. We log all reports here, regardless of
-    # sighting frequency
-    if [[ "$MODE" != "alarm" ]]; then
-        echo $(date) "detected and de-authed device" "$device" "with MAC addr" $target >> $LOGS/detected
-    else
-        echo $(date) "detected device" "$device" "with MAC addr" $target >> $LOGS/detected
     fi
 }
 
