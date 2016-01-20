@@ -19,7 +19,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 readonly SCRIPTS=/root/scripts
-readonly UPDIR=/root/update
+readonly UDIR=/root/update
 readonly LOGS=/www/logs                               
 readonly CONFIG=/www/config                                                                       
 readonly DATA=/www/data                                             
@@ -35,12 +35,13 @@ chmod go-rw /tmp/keys
 # TODO: fix it permanently!
 $SCRIPTS/ethfix.sh
 
-if [ -f $CONFIG/updated ]; then                               
-    echo "updating..." 
+if [ -f $CONFIG/upgrade ]; then                               
+    echo "upgrading..." 
     # run the update script now
-    $UPDIR/update-weekly.sh
-    rm -f $CONFIG/updated
-    reboot
+    $UDIR/upgrade.sh &> $LOG
+    rm -f $CONFIG/upgrade
+    # we'll handle reboots in the update script itself, for more control
+    # reboot 
 fi
 
 #Start networking
