@@ -84,9 +84,8 @@ case "$EVENT" in
 		echo continuous > $CONFIG/mode
         html finish.php
 	;;
-	*mode2*)
+	*mode2*) 
 		echo sweep > $CONFIG/mode
-		cat $DATA/networks > $CONFIG/networks
         html finish.php
 	;;
     *unplugvpn*)
@@ -116,17 +115,17 @@ case "$EVENT" in
     *checkvpn*)
         html vpn.php #we need a full refresh to call the checking code in vpn.php
     ;;
-	*finish1*)
-		echo $EVENT | cut -d "=" -f 2 | sed -e 's/%3D/=/g' -e 's/\ //g' | base64 -d  > $CONFIG/networks
-        html finish.php
-	;;
-	*finish2*)
-		cat $DATA/networks > $CONFIG/networks
-        html finish.php
-	;;
+	#*finish1*) # unused in USA model
+	#	echo $EVENT | cut -d "=" -f 2 | sed -e 's/%3D/=/g' -e 's/\ //g' | base64 -d  > $CONFIG/networks
+    #    html finish.php
+	#;;
+	#*finish2*) # unused in USA model
+	#	cat $DATA/networks > $CONFIG/networks
+    #    html finish.php
+	#;;
 	*armed*)
-        echo "plugunplug.ovpn 0" > $CONFIG/vpn
-        echo start > $CONFIG/vpnstatus
+        killall openvpn vpn.sh # stop existing instance
+        rm -f $CONFIG/vpn
 		echo $EVENT > $CONFIG/event.log
 		touch $CONFIG/armed	
 		sleep 2
