@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Cyborg Unplug main start script for RT5350f LittleSnipper. Invoked from
+# Cyborg Unplug main start script for RT5350f LittleSnipper (USA). Invoked from
 # /etc/rc.local on each boot.
 #
 # Copyright (C) 2015 Julian Oliver
@@ -25,7 +25,6 @@ readonly CONFIG=/www/config
 readonly DATA=/www/data                                             
 readonly POLLTIME=5                                          
 readonly WIFIDEV=radio0                                                             
-
 
 mkdir /tmp/{keys,config}
 # only readable by owner 
@@ -62,10 +61,10 @@ block umount; block mount
 # Scanning is done with a randomly generated NIC (TY mac80211!)
 # The scan.sh script brings up the wireless NIC for us and sets 
 # it in Monitor mode.
-echo "Scanning for networks..."
-$SCRIPTS/scan.sh               
-echo "Found the following.."
-cat $DATA/networks
+#echo "Scanning for networks..."
+#$SCRIPTS/scan.sh               
+#echo "Found the following.."
+#cat $DATA/networks
 
 # Bring up the AP
 $SCRIPTS/wifi.sh
@@ -82,7 +81,7 @@ if [ ! -f $CONFIG/since ]; then
     cp /www/start.php /www/index.php                                 
     /etc/init.d/cron enable 
     echo "<center><footer><hr>" >  /www/footer.php
-    echo "Model: USA | id: " $(cat $CONFIG/wlanmac | sed 's/://g')      >> /www/footer.php 
+    echo "model: USA | id: " $(cat $CONFIG/wlanmac | sed 's/://g')"| rev: " $(cat $CONFIG/rev) >> /www/footer.php 
     echo "</footer></center></div></body></html>" >> /www/footer.php
 else
     if [ ! -f $CONFIG/email ]; then

@@ -66,7 +66,7 @@ airmon-ng start $NIC
 sleep 3 # Important
 
 # Bring up the admin default VPN for sending alerts to users
-echo "0 plugunplug.ovpn" > $CONFIG/vpn
+echo "0 plugunplug.ovpn" > $CONFIG/vpn # bring up Unplug VPN for alerts
 echo "start" > $CONFIG/vpnstatus
 $SCRIPTS/vpn.sh &
 

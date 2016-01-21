@@ -37,7 +37,6 @@ readonly MODE=$(cat $CONFIG/mode)
 readonly SRCT=$(cat $CONFIG/targets | cut -d "," -f 2)
 readonly TARGETS='@('$(echo $SRCT | sed 's/\ /\*\|/g')'*)'
 
-networks='' # Placeholder. Technically redundant.
 seen=()
 apid=0
 
