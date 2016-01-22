@@ -1,4 +1,4 @@
-<?php include 'header.php';?>
+<?php include '../header.php';?>
 
     <center>
 	<h1 id="headline">Configure Little Snipper</h1>
@@ -14,5 +14,8 @@
         <form action="alertsconf.php">
 			<input name="alerts" type="submit" value="alerts" class='button'>
         </form>
+        <form action="authconf.php">
+			<input name="auth" type="submit" value="auth" class='button'>
+        </form>
 	</div>
-<?php include 'footer.php';?>
+<?php include '../footer.php';?>

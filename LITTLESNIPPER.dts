@@ -1,0 +1,66 @@
+/dts-v1/;
+
+/include/ "rt5350.dtsi"
+
+/ {
+	compatible = "LITTLESNIPPER", "ralink,rt5350-soc";
+	model = "Cyborg Unplug - Little Snipper";
+
+	palmbus@10000000 {
+		spi@b00 {
+			status = "okay";
+			m25p80@0 {
+				compatible = "mx25l12805d";
+				linux,modalias = "m25p80", "mx25l12805d";
+				#address-cells = <1>;
+				#size-cells = <1>;
+				reg = <0 0>;
+				spi-max-frequency = <10000000>;
+
+				partition@0 {
+					label = "u-boot";
+					reg = <0x0 0x30000>;
+					read-only;
+				};
+
+				partition@30000 {
+					label = "u-boot-env";
+					reg = <0x30000 0x10000>;
+					read-only;
+				};
+
+				factory: partition@40000 {
+					label = "factory";
+					reg = <0x40000 0x10000>;
+					read-only;
+				};
+
+				partition@50000 {
+					label = "firmware";
+					reg = <0x50000 0xfb0000>;
+				};
+			};
+		};
+	};
+
+	pinctrl {
+		state_default: pinctrl0 {
+			gpio {
+				ralink,group = "i2c", "jtag", "uartf";
+				ralink,function = "gpio";
+			};
+		};
+	};
+
+	esw@10110000 {
+		ralink,portmap = <0x3f>;
+	};
+
+	ethernet@10100000 {
+		mtd-mac-address = <&factory 0x28>;
+	};
+
+	wmac@10180000 {
+		ralink,mtd-eeprom = <&factory 0>;
+	};
+};
