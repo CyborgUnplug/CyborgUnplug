@@ -26,11 +26,11 @@ if (file_exists($fn)) {
              echo "<form enctype='multipart/form-data' action='registered.php' method='post'>";
              echo "<p>";
              echo "Great, it seems we're online. Now enter an email address on which to
-             receive email alerts and updates directly from Little Snipper.<br>Rest assured,
-             we won't use it for anything else.";
+             receive email alerts and updates from Little Snipper. Rest assured,
+             we won't use it for anything else!";
              echo "</center>";
              echo "<br><br>";
-             echo "<input name='email' type='text' placeholder='you@yourdomain.org' />";
+             echo "<input name='email' type='text' placeholder='you@yourdomain.com' />";
              echo "<br><br>";
              echo "<input type='submit' value='save' />";
              echo "</form>";

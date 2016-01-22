@@ -11,7 +11,7 @@
 		<form method="get" id="encrypt" action="cgi-bin/config.cgi">
 			<input name="encrypt" type="submit" value="encrypt" class='button'>
         </form>
-        <form action="configure.php">
+        <form action="admin/configure.php">
 			<input name="configure" type="submit" value="configure" class='button'>
         </form>
         <form action="share.php">
