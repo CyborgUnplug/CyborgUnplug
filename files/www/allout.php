@@ -12,7 +12,9 @@
 	</div>
 	<form method="get" id="mode" action="cgi-bin/config.cgi">
 		<input name="finish2" type="hidden" value="nothing">
+        <center>
 		<input type="submit" value="AGREE" class="btnnext">
+        </center>
 	</form>
 
 <?php include 'footer.php';?>
