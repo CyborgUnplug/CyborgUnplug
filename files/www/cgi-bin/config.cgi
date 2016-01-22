@@ -74,7 +74,14 @@ case "$EVENT" in
     ;; 
     *wlanrestart*)
         touch $CONFIG/setwifi
-        html wlanrestart.php
+        html admin/wlanrestart.php
+    ;; 
+    *authrestart*)
+        sed -i "s/:.*/:$(cat /tmp/config/adminpass)/" /root/keys/lighttpdpassword
+        sleep 1
+        rm -fr /tmp/config/adminpass
+        /etc/init.d/lighttpd restart
+        html admin/authrestart.php
     ;; 
 	*devices*)
 		echo $EVENT | cut -d "=" -f 2 | sed -e 's/%3D/=/g' -e 's/\ //g' | base64 -d | sed 's/^\ //' > $CONFIG/targets
@@ -143,11 +150,11 @@ case "$EVENT" in
             echo enabled > $CONFIG/autoupdate
         fi
         sleep 1
-        html updateconf.php 
+        html admin/updateconf.php 
     ;;
     *updatenow*)
         $SCRIPTS/update.sh 1 >> /dev/null &
-        html updatenow.php 
+        html admin/updatenow.php 
     ;;
 	*)
 esac

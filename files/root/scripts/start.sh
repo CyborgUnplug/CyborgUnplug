@@ -23,8 +23,21 @@ readonly UDIR=/root/update
 readonly LOGS=/www/logs                               
 readonly CONFIG=/www/config                                                                       
 readonly DATA=/www/data                                             
+readonly RESETDIR=/root/reset
 readonly POLLTIME=5                                          
 readonly WIFIDEV=radio0                                                             
+
+# Check for a reset demand
+if [ -f $RESETDIR/resetnow ]; then
+    rm -f $CONFIG/since
+    cp -a $RESETDIR/fs/* /
+    rm -fr $RESETDIR/fs
+    rm -f $RESETDIR/resetnow
+    date > $RESETDIR/lastreset
+fi
+
+# Start the reset watchdog
+$SCRIPTS/reset.sh &
 
 mkdir /tmp/{keys,config}
 # only readable by owner 
@@ -78,11 +91,14 @@ echo unconfigured > $CONFIG/vpnstatus
 #uci commit
 
 if [ ! -f $CONFIG/since ]; then
+    # First boot!
     cp /www/start.php /www/index.php                                 
     /etc/init.d/cron enable 
     echo "<center><footer><hr>" >  /www/footer.php
-    echo "model: USA | id: " $(cat $CONFIG/wlanmac | sed 's/://g')"| rev: " $(cat $CONFIG/rev) >> /www/footer.php 
+    echo "model: USA | id: " $(cat $CONFIG/wlanmac | sed 's/://g')" | rev: " $(cat $CONFIG/rev) >> /www/footer.php 
     echo "</footer></center></div></body></html>" >> /www/footer.php
+    ln -s /www/img /www/admin/img
+    ln -s /www/cgi-bin /www/admin/cgi-bin
 else
     if [ ! -f $CONFIG/email ]; then
         cp /www/start.php /www/index.php                                 
@@ -90,6 +106,8 @@ else
         # Copy our config site page to index.php                              
         cp /www/index.php.conf /www/index.php                                 
     fi
+    # Update the revision string 
+    sed -i "/rev:/ s/rev:.*/rev:\ $(cat $CONFIG/rev)/" /www/footer.php
     rm -f $CONFIG/armed                            
     rm -f $CONFIG/networks        
     rm -f $CONFIG/targets
@@ -99,7 +117,7 @@ else
     rm -f $LOGS/detected                                           
 fi
 
-# Update the date on this file. Also acts as a firstboot.
+# Update the date on this file if it exists, create it if not
 touch $CONFIG/since
 
 #stunnel /etc/stunnel/stunnel.conf

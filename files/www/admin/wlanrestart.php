@@ -1,4 +1,4 @@
-<?php include 'header.php';
+<?php include '../header.php';
 
     echo "<div class='warning'>";
     echo "You have been disconnected\n";
@@ -6,4 +6,4 @@
     echo "</div>";
     echo "<br>";
     echo "<br>";
-include 'footer.php';?>
+include '../footer.php';?>
