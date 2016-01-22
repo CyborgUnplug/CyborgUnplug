@@ -35,7 +35,7 @@ while true;
             if [[ $count -gt 10 ]]; then
                 echo "resetting"
                 mkdir $RESETDIR/fs
-                tar xvzf /reset.tar.gz -C $RESETDIR/fs 
+                tar xvzf /usr/share/reset.tar.gz -C $RESETDIR/fs 
                 touch $RESETDIR/resetnow
                 # count=0
                 $SCRIPTS/blink.sh reset
