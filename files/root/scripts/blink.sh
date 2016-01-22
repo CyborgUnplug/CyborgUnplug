@@ -19,6 +19,18 @@ target() {
         done                                            
 }                                                       
 
+reset() {                                      
+    while true;                             
+        do  
+            wink .05 .05
+            wink .05 .05
+            wink .05 .05
+            wink .05 .05
+            wink .05 .05
+            $SLEEP 1
+        done                                            
+}                                                       
+
 detect() {                                      
     while true;                             
         do  

@@ -1,4 +1,4 @@
-<?php include 'header.php';?>
+<?php include '../header.php';?>
 
 <br>
 <center>
@@ -6,9 +6,9 @@
 </center>
 
 <?php
-    $fn='config/email';
+    $fn='/www/config/email';
     if (file_exists($fn)) {
-        $f = fopen("config/email", "r");
+        $f = fopen("/www/config/email", "r");
         $g=fgets($f);                                                                                                                              
         if ($g) {
             echo "<br>";
@@ -17,7 +17,7 @@
             echo "<center>". $g ."</center>";
             echo "</div>";
             echo "<div id='container_general'>";
-            echo "<form enctype='multipart/form-data' action='registered.php' method='post'>";
+            echo "<form enctype='multipart/form-data' action='emailconf.php' method='post'>";
             echo "<p>";
             echo "<center>";
             echo "Enter a new email address on which to receive email alerts and notifications from Little Snipper";
@@ -31,4 +31,4 @@
             echo "</div>";
         }
     }
-include 'footer.php';?>
+include '../footer.php';?>
