@@ -78,9 +78,8 @@ case "$EVENT" in
     ;; 
     *authrestart*)
         sed -i "s/:.*/:$(cat /tmp/config/adminpass)/" /root/keys/lighttpdpassword
-        sleep 1
-        rm -fr /tmp/config/adminpass
         /etc/init.d/lighttpd restart
+        rm -fr /tmp/config/adminpass
         html admin/authrestart.php
     ;; 
 	*devices*)
