@@ -22,33 +22,50 @@ readonly DATE=$(date)
 readonly DEVICE=$1 # devices seen
 readonly MAC=$2 # device MAC addr
 
-echo $DEVICE $MAC
-
-readonly BODY="Subject: Cyborg Unplug Alert
+if [[ "$DEVICE" == "none" ]]; then
+body="Subject: Cyborg Unplug Notification 
 From: alerts@vpn.plugunplug.net
--------------------------------------------------------------------
-The following devices were detected by Little Snipper at:
+-------------------------------------------------------------------------------
+No specified devices were detected as of $DATE.
 
-$DATE
+Please note this is not hard evidence that the devices you've selected for
+detection are not present; they may be switched off or have networking disabled.
 
-$DEVICE with Hardware Address: $MAC 
+Nonetheless, if you feel your location and/or situation is volatile you should
+leave the detector running. Also be sure to run the detector if you leave and
+later return to the volatile location.
 
-Please note this is not hard evidence that the above device was present; 
-there is always a small chance someone is using a spoofed MAC (hardware) 
-address, resulting in it coming up in our scans. 
-
-Nonetheless, it's certainly a cause for concern and we thought you 
-should know.
-
-Kind regards,
+Yours,
 
 Little Snipper
--------------------------------------------------------------------
+-------------------------------------------------------------------------------
 "
+else    
+body="Subject: Cyborg Unplug Alert
+From: alerts@vpn.plugunplug.net
+-------------------------------------------------------------------------------
+On $DATE, the following device was detected by Little Snipper:
+
+    $DEVICE with Hardware Address: $MAC
+
+Please note this is not hard evidence that the above device was present; there
+is always a small chance someone is using a spoofed MAC (hardware) address,
+resulting in it coming up in my scans. 
+
+Nonetheless, it's certainly a cause for concern and I thought you should know.
+
+Yours,
+
+Little Snipper
+-------------------------------------------------------------------------------
+
+"
+fi
+
 if [ -f $CONFIG/email ]; then
     readonly ADDR=$(cat $CONFIG/email)
     if [ ! -z $ADDR ]; then
-        echo "$BODY" | msmtp --read-envelope-from -t "$ADDR"
+        echo "$body" | msmtp --read-envelope-from -t "$ADDR"
     fi
 else 
     echo "no email address configured."

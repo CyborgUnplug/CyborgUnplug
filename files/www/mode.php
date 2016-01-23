@@ -10,7 +10,7 @@
         <br><br>
         <input name="mode3" type="submit" value="alerts only" class="btn">
         <br><br>
-        <input name="mode4" type="submit" value="sweep and report" class="btn">
+        <input name="mode4" type="submit" value="quick sweep" class="btn">
     </form>
     
 <?php include 'footer.php';?>

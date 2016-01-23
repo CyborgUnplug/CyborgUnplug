@@ -9,10 +9,12 @@
     <br>
     (<em>ending in .ovpn</em>) to upload
     <br><br>
+    <center>
     <label class="upload button">
         <input name="uploaded_file" type="file" required \>
         <span>load config</span>
     </label>
+    </center>
 
     <br><br> 
     <input name="username" type="text" placeholder="username" />

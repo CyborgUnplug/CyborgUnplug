@@ -1,7 +1,7 @@
 <?php include '../header.php';?>
 
     <center>
-    <h1 id="headline">Change password</h1>
+    <h1 id="headline">Configure the WiFi</h1>
     </center>
      <div id="container_general">
 	<div class='warning'>
