@@ -38,7 +38,7 @@ readonly SRCT=$(cat $CONFIG/targets | cut -d "," -f 2)
 readonly TARGETS='@('$(echo $SRCT | sed 's/\ /\*\|/g')'*)'
 
 networks='' # Placeholder. Technically redundant.
-seen=()
+tseen=()
 apid=0
 
 # Make the activity page the default site page for connections during detection
@@ -81,26 +81,26 @@ $SCRIPTS/vpn.sh &
 
 alert() {
     tmail=false
-    now=$(date +'%s')
+    tnow=$(date +'%s')
     # TODO resolve how long the LED notification should run. Reset to 'detect' once
     # the owner has been notified by email? 
     $SCRIPTS/blink.sh target 
     # Have we already seen this target? 
-    if [[ ! " ${seen[@]} " =~ "$target" ]]; then
+    if [[ ! " ${tseen[@]} " =~ "$target" ]]; then
         # Add target to array, with last seen seconds set to now
-        tt=$target"|"$now
-        seen=(${seen[@]} $tt)
+        tt=$target"|"$tnow
+        tseen=(${tseen[@]} $tt)
         tmail=true
     else
         # No associative arrays in this version of bash. 
         # Can't return index on match. Have to iterate
-        for index in $(seq 0 $((${#seen[@]}-1))); do
+        for index in $(seq 0 $((${#tseen[@]}-1))); do
             # Calculate last seen delta
-            tdelta=$(($now - ${seen[$index]/$target|/}))
+            tdelta=$(($tnow - ${tseen[$index]/$target|/}))
             # Send alerts no more than once every 5mins (to avoid spamming)
             if [[ $tdelta -gt 300 ]]; then
                 # Remove old entry from array
-                unset seen[$index]
+                unset tseen[$index]
                 tmail=true
             else
                 # Don't send alert this round as device was just seen
@@ -219,7 +219,10 @@ case "$MODE" in
     *)                    
 esac
 
+# Set the LED blinker to the detect pattern
 $SCRIPTS/blink.sh detect 
+
+startt=$(date +'%s')
 
 while true;
         do
@@ -231,39 +234,54 @@ while true;
             # pairs need to be extraced and matched separately.
             cat $CAPDIR/cap | awk '{ print $2 $3 $4 $11 }' | sed 's/,/\ /g' | sort -u > $CAPDIR/pairs
             if [ -f $CAPDIR/pairs ]; then
-                    if [[ "$MODE" == "territory" ]]; then
-                        kill -STOP $CPID
-                    fi
-                    while read line;
-                             do
-                                arr=($line) # Array from the line
-                                src=${arr[0]}; dst=${arr[1]}; BSSID=${arr[2]}; freq=${arr[3]}
-                                echo $src $dst $BSSID $freq
-                                if [[ $src != $BSSID ]]; then
-                                    STA=$src
-                                else 
-                                    STA=$dst 
-                                fi
+                if [[ "$MODE" == "territory" ]]; then
+                    kill -STOP $CPID
+                fi
+                while read line;
+                     do
+                        arr=($line) # Array from the line
+                        src=${arr[0]}; dst=${arr[1]}; BSSID=${arr[2]}; freq=${arr[3]}
+                        echo $src $dst $BSSID $freq
+                        if [[ $src != $BSSID ]]; then
+                            STA=$src
+                        else 
+                            STA=$dst 
+                        fi
 
-                                if [[ "$MODE" == "territory" && "$STA" == $TARGETS && "$BSSID" == $networks ]]; then
-                                        target=$STA
-                                        deauth
-                                elif [[ "$STA" == $TARGETS ]]; then
-                                    target=$STA
-                                    if [[ "$MODE" == "allout" ]]; then
-                                        deauth
-                                    else
-                                        alert
-                                    fi
-                                elif [[ "$BSSID" == $TARGETS ]]; then
-                                    target=$BSSID
-                                    if [[ "$MODE" == "allout" ]]; then
-                                        deauth
-                                    else
-                                        alert
-                                    fi
-                                fi
-                        done < $CAPDIR/pairs #EOF
+                        if [[ "$MODE" == "territory" && "$STA" == $TARGETS && "$BSSID" == $networks ]]; then
+                                target=$STA
+                                deauth
+                        elif [[ "$STA" == $TARGETS ]]; then
+                            target=$STA
+                            if [[ "$MODE" == "allout" ]]; then
+                                deauth
+                            else
+                                alert
+                            fi
+                        elif [[ "$BSSID" == $TARGETS ]]; then
+                            target=$BSSID
+                            if [[ "$MODE" == "allout" ]]; then
+                                deauth
+                            else
+                                alert
+                            fi
+                        fi
+                    done < $CAPDIR/pairs #EOF
+
+            now=$(date +'%s')
+            delta=$(( $now - $startt ))
+            echo $delta
+            # Notify owner if no target devices have been detected in 12 hours (43200 seconds)
+            if [[ $(cat $CONFIG/networkstate) == "online" && $delta -gt 43200 && ! -f $LOGS/detected ]]; then
+                    # in case a stuck alert.sh PID
+                    if [[ $apid != 0 ]]; then
+                        kill -9 $apid 
+                    fi
+                    echo "Notifying owner no devices have been detected"
+                    $SCRIPTS/alert.sh none &
+                    apid=$! # new PID
+                    startt=$(date +'%s')
+            fi
             echo "Removing temporary files."
             rm -f $CAPDIR/pairs $CAPDIR/channels 
             horst -x pause
@@ -273,6 +291,6 @@ while true;
             rm -f $CAPDIR/cap
             horst -x outfile=$CAPDIR/cap
             horst -x resume 
-        fi
+            fi
 done
 
