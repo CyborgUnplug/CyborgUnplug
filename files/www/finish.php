@@ -25,11 +25,34 @@
                 </form>
             </div>
         </li>
+   
+        <li>
+            <a href='#networks' class='navLink'><h4 class='toggle-title'>networks to watch</h4></a>
+            <div id='networks' class='page'>
+                <form id="networks"> 
+                    <div class="config_container">
+                        <?php
+                            $f = fopen("config/networks", "r");
+                            while(!feof($f)) {
+                                $g=fgets($f);
+                                if ($g) {
+                                    $parts=explode(',',$g);
+                                    echo "$parts[1]<br/>";
+                                }
+                            }
+                            fclose($f);
+                        ?>
+                    </div>
+                </form>
+            </div>
+        </li>
     </ul>
 
     <form method="get" id="armed" action="cgi-bin/config.cgi">
         <input name="armed" type="hidden" id="armed" value="standby">
+        <center>
         <input type="submit" value="ARM DEVICE" class='btnarm'>
+        </center>
     </form>
 
 <?php include 'footer.php';?>

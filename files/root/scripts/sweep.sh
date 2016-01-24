@@ -32,6 +32,7 @@ readonly SRCT=$(cat $CONFIG/targets | cut -d "," -f 2)
 readonly TARGETS='@('$(echo $SRCT | sed 's/\ /\*\|/g')'*)'
 
 seen=()
+apid=0
 
 # Make the activity page the default site page for connections during detection
 # (only available over Ethernet) 
@@ -66,15 +67,14 @@ airmon-ng start $NIC
 sleep 3 # Important
 
 # Bring up the admin default VPN for sending alerts to users
-echo "0 plugunplug.ovpn" > $CONFIG/vpn # bring up Unplug VPN for alerts
+echo "0 plugunplug.ovpn" > $CONFIG/vpn
 echo "start" > $CONFIG/vpnstatus
 $SCRIPTS/vpn.sh &
 
-$SCRIPTS/blink.sh detect 
-
 alert() {
     tmail=false
-    # TODO resolve how long the LED notification should run. Reset to 'detect' once
+    # TODO resolve how long the LED notification should run. Reset to 'detect'
+    # once
     # the owner has been notified by email? 
     $SCRIPTS/blink.sh target 
     # Have we already seen this target? 
@@ -90,6 +90,7 @@ alert() {
             echo "Alerting Unplug owner"
             device=$(cat /www/data/devices | grep -i ${target:0:8} | cut -d ',' -f 1)
             $SCRIPTS/alert.sh "$device" $target &
+            apid=$!
             # Log this for the report page
             echo $(date) "detected device" "$device" "with MAC addr" $target >> $LOGS/detected
         else
@@ -97,14 +98,14 @@ alert() {
         fi
     fi
 }
-
 # Start horst with upper channel limit of 13 in quiet mode and a command hook
 # for remote control (-X). Has to be backgrounded.
-#horst -u 13 -q -d 250 -i $NIC -f DATA -o $CAPDIR/cap -X &
 horst -u 13 -q -i $NIC -o $CAPDIR/cap -X &
+hpid=$!
 
 POLLTIME=13 # Seconds we wait for capture to find STA/BSSID pairs
 horst -x channel_auto=1
+horst -x pause 
 
 COUNT=0
 
@@ -112,6 +113,8 @@ $SCRIPTS/blink.sh detect
 
 while [ $COUNT -lt 6 ];
         do
+            horst -x outfile=$CAPDIR/cap
+            horst -x resume 
             echo "//--------------------* $COUNT * ----------------------------------->"
             echo "Sleeping for " $POLLTIME " and writing capture log"
             sleep $POLLTIME
@@ -124,13 +127,12 @@ while [ $COUNT -lt 6 ];
                              do
                                 arr=($line) # Array from the line
                                 src=${arr[0]}; dst=${arr[1]}; BSSID=${arr[2]}; freq=${arr[3]}
-                                echo $src $dst $BSSID $freq
+                                #echo $src $dst $BSSID $freq
                                 if [[ $src != $BSSID ]]; then
                                     STA=$src
                                 else 
                                     STA=$dst 
                                 fi
-
                                 if [[ "$STA" == $TARGETS ]]; then
                                     target=$STA
                                     alert
@@ -139,26 +141,25 @@ while [ $COUNT -lt 6 ];
                                     alert
                                 fi
                         done < $CAPDIR/pairs #EOF
-<<<<<<< HEAD
-            let 'COUNT += 1'
-            echo "Removing temporary files."
-            rm -f $CAPDIR/pairs $CAPDIR/channels 
-            horst -x pause
-            rm -f $CAPDIR/cap
-            horst -x outfile=$CAPDIR/cap
-            horst -x resume 
-        fi
-=======
                 let 'COUNT += 1'
                 echo "Removing temporary files."
                 rm -f $CAPDIR/pairs $CAPDIR/channels 
                 horst -x pause
                 rm -f $CAPDIR/cap
-                horst -x outfile=$CAPDIR/cap
-                horst -x resume 
             fi
->>>>>>> parent of e6b1790... Added an email notification in the case target devices are not detected within
 done
+
+if [[ $(cat $CONFIG/networkstate) == "online" && ! -f $LOGS/detected ]]; then
+        # in case a stuck alert.sh PID
+        if [[ $apid != 0 ]]; then
+            kill -9 $apid 
+        fi
+        echo "Notifying owner no devices have been detected"
+        $SCRIPTS/alert.sh none 
+fi
+
+$SCRIPTS/blink.sh idle 
+kill -9 $hpid # kill horst
 
 echo NULL > $CONFIG/mode
 cp /www/index.php.conf /www/index.php
@@ -172,4 +173,3 @@ uci set wireless.@wifi-iface[0].mode="ap"
 uci set wireless.@wifi-iface[0].disabled="0"
 uci commit wireless
 wifi up
-$SCRIPTS/blink.sh idle 
