@@ -37,6 +37,10 @@ readonly MODE=$(cat $CONFIG/mode)
 readonly SRCT=$(cat $CONFIG/targets | cut -d "," -f 2)
 readonly TARGETS='@('$(echo $SRCT | sed 's/\ /\*\|/g')'*)'
 
+<<<<<<< HEAD
+=======
+networks='' # Placeholder. Technically redundant.
+>>>>>>> parent of e6b1790... Added an email notification in the case target devices are not detected within
 seen=()
 apid=0
 
@@ -154,6 +158,7 @@ while true;
             # pairs need to be extraced and matched separately.
             cat $CAPDIR/cap | awk '{ print $2 $3 $4 $11 }' | sed 's/,/\ /g' | sort -u > $CAPDIR/pairs
             if [ -f $CAPDIR/pairs ]; then
+<<<<<<< HEAD
                 while read line;
                          do
                             arr=($line) # Array from the line
@@ -175,6 +180,41 @@ while true;
 
 
                     done < $CAPDIR/pairs #EOF
+=======
+                    if [[ "$MODE" == "territory" ]]; then
+                        kill -STOP $CPID
+                    fi
+                    while read line;
+                             do
+                                arr=($line) # Array from the line
+                                src=${arr[0]}; dst=${arr[1]}; BSSID=${arr[2]}; freq=${arr[3]}
+                                echo $src $dst $BSSID $freq
+                                if [[ $src != $BSSID ]]; then
+                                    STA=$src
+                                else 
+                                    STA=$dst 
+                                fi
+
+                                if [[ "$MODE" == "territory" && "$STA" == $TARGETS && "$BSSID" == $networks ]]; then
+                                        target=$STA
+                                        deauth
+                                elif [[ "$STA" == $TARGETS ]]; then
+                                    target=$STA
+                                    if [[ "$MODE" == "allout" ]]; then
+                                        deauth
+                                    else
+                                        alert
+                                    fi
+                                elif [[ "$BSSID" == $TARGETS ]]; then
+                                    target=$BSSID
+                                    if [[ "$MODE" == "allout" ]]; then
+                                        deauth
+                                    else
+                                        alert
+                                    fi
+                                fi
+                        done < $CAPDIR/pairs #EOF
+>>>>>>> parent of e6b1790... Added an email notification in the case target devices are not detected within
             echo "Removing temporary files."
             rm -f $CAPDIR/pairs $CAPDIR/channels 
             horst -x pause
