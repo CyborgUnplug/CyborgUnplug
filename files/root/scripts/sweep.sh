@@ -139,6 +139,7 @@ while [ $COUNT -lt 6 ];
                                     alert
                                 fi
                         done < $CAPDIR/pairs #EOF
+<<<<<<< HEAD
             let 'COUNT += 1'
             echo "Removing temporary files."
             rm -f $CAPDIR/pairs $CAPDIR/channels 
@@ -147,6 +148,16 @@ while [ $COUNT -lt 6 ];
             horst -x outfile=$CAPDIR/cap
             horst -x resume 
         fi
+=======
+                let 'COUNT += 1'
+                echo "Removing temporary files."
+                rm -f $CAPDIR/pairs $CAPDIR/channels 
+                horst -x pause
+                rm -f $CAPDIR/cap
+                horst -x outfile=$CAPDIR/cap
+                horst -x resume 
+            fi
+>>>>>>> parent of e6b1790... Added an email notification in the case target devices are not detected within
 done
 
 echo NULL > $CONFIG/mode
