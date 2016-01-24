@@ -1,13 +1,16 @@
 <?php include 'header.php';?>
 
+  <center>
   <h1 id="headline">Configure a VPN</h1>
+  </center>
 
  <div id="container_general">
   <form enctype="multipart/form-data" action="vpn.php" method="post">
     <input type="hidden" name="MAX_FILE_SIZE" value="1000000" />
+    <center>
     Choose an OpenVPN configuration file
-    <br>
     (<em>ending in .ovpn</em>) to upload
+    </center>
     <br><br>
     <center>
     <label class="upload button">

@@ -28,8 +28,10 @@
     </ul>
 
     <form method="get" id="armed" action="cgi-bin/config.cgi">
+        <center>
         <input name="armed" type="hidden" id="armed" value="standby">
         <input type="submit" value="ARM DEVICE" class='btnarm'>
+        </center>
     </form>
 
 <?php include 'footer.php';?>

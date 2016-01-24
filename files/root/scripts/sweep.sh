@@ -71,13 +71,12 @@ echo "0 plugunplug.ovpn" > $CONFIG/vpn # bring up Unplug VPN for alerts
 echo "start" > $CONFIG/vpnstatus
 $SCRIPTS/vpn.sh &
 
-$SCRIPTS/blink.sh detect 
+echo idle > /tmp/blink
 
 alert() {
     tmail=false
     # TODO resolve how long the LED notification should run. Reset to 'detect' once
     # the owner has been notified by email? 
-    $SCRIPTS/blink.sh target 
     # Have we already seen this target? 
     if [[ ! " ${seen[@]} " =~ "$target" ]]; then
         # Add target to array
@@ -88,6 +87,7 @@ alert() {
     fi
     if [ "$tmail" = true ]; then
         if [[ $(cat $CONFIG/networkstate) == "online" ]]; then
+            echo target > /tmp/blink
             echo "Alerting Unplug owner"
             device=$(cat /www/data/devices | grep -i ${target:0:8} | cut -d ',' -f 1)
             $SCRIPTS/alert.sh "$device" $target &
@@ -111,7 +111,7 @@ horst -x pause
 
 COUNT=0
 
-$SCRIPTS/blink.sh detect 
+echo detect > /tmp/blink
 
 while [ $COUNT -lt 6 ];
         do
@@ -160,18 +160,19 @@ if [[ $(cat $CONFIG/networkstate) == "online" && ! -f $LOGS/detected ]]; then
         $SCRIPTS/alert.sh none 
 fi
 
-$SCRIPTS/blink.sh idle 
+echo idle > /tmp/blink
 kill -9 $hpid # kill horst
 
 echo NULL > $CONFIG/mode
 cp /www/index.php.conf /www/index.php
 killall openvpn vpn.sh
-rm -f $CONFIG/vpn
-echo unconfigured > $CONFIG/vpnstatus
-rm -f $CONFIG/armed
+sleep 1
 # Set back to AP mode 
 wifi down
 uci set wireless.@wifi-iface[0].mode="ap"
 uci set wireless.@wifi-iface[0].disabled="0"
 uci commit wireless
 wifi up
+rm -f $CONFIG/vpn
+echo unconfigured > $CONFIG/vpnstatus
+rm -f $CONFIG/armed

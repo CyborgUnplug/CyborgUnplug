@@ -1,4 +1,4 @@
-<?php include '../header-no-status.php';?>
+<?php include '../header.php';?>
 
                 <center>
                 <h1 id='headline'>Now updating...</h1>";

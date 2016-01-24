@@ -13,73 +13,80 @@ wink() {
 }
 
 target() {                                      
-    while true;                             
-        do  
             wink 1 1 
-        done                                            
 }                                                       
 
 reset() {                                      
-    while true;                             
-        do  
             wink .05 .05
             wink .05 .05
             wink .05 .05
             wink .05 .05
             wink .05 .05
             $SLEEP 1
-        done                                            
 }                                                       
 
 detect() {                                      
-    while true;                             
-        do  
             wink .05 .1 
             wink .05 .1
             wink .05 .1
             $SLEEP 5
-        done                                            
 }                                                       
                                                         
 vpn() {                                          
-    while true;                                     
-        do                                          
             wink .05 .1 
             wink .05 .1
             $SLEEP 5
-	    
-        done      
 }                              
 
 idle() {
-    while true;                                     
-        do                                          
             wink .05 5
-        done      
 }
                                                     
-killold() {
-    PID=($(ps | grep [blin]k.sh | awk '{ print $1 }'))
-    echo ${PID[@]}
-    if [ ${#PID[@]} -gt 2 ]; then
-        kill -9 ${PID[0]}
-    fi
-}
+while true;
+	do read line;
+        case "$line" in                      
+            *target*)                 
+                echo "target" 
+                pattern=target 
+                pid=$!
+            ;;                    
+            *detect*)                 
+                echo "detect" 
+                pattern=detect
+                pid=$!
+            ;;                    
+            *reset*)                 
+                echo "reset" 
+                pattern=reset
+                pid=$!
+            ;;                    
+            *idle*)                  
+                echo "idle"
+                pattern=idle
+                pid=$!
+            ;;                    
+            *vpn*)                  
+                echo "vpnup"
+                pattern=vpn
+                pid=$!
+            ;;                    
+            *stop*)
+                kill -9 $pid 
+            ;;
+            *)                    
+        esac            
+	$pattern
+   done < /tmp/blink
 
-killold
-
-case "$1" in                      
-    *target*)                 
-        echo "target" 
-        target &      
-    ;;                    
-    *idle*)                  
-        echo "idle"
-        idle &
-    ;;                    
-    *vpn*)                  
-        echo "vpnup"
-        vpn &
-    ;;                    
-    *)                    
-esac                          
+# Will come up with a less murderous way of doing this at some point
+#killold() {
+#        PID=($(ps | grep [blin]k.sh | awk '{ print $1 }'))
+#        echo ${PID[@]}
+#        if [ ${#PID[@]} -gt 1 ]; then
+#                endindex=$(( ${#PID[@]} -1 ))
+#                unset PID[$endindex] # Spare the youngest PID
+#                kill -9 $(echo ${PID[@]}) # Kill the rest
+#        fi
+#}
+#
+#killold
