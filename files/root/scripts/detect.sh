@@ -39,6 +39,7 @@ readonly TARGETS='@('$(echo $SRCT | sed 's/\ /\*\|/g')'*)'
 
 tseen=()
 apid=0
+bpid=0
 
 # Make the activity page the default site page for connections during detection
 # (only available over Ethernet) 
@@ -83,7 +84,7 @@ alert() {
     tnow=$(date +'%s')
     # TODO resolve how long the LED notification should run. Reset to 'detect' once
     # the owner has been notified by email? 
-    $SCRIPTS/blink.sh target 
+    echo target > /tmp/blink
     # Have we already seen this target? 
     if [[ ! " ${tseen[@]} " =~ "$target" ]]; then
         # Add target to array, with last seen seconds set to now
@@ -131,7 +132,6 @@ alert() {
 # Start horst with upper channel limit of 13 in quiet mode and a command hook
 # for remote control (-X). Has to be backgrounded. We look for any traffic
 horst -u 13 -q -i $NIC -o $CAPDIR/cap -X &
-HPID=$!
 
 #if [ $? -ne 0 ]; then # Test horst exit status 
 #  # Something is wrong, like a dead mon0
@@ -143,7 +143,7 @@ POLLTIME=13 # Seconds we wait for capture to find STA/BSSID pairs
 horst -x channel_auto=1
 
 # Set the LED blinker to the detect pattern
-$SCRIPTS/blink.sh detect 
+echo detect > /tmp/blink
 
 startt=$(date +'%s')
 
@@ -161,7 +161,7 @@ while true;
                          do
                             arr=($line) # Array from the line
                             src=${arr[0]}; dst=${arr[1]}; BSSID=${arr[2]}; freq=${arr[3]}
-                            echo $src $dst $BSSID $freq
+                            #echo $src $dst $BSSID $freq
                             if [[ $src != $BSSID ]]; then
                                 STA=$src
                             else 
@@ -177,27 +177,29 @@ while true;
                             fi
 
 
-                    done < $CAPDIR/pairs #EOF
-            now=$(date +'%s')
-            delta=$(( $now - $startt ))
-            echo $delta
-            # Notify owner if no target devices have been detected in 12 hours (43200 seconds)
-            if [[ $(cat $CONFIG/networkstate) == "online" && $delta -gt 43200 && ! -f $LOGS/detected ]]; then
-                    # in case a stuck alert.sh PID
-                    if [[ $apid != 0 ]]; then
-                        kill -9 $apid 
-                    fi
-                    echo "Notifying owner no devices have been detected"
-                    $SCRIPTS/alert.sh none &
-                    apid=$! # new PID
-                    startt=$(date +'%s')
-            fi
-            echo "Removing temporary files."
-            rm -f $CAPDIR/pairs $CAPDIR/channels 
-            horst -x pause
-            rm -f $CAPDIR/cap
-            horst -x outfile=$CAPDIR/cap
-            horst -x resume 
+                        done < $CAPDIR/pairs #EOF
+                now=$(date +'%s')
+                delta=$(( $now - $startt ))
+                echo $delta
+                # Notify owner if no target devices have been detected in 12 hours (43200 seconds)
+                if [[ $(cat $CONFIG/networkstate) == "online" && $delta -gt 43200 && ! -f $LOGS/detected ]]; then
+                        echo detect > /tmp/blink
+                        # in case a stuck alert.sh PID
+                        if [[ $apid != 0 ]]; then
+                            kill -9 $apid 
+                        fi
+                        echo "Notifying owner no devices have been detected"
+                        $SCRIPTS/alert.sh none &
+                        apid=$! # new PID
+                        startt=$(date +'%s')
+                fi
+                echo "Removing temporary files."
+                rm -f $CAPDIR/pairs $CAPDIR/channels 
+                horst -x pause
+                echo "made it to here"
+                rm -f $CAPDIR/cap
+                horst -x outfile=$CAPDIR/cap
+                horst -x resume 
         fi
 done
 

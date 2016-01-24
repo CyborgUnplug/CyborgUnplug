@@ -43,6 +43,12 @@ mkdir /tmp/{keys,config}
 # only readable by owner 
 chmod go-rw /tmp/keys
 
+# Our blink pattern control handle
+mkfifo /tmp/blink
+
+# Read from it
+$SCRIPTS/blink.sh /tmp/blink &
+
 # Fix the eth0-no-MAC issue. 
 # TODO: fix it permanently!
 $SCRIPTS/ethfix.sh
@@ -84,6 +90,7 @@ $SCRIPTS/wifi.sh
 
 chown nobody:nogroup $CONFIG/vpnstatus
 echo unconfigured > $CONFIG/vpnstatus
+vpnpid=0
 
 # Disable wifi (incl hostapd) for the next boot as we want to 
 # manage bringing up wifi on our own terms.
@@ -123,7 +130,7 @@ touch $CONFIG/since
 #stunnel /etc/stunnel/stunnel.conf
 
 # Start the LED blinker
-$SCRIPTS/blink.sh idle 
+echo idle > /tmp/blink
 
 # Start the pinger
 $SCRIPTS/ping.sh &
@@ -140,19 +147,17 @@ while true;
                 if [[ "$MODE" == "sweep" ]]; then
                     echo "Doing a sweep..."
                     $SCRIPTS/sweep.sh # This script exists on its own 
+                    echo idle > /tmp/blink
                 else
                     echo "Starting detector..."
                     $SCRIPTS/detect.sh &
-                    exit                                             
+                    exit # There's no going back after this, a set state
                 fi
-        fi
-        if [[ -f $CONFIG/vpn && ! -f $CONFIG/armed ]]; then
-                echo "Starting the VPN"
-                $SCRIPTS/vpn.sh
-        fi
-        if [ -f $CONFIG/setwifi ]; then
+        elif [ -f $CONFIG/setwifi ]; then
                 $SCRIPTS/wifi.sh 
                 rm -f $CONFIG/setwifi
+        elif [[ -f $CONFIG/vpn && ! -f $CONFIG/armed ]]; then
+                $SCRIPTS/vpn.sh 
         fi
         sleep $POLLTIME
 done

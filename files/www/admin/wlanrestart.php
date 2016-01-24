@@ -1,5 +1,6 @@
 <?php include '../header.php';
 
+    echo "<br>";
     echo "<div class='warning'>";
     echo "You have been disconnected\n";
     echo "Reconnect with the new settings to continue.";

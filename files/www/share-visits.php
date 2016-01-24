@@ -10,7 +10,9 @@ include("php_file_tree.php");
         <script src="php_file_tree.js" type="text/javascript"></script>
     </head>
     <body>
+    <center>
 	<h1 id="headline">Share files wirelessly</h1>
+    </center>
     <br>
 		<?php
         $f = fopen("config/ssid", "r");
@@ -42,4 +44,5 @@ include("php_file_tree.php");
 		?>
     </div>
     </body>
+<br>
 <?php include 'footer.php';?>

@@ -50,6 +50,17 @@ if ($vpnup == 0) {
     curl_exec($ch);
     curl_close($ch);
     echo "<br>Check at <a href='http://checkip.com'>checkip.com</a>";
+    $fn='/www/config/vpn';
+    if (file_exists($fn)) {
+        $f1 = fopen("/www/config/vpn", "r");
+        $g=fgets($f1);                                                                                                                              
+        if ($g) {
+            if (! preg_match('/plugunplug.ovpn/', $g) == 1) {
+                echo "<br><br>NOTE: if the status bar reads 'OFFLINE', it may be because this VPN blocks ICMP ('ping') packets. Try browsing to see if you're really online";
+            }
+        fclose($f1);
+        }
+    }
     echo "</center>";
     echo "</div>";
     echo "<div class='warning'>";
