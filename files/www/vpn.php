@@ -25,6 +25,7 @@ if (file_exists($fn)) {
 }
 fclose($f);
 if ($vpnup == 0) {
+    echo "<br><br>";
     echo "<div class='warning warning3'>";
     echo "Conversing with server...\n";
     echo "<img src='img/loading.gif'>";
@@ -79,8 +80,10 @@ if ($vpnup == 0) {
     echo "<input type='submit' value='Check VPN' class='button'>";
     echo "</form>";
 } else if ($vpnup == 3) {
+    echo "<br>";
     echo "<div class='warning'>";
     echo "The VPN is not running\n";
+    echo "<br>";
     echo "</div>";
     echo "<form method='get' id='newvpn' action='cgi-bin/config.cgi'>";
     echo "<input name='newvpn' type='hidden' value='newvpn'>";
@@ -150,9 +153,11 @@ if ($vpnup == 0) {
     }
     else {
         echo '<meta http-equiv="refresh" content="10">';
+        echo "<br>";
         echo "<div class='warning'>";
         echo "The VPN is not running\n";
         echo "</div>";
+        echo "<br>";
         echo "<form method='get' id='newvpn' action='cgi-bin/config.cgi'>";
         echo "<input name='newvpn' type='hidden' value='newvpn'>";
         echo "<input type='submit' value='Start over' class='button'>";

@@ -6,27 +6,25 @@
 
  <div id="container_general">
   <form enctype="multipart/form-data" action="vpn.php" method="post">
-    <input type="hidden" name="MAX_FILE_SIZE" value="1000000" />
+    <input type="hidden" name="MAX_FILE_SIZE" value="100000" />
     <center>
-    Choose an OpenVPN configuration file
-    (<em>ending in .ovpn</em>) to upload
+    Upload an OpenVPN configuration file
+    (<em>ends in .ovpn</em>)
     </center>
-    <br><br>
+    <br>
     <center>
     <label class="upload button">
         <input name="uploaded_file" type="file" required \>
         <span>load config</span>
     </label>
     </center>
-
-    <br><br> 
+    <br>
     <input name="username" type="text" placeholder="username" />
     <br><br>
     <input name="password" type="text" placeholder="password" />
     <br><br>
     <input type="submit" value="save" />
   </form>
-    <br><br>
   </div>
     
 <?php include 'footer.php';?>

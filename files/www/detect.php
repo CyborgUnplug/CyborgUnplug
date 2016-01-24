@@ -40,7 +40,6 @@
 			<input type="submit" value="NEXT" class='btnnext'>
             </center>
 		</form>
-
 	</div>
 
 <?php include 'footer.php';?>

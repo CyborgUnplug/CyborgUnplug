@@ -1,6 +1,5 @@
 <?php include '../header.php';?>
 
-<br>
 <center>
 <h1 id="headline">Change your alerts email</h1>
 </center>
@@ -22,12 +21,11 @@
             echo "<center>";
             echo "Enter a new email address on which to receive email alerts and notifications from Little Snipper";
             echo "</center>";
-            echo "<br><br>";
+            echo "<br>";
             echo "<input name='email' type='text' placeholder='". $g ."' />";
             echo "<br><br>";
             echo "<input type='submit' value='save' />";
             echo "</form>";
-            echo "<br><br>";
             echo "</div>";
         }
     }
