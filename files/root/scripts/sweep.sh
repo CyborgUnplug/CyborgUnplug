@@ -70,8 +70,7 @@ sleep 3 # Important
 echo "0 plugunplug.ovpn" > $CONFIG/vpn # bring up Unplug VPN for alerts
 echo "start" > $CONFIG/vpnstatus
 $SCRIPTS/vpn.sh &
-
-echo idle > /tmp/blink
+sleep 5 # a little extra time for the VPN
 
 alert() {
     tmail=false
@@ -87,7 +86,6 @@ alert() {
     fi
     if [ "$tmail" = true ]; then
         if [[ $(cat $CONFIG/networkstate) == "online" ]]; then
-            echo target > /tmp/blink
             echo "Alerting Unplug owner"
             device=$(cat /www/data/devices | grep -i ${target:0:8} | cut -d ',' -f 1)
             $SCRIPTS/alert.sh "$device" $target &
@@ -103,7 +101,7 @@ alert() {
 # Start horst with upper channel limit of 13 in quiet mode and a command hook
 # for remote control (-X). Has to be backgrounded.
 horst -u 13 -q -i $NIC -o $CAPDIR/cap -X &
-hpid=$!
+#hpid=$!
 
 POLLTIME=13 # Seconds we wait for capture to find STA/BSSID pairs
 horst -x channel_auto=1
@@ -115,10 +113,9 @@ echo detect > /tmp/blink
 
 while [ $COUNT -lt 6 ];
         do
-            horst -x outfile=$CAPDIR/cap
-            horst -x resume 
             echo "//--------------------* $COUNT * ----------------------------------->"
             echo "Sleeping for " $POLLTIME " and writing capture log"
+            echo detect > /tmp/blink
             sleep $POLLTIME
             # Sort associated clients into temporary pairing files. Channels are
             # not in the probed/association section of airodump-ng and so the
@@ -138,9 +135,11 @@ while [ $COUNT -lt 6 ];
                                 if [[ "$STA" == $TARGETS ]]; then
                                     target=$STA
                                     alert
+                                    echo target > /tmp/blink
                                 elif [[ "$BSSID" == $TARGETS ]]; then
                                     target=$BSSID
                                     alert
+                                    echo target > /tmp/blink
                                 fi
                         done < $CAPDIR/pairs #EOF
                 let 'COUNT += 1'
@@ -148,6 +147,8 @@ while [ $COUNT -lt 6 ];
                 rm -f $CAPDIR/pairs $CAPDIR/channels 
                 horst -x pause
                 rm -f $CAPDIR/cap
+                horst -x outfile=$CAPDIR/cap
+                horst -x resume 
             fi
 done
 
@@ -161,18 +162,24 @@ if [[ $(cat $CONFIG/networkstate) == "online" && ! -f $LOGS/detected ]]; then
 fi
 
 echo idle > /tmp/blink
-kill -9 $hpid # kill horst
-
 echo NULL > $CONFIG/mode
 cp /www/index.php.conf /www/index.php
+
+killall horst 
+#kill -9 $hpid 
 killall openvpn vpn.sh
 sleep 1
+
 # Set back to AP mode 
 wifi down
 uci set wireless.@wifi-iface[0].mode="ap"
 uci set wireless.@wifi-iface[0].disabled="0"
 uci commit wireless
 wifi up
+
 rm -f $CONFIG/vpn
 echo unconfigured > $CONFIG/vpnstatus
 rm -f $CONFIG/armed
+killall dnsmasq # For some reason using /etc/init.d/ to pull it down doesn't work
+/etc/init.d/dnsmasq start
+

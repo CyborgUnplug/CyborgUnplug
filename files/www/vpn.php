@@ -19,7 +19,7 @@ if (file_exists($fn)) {
             $vpnup=0;
         }
         //else if (preg_match('/stop/', $g) == 1) {
-        //    $vpnup=-2;
+        //    $vpnup=3;
         //}
     }
 }
@@ -35,6 +35,7 @@ if ($vpnup == 0) {
     $secondsWait = 5;
     echo '<meta http-equiv="refresh" content="'.$secondsWait.'">';
 } else if ($vpnup == 1) {
+    echo '<meta http-equiv="refresh" content="20">';
     $url = 'https://plugunplug.net/geoip/yourip.php';
     $ch = curl_init();
     $timeout = 5;
@@ -117,6 +118,7 @@ if ($vpnup == 0) {
               echo "<div class='warning'>";
               echo "Overwriting file of the same name: ".$_FILES["uploaded_file"]["name"];
               echo "</div>";
+              echo "<br>";
               $conffile=true;
           }
       } else {
@@ -135,6 +137,7 @@ if ($vpnup == 0) {
         if($ret === false) {
             die('There was an error writing this file');
             $authfile=false;
+
         }
         else {
               echo "<div class='warning warning3'>";
@@ -145,9 +148,16 @@ if ($vpnup == 0) {
               $authfile=true;
         }
     }
-    //else {
-    //   die('no post data to process');
-    //}
+    else {
+        echo '<meta http-equiv="refresh" content="10">';
+        echo "<div class='warning'>";
+        echo "The VPN is not running\n";
+        echo "</div>";
+        echo "<form method='get' id='newvpn' action='cgi-bin/config.cgi'>";
+        echo "<input name='newvpn' type='hidden' value='newvpn'>";
+        echo "<input type='submit' value='Start over' class='button'>";
+        echo "</form>";
+    }
 
     if (!$conffile == false) {
         if (($authfile === true) && ($conffile === true)) {
