@@ -26,7 +26,7 @@ if (file_exists($fn)) {
 fclose($f);
 if ($vpnup == 0) {
     echo "<div class='warning warning3'>";
-    echo "Connecting to server...\n";
+    echo "Conversing with server...\n";
     echo "<img src='img/loading.gif'>";
     echo "</div>";
     echo "<form action='vpn.php'>"; 
@@ -75,8 +75,8 @@ if ($vpnup == 0) {
     echo "<input type='submit' value='Start over' class='button'>";
     echo "</form>";
     echo "<div class='warning warning3'>";
-    echo "Check usernames and passwords and that a local firewall doesn't block VPNs.\n";
-    echo "Be sure an Ethernet cable is connected from the WAN port to\n";
+    echo "If you've just tried to connect and it failed, check usernames and passwords (if any).\n";
+    echo "Also, be sure an ethernet cable is connected from the WAN port to\n";
     echo "your wired Internet connection.\n";
     echo "</div>";
 

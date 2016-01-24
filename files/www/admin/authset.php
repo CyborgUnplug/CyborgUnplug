@@ -39,7 +39,9 @@ if (! isset($_POST['password']) ) {
         //echo "$ret bytes written to auth file";
         echo "</div>";
         echo "<div class='warning warning3'>";
-        echo "Select reboot below to restart the configuration interface.\n";
+        echo "Hit the button below to restart the configuration interface.\n";
+        echo "</div>";
+        echo "<div class='warning'>";
         echo "You'll need to log in with the new settings.\n";
         echo "</div>";
         echo "<form method='get' id='authrestart' action='../cgi-bin/config.cgi'>";
