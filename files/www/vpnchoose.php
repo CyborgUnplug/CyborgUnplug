@@ -21,7 +21,7 @@
     <br>
     <div id="container_caption">
         Routes through Germany<br>
-        Undetectable VPN traffic<br>
+        Encapsulated in SSL 'sheath' - near undetectable<br>
         No P2P traffic<br>
         No DNS leaks (same DNS as VPN host)
     </div>
