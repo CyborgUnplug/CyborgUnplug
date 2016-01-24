@@ -67,14 +67,15 @@ airmon-ng start $NIC
 sleep 3 # Important
 
 # Bring up the admin default VPN for sending alerts to users
-echo "0 plugunplug.ovpn" > $CONFIG/vpn
+echo "0 plugunplug.ovpn" > $CONFIG/vpn # bring up Unplug VPN for alerts
 echo "start" > $CONFIG/vpnstatus
 $SCRIPTS/vpn.sh &
 
+$SCRIPTS/blink.sh detect 
+
 alert() {
     tmail=false
-    # TODO resolve how long the LED notification should run. Reset to 'detect'
-    # once
+    # TODO resolve how long the LED notification should run. Reset to 'detect' once
     # the owner has been notified by email? 
     $SCRIPTS/blink.sh target 
     # Have we already seen this target? 
@@ -98,6 +99,7 @@ alert() {
         fi
     fi
 }
+
 # Start horst with upper channel limit of 13 in quiet mode and a command hook
 # for remote control (-X). Has to be backgrounded.
 horst -u 13 -q -i $NIC -o $CAPDIR/cap -X &

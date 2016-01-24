@@ -36,9 +36,7 @@
 				fclose($f);
 			?>
 			<input name="devices" type="hidden" id="checkList" value="nothing">
-            <center>
 			<input type="submit" value="NEXT" class='btnnext'>
-            </center>
 		</form>
 
 	</div>

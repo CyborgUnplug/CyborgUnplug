@@ -28,7 +28,7 @@
                 echo "<div class='warning'>";
                 echo "WiFi access disabled during detection<br>";
                 echo "Alerts sent by email<br>";
-                echo "Connect by Ethernet to read reports on device during detection<br>";
+                echo "Connect by Ethernet to read reports on device<br>";
                 echo "</div>";
                 echo "<br>";
                 echo "<div class='warning warning3'>";
