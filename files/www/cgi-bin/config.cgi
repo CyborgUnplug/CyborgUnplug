@@ -78,8 +78,9 @@ case "$EVENT" in
     ;; 
     *authrestart*)
         sed -i "s/:.*/:$(cat /tmp/config/adminpass)/" /root/keys/lighttpdpassword
-        /etc/init.d/lighttpd restart
+        sleep 1
         rm -fr /tmp/config/adminpass
+        /etc/init.d/lighttpd restart
         html admin/authrestart.php
     ;; 
 	*devices*)
@@ -87,21 +88,11 @@ case "$EVENT" in
         html mode.php
 	;;
 	*mode1*)
-		echo territory > $CONFIG/mode
-        html territorial.php
-	;;
-	*mode2*)
-		echo allout > $CONFIG/mode
-        html allout.php
-	;;
-	*mode3*)
-		echo alarm > $CONFIG/mode
-		cat $DATA/networks > $CONFIG/networks
+		echo continuous > $CONFIG/mode
         html finish.php
 	;;
-	*mode4*)
+	*mode2*) 
 		echo sweep > $CONFIG/mode
-		cat $DATA/networks > $CONFIG/networks
         html finish.php
 	;;
     *unplugvpn*)
@@ -131,14 +122,14 @@ case "$EVENT" in
     *checkvpn*)
         html vpn.php #we need a full refresh to call the checking code in vpn.php
     ;;
-	*finish1*)
-		echo $EVENT | cut -d "=" -f 2 | sed -e 's/%3D/=/g' -e 's/\ //g' | base64 -d  > $CONFIG/networks
-        html finish.php
-	;;
-	*finish2*)
-		cat $DATA/networks > $CONFIG/networks
-        html finish.php
-	;;
+	#*finish1*) # unused in USA model
+	#	echo $EVENT | cut -d "=" -f 2 | sed -e 's/%3D/=/g' -e 's/\ //g' | base64 -d  > $CONFIG/networks
+    #    html finish.php
+	#;;
+	#*finish2*) # unused in USA model
+	#	cat $DATA/networks > $CONFIG/networks
+    #    html finish.php
+	#;;
 	*armed*)
         killall openvpn vpn.sh # stop existing instance
         rm -f $CONFIG/vpn
@@ -151,7 +142,7 @@ case "$EVENT" in
         update=$(echo "$EVENT" | cut -d '=' -f 2)
         if [[ "$update" == "disabled" ]]; then
             #comment out the update line in crontab
-            sed -i '/update/ s/^/#/' /etc/crontabs/root
+            sed -i '/update/ s/^/#/' /etc/crontabs/root                                                                                                        
             echo disabled > $CONFIG/autoupdate
         elif [[ "$update" == "enabled" ]]; then
             #uncomment the update line in crontab

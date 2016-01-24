@@ -97,7 +97,7 @@ vpncheck () {
         rm $CONFIG/vpn
     else
         # do test ping here
-        echo "tun/tap is up"
+        echo "VPN status is: " $(cat $CONFIG/vpnstatus)
         #cat /www/config/vpnstatus
     fi
 }
