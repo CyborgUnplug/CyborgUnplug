@@ -23,7 +23,7 @@
         Routes through Germany<br>
         Traverses firewalls - appears as HTTPS traffic<br>
         No DNS leaks (DNS servers of VPN host)<br>
-        By using this VPN you agree to <a href="tac.php">these terms</a>
+        By using this VPN you agree to <a href="tos.php">these terms</a>
     </div>
 
   </div>

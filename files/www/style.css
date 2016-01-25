@@ -191,6 +191,8 @@ sup{top:-0.5em}
 sub{bottom:-0.25em}
 dd{margin:0 0 0 40px} dt{font-weight: 700;}
 ul, ol{list-style:none; list-style-image:none; margin:0; padding:0;}
+ol.tos{list-style:decimal; list-style-image:none; margin:0; padding:15px;}
+
 img{border:0; -ms-interpolation-mode:bicubic; vertical-align:middle}
 svg:not(:root){overflow:hidden}
 figure{margin:0}
