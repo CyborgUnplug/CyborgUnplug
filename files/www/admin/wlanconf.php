@@ -5,8 +5,7 @@
     </center>
      <div id="container_general">
 	<div class='warning'>
-    If you forget your new password you'll need to connect to the LAN port over
-ethernet cable, then visit 10.10.11.1 in
+    If you forget your password you'll need to connect to the LAN port and visit 10.10.11.1 in
 the browser to change it.
 	</div>
       <form enctype="multipart/form-data" action="wlanset.php" method="post">
@@ -21,6 +20,5 @@ the browser to change it.
         <br><br>
         <input type="submit" value="save" />
       </form>
-        <br><br>
       </div>
 <?php include '../footer.php';?>

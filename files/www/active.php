@@ -25,10 +25,11 @@
             }
             else {
                 echo "<h1 id='headline'>The detector is active</h1>";
+                echo "<br>";
                 echo "<div class='warning'>";
                 echo "WiFi access disabled during detection<br>";
                 echo "Alerts sent by email<br>";
-                echo "Connect by Ethernet to read reports on device during detection<br>";
+                echo "Connect by Ethernet to read reports<br>";
                 echo "</div>";
                 echo "<br>";
                 echo "<div class='warning warning3'>";
@@ -102,6 +103,5 @@
             </div>
         </li>
     </ul>
-    
 
 <?php include 'footer.php';?>

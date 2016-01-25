@@ -49,10 +49,15 @@ case "$EVENT" in
         html index.php
     ;;
     *encrypt*)
+        if [ $(cat $CONFIG/vpnstatus) == "start" ]; then
+            # Owner will only get here riding the back button after a failed/broken connection attempt
+            # Reset config to 'unconfigured' 
+            echo unconfigured > $CONFIG/vpnstatus
+        fi
         if [ $(cat $CONFIG/vpnstatus) == "unconfigured" ]; then
             rm -f $UPLOAD/*
             html vpnchoose.php
-        elif [ -f $CONFIG/vpn ]; then
+        else 
             html vpn.php
         fi
     ;; 
@@ -69,6 +74,7 @@ case "$EVENT" in
     ;; 
     *umount*)
         block umount
+        cp $SITE/index.php.conf $SITE/index.php
         sleep 1
         html share.php
     ;; 
@@ -78,8 +84,9 @@ case "$EVENT" in
     ;; 
     *authrestart*)
         sed -i "s/:.*/:$(cat /tmp/config/adminpass)/" /root/keys/lighttpdpassword
-        /etc/init.d/lighttpd restart
+        sleep 1
         rm -fr /tmp/config/adminpass
+        /etc/init.d/lighttpd restart
         html admin/authrestart.php
     ;; 
 	*devices*)

@@ -2,11 +2,12 @@
 /*Resourced by header.php
 GeoIP status updates end-to-end encrypted */
 
-    $f1 = fopen("config/ssid", "r");
+    $f1 = fopen("/www/config/ssid", "r");
     $ssid=fgets($f1);                                                                                                                              
-    $fn2='config/networkstate';
-    if (file_exists($fn2)) {
-        $f2 = fopen("config/networkstate", "r");
+    fclose($f1);
+    $fn='/www/config/networkstate';
+    if (file_exists($fn)) {
+        $f2 = fopen("/www/config/networkstate", "r");
         $g=fgets($f2);                                                                                                                              
         if ($g) {
             if (preg_match('/online/', $g) == 1) {
@@ -19,7 +20,7 @@ GeoIP status updates end-to-end encrypted */
                 curl_setopt($ch,CURLOPT_CONNECTTIMEOUT,$timeout);
                 curl_setopt($ch,CURLOPT_CAINFO,'/etc/stunnel/server.crt');
                 echo $ssid."<b>Status</b> ONLINE "; 
-                $vpnstatus = fopen("config/vpnstatus", "r");
+                $vpnstatus = fopen("/www/config/vpnstatus", "r");
                 $h=fgets($vpnstatus);
                 if (preg_match('/up/', $h) == 1) {
                     echo "<b>Tunneled via</b> ";
@@ -27,6 +28,7 @@ GeoIP status updates end-to-end encrypted */
                 else {
                     echo "<b>Routed via</b> ";
                 }
+                fclose($vpnstatus);
                 curl_exec($ch);
                 //echo "unplug SSID: ".$ssid."Status: ONLINE. Tunneled through:".curl_exec($ch);
                 curl_close($ch);
@@ -35,5 +37,6 @@ GeoIP status updates end-to-end encrypted */
                 echo $ssid."<b>Status</b> OFFLINE";
             }
         }
+        fclose($f2);
     }
 ?>
