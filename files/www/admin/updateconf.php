@@ -44,11 +44,12 @@
                 }
 			?>
             <br>
+            <center>
             By default Little Snipper checks for updates every day at
             midnight. The updates are applied on the next reboot. For your interest and/or peace-of-mind, each update directly
             corresponds to a revision in this <a href="https://github.com/JulianOliver/CyborgUnplug/tree/usa">publicly auditable
 code repository</a>.
-            <br>
+            </center>
     </div>
 
 <?php include '../footer.php';?>
