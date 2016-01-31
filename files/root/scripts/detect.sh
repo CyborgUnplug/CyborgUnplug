@@ -84,7 +84,7 @@ alert() {
     tnow=$(date +'%s')
     # TODO resolve how long the LED notification should run. Reset to 'detect' once
     # the owner has been notified by email? 
-    $SCRIPTS/blink.sh target 
+    echo target > /tmp/blink
     # Have we already seen this target? 
     if [[ ! " ${tseen[@]} " =~ "$target" ]]; then
         # Add target to array, with last seen seconds set to now
@@ -220,7 +220,7 @@ case "$MODE" in
 esac
 
 # Set the LED blinker to the detect pattern
-$SCRIPTS/blink.sh detect 
+echo detect > /tmp/blink
 
 startt=$(date +'%s')
 

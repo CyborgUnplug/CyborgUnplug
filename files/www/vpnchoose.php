@@ -21,9 +21,9 @@
     <br>
     <div id="container_caption">
         Routes through Germany<br>
-        Undetectable VPN traffic<br>
-        No P2P traffic<br>
-        No DNS leaks (same DNS as VPN host)
+        Traverses firewalls - appears as HTTPS traffic<br>
+        No DNS leaks (DNS servers of VPN host)<br>
+        By using this VPN you agree to <a href="tos.php">these terms</a>
     </div>
 
   </div>

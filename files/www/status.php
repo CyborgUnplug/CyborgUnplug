@@ -19,7 +19,7 @@ GeoIP status updates end-to-end encrypted */
                 curl_setopt($ch,CURLOPT_URL, $url);
                 curl_setopt($ch,CURLOPT_CONNECTTIMEOUT,$timeout);
                 curl_setopt($ch,CURLOPT_CAINFO,'/etc/stunnel/server.crt');
-                echo $ssid."<b>Status</b> ONLINE "; 
+                echo $ssid."<b> Status</b> ONLINE "; 
                 $vpnstatus = fopen("/www/config/vpnstatus", "r");
                 $h=fgets($vpnstatus);
                 if (preg_match('/up/', $h) == 1) {
