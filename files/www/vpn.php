@@ -19,12 +19,13 @@ if (file_exists($fn)) {
             $vpnup=0;
         }
         //else if (preg_match('/stop/', $g) == 1) {
-        //    $vpnup=-2;
+        //    $vpnup=3;
         //}
     }
 }
 fclose($f);
 if ($vpnup == 0) {
+    echo "<br><br>";
     echo "<div class='warning warning3'>";
     echo "Conversing with server...\n";
     echo "<img src='img/loading.gif'>";
@@ -35,6 +36,7 @@ if ($vpnup == 0) {
     $secondsWait = 5;
     echo '<meta http-equiv="refresh" content="'.$secondsWait.'">';
 } else if ($vpnup == 1) {
+    echo '<meta http-equiv="refresh" content="20">';
     $url = 'https://plugunplug.net/geoip/yourip.php';
     $ch = curl_init();
     $timeout = 5;
@@ -50,6 +52,17 @@ if ($vpnup == 0) {
     curl_exec($ch);
     curl_close($ch);
     echo "<br>Check at <a href='http://checkip.com'>checkip.com</a>";
+    $fn='/www/config/vpn';
+    if (file_exists($fn)) {
+        $f1 = fopen("/www/config/vpn", "r");
+        $g=fgets($f1);                                                                                                                              
+        if ($g) {
+            if (! preg_match('/plugunplug.ovpn/', $g) == 1) {
+                echo "<br><br>NOTE: if the status bar reads 'OFFLINE', it may be because this VPN blocks ICMP ('ping') packets. Try browsing to see if you're really online";
+            }
+        fclose($f1);
+        }
+    }
     echo "</center>";
     echo "</div>";
     echo "<div class='warning'>";
@@ -67,8 +80,10 @@ if ($vpnup == 0) {
     echo "<input type='submit' value='Check VPN' class='button'>";
     echo "</form>";
 } else if ($vpnup == 3) {
+    echo "<br>";
     echo "<div class='warning'>";
     echo "The VPN is not running\n";
+    echo "<br>";
     echo "</div>";
     echo "<form method='get' id='newvpn' action='cgi-bin/config.cgi'>";
     echo "<input name='newvpn' type='hidden' value='newvpn'>";
@@ -106,6 +121,7 @@ if ($vpnup == 0) {
               echo "<div class='warning'>";
               echo "Overwriting file of the same name: ".$_FILES["uploaded_file"]["name"];
               echo "</div>";
+              echo "<br>";
               $conffile=true;
           }
       } else {
@@ -124,6 +140,7 @@ if ($vpnup == 0) {
         if($ret === false) {
             die('There was an error writing this file');
             $authfile=false;
+
         }
         else {
               echo "<div class='warning warning3'>";
@@ -134,9 +151,18 @@ if ($vpnup == 0) {
               $authfile=true;
         }
     }
-    //else {
-    //   die('no post data to process');
-    //}
+    else {
+        echo '<meta http-equiv="refresh" content="10">';
+        echo "<br>";
+        echo "<div class='warning'>";
+        echo "The VPN is not running\n";
+        echo "</div>";
+        echo "<br>";
+        echo "<form method='get' id='newvpn' action='cgi-bin/config.cgi'>";
+        echo "<input name='newvpn' type='hidden' value='newvpn'>";
+        echo "<input type='submit' value='Start over' class='button'>";
+        echo "</form>";
+    }
 
     if (!$conffile == false) {
         if (($authfile === true) && ($conffile === true)) {

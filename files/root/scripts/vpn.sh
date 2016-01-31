@@ -73,8 +73,7 @@ vpnstart () {
                     echo "tun/tap device is up"
                     #echo "Updating date"
                     #ntpd -q -n -p 0.openwrt.pool.ntp.org & # don't daemonise, quit after setting
-                    echo "This is STARTED: " $STARTED
-                    $SCRIPTS/blink.sh vpn
+                    echo vpn > /tmp/blink
                     return 0 
                 fi
         done
@@ -97,7 +96,7 @@ vpncheck () {
         rm $CONFIG/vpn
     else
         # do test ping here
-        echo "tun/tap is up"
+        echo "VPN status is: " $(cat $CONFIG/vpnstatus)
         #cat /www/config/vpnstatus
     fi
 }
@@ -114,13 +113,14 @@ vpnstop() {
     #rm -f $EXTVPN/*
     routetoggle down
     echo unconfigured > $CONFIG/vpnstatus
-    $SCRIPTS/blink.sh idle 
+    echo idle > /tmp/blink
     rm $CONFIG/vpn
     exit
 }
 
 routetoggle() {
-    /etc/init.d/dnsmasq stop
+    #/etc/init.d/dnsmasq stop
+    killall dnsmasq
     GATEWAY=$(route -n | grep UG[^H] | awk '{ print $2 }')
     if [ "$1" == up ]; then
         # Add our route
@@ -140,23 +140,19 @@ routetoggle() {
     fi 
 }
 
-while true; 
-    do
-        STATUS=$(cat $CONFIG/vpnstatus)
-        echo "OpenVPN status: " $STATUS
-        case "$STATUS" in
-            *up*)
-                vpncheck 
-            ;;
-            *stop*)
-                vpnstop 
-            ;; 
-            *start*)
-                vpnstart
-            ;; 
-            *)
-        esac
-        sleep $POLLTIME
-    done
+STATUS=$(cat $CONFIG/vpnstatus)
+echo "OpenVPN status: " $STATUS
+case "$STATUS" in
+    *up*)
+        vpncheck 
+    ;;
+    *stop*)
+        vpnstop 
+    ;; 
+    *start*)
+        vpnstart
+    ;; 
+    *)
+esac
     
     

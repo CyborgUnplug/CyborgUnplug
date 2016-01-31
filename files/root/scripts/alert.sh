@@ -44,7 +44,7 @@ else
 body="Subject: Cyborg Unplug Alert
 From: alerts@vpn.plugunplug.net
 -------------------------------------------------------------------------------
-On $DATE, the following device was detected by Little Snipper:
+On $DATE, the following device was detected:
 
     $DEVICE with Hardware Address: $MAC
 

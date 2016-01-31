@@ -67,16 +67,15 @@ airmon-ng start $NIC
 sleep 3 # Important
 
 # Bring up the admin default VPN for sending alerts to users
-echo "0 plugunplug.ovpn" > $CONFIG/vpn
+echo "0 plugunplug.ovpn" > $CONFIG/vpn # bring up Unplug VPN for alerts
 echo "start" > $CONFIG/vpnstatus
 $SCRIPTS/vpn.sh &
+sleep 5 # a little extra time for the VPN
 
 alert() {
     tmail=false
-    # TODO resolve how long the LED notification should run. Reset to 'detect'
-    # once
+    # TODO resolve how long the LED notification should run. Reset to 'detect' once
     # the owner has been notified by email? 
-    $SCRIPTS/blink.sh target 
     # Have we already seen this target? 
     if [[ ! " ${seen[@]} " =~ "$target" ]]; then
         # Add target to array
@@ -98,10 +97,11 @@ alert() {
         fi
     fi
 }
+
 # Start horst with upper channel limit of 13 in quiet mode and a command hook
 # for remote control (-X). Has to be backgrounded.
 horst -u 13 -q -i $NIC -o $CAPDIR/cap -X &
-hpid=$!
+#hpid=$!
 
 POLLTIME=13 # Seconds we wait for capture to find STA/BSSID pairs
 horst -x channel_auto=1
@@ -109,14 +109,13 @@ horst -x pause
 
 COUNT=0
 
-$SCRIPTS/blink.sh detect 
+echo detect > /tmp/blink
 
 while [ $COUNT -lt 6 ];
         do
-            horst -x outfile=$CAPDIR/cap
-            horst -x resume 
             echo "//--------------------* $COUNT * ----------------------------------->"
             echo "Sleeping for " $POLLTIME " and writing capture log"
+            echo detect > /tmp/blink
             sleep $POLLTIME
             # Sort associated clients into temporary pairing files. Channels are
             # not in the probed/association section of airodump-ng and so the
@@ -136,9 +135,11 @@ while [ $COUNT -lt 6 ];
                                 if [[ "$STA" == $TARGETS ]]; then
                                     target=$STA
                                     alert
+                                    echo target > /tmp/blink
                                 elif [[ "$BSSID" == $TARGETS ]]; then
                                     target=$BSSID
                                     alert
+                                    echo target > /tmp/blink
                                 fi
                         done < $CAPDIR/pairs #EOF
                 let 'COUNT += 1'
@@ -146,6 +147,8 @@ while [ $COUNT -lt 6 ];
                 rm -f $CAPDIR/pairs $CAPDIR/channels 
                 horst -x pause
                 rm -f $CAPDIR/cap
+                horst -x outfile=$CAPDIR/cap
+                horst -x resume 
             fi
 done
 
@@ -158,18 +161,25 @@ if [[ $(cat $CONFIG/networkstate) == "online" && ! -f $LOGS/detected ]]; then
         $SCRIPTS/alert.sh none 
 fi
 
-$SCRIPTS/blink.sh idle 
-kill -9 $hpid # kill horst
-
+echo idle > /tmp/blink
 echo NULL > $CONFIG/mode
 cp /www/index.php.conf /www/index.php
+
+killall horst 
+#kill -9 $hpid 
 killall openvpn vpn.sh
-rm -f $CONFIG/vpn
-echo unconfigured > $CONFIG/vpnstatus
-rm -f $CONFIG/armed
+sleep 1
+
 # Set back to AP mode 
 wifi down
 uci set wireless.@wifi-iface[0].mode="ap"
 uci set wireless.@wifi-iface[0].disabled="0"
 uci commit wireless
 wifi up
+
+rm -f $CONFIG/vpn
+echo unconfigured > $CONFIG/vpnstatus
+rm -f $CONFIG/armed
+killall dnsmasq # For some reason using /etc/init.d/ to pull it down doesn't work
+/etc/init.d/dnsmasq start
+
