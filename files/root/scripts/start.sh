@@ -29,7 +29,7 @@ readonly WIFIDEV=radio0
 
 # Check for a reset demand
 if [ -f $RESETDIR/resetnow ]; then
-    rm -f $CONFIG/since
+    rm -f $CONFIG/email
     cp -a $RESETDIR/fs/* /
     rm -fr $RESETDIR/fs
     rm -f $RESETDIR/resetnow
