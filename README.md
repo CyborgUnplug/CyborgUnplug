@@ -3,7 +3,7 @@
 ![](https://plugunplug.net/img/site-banner.jpg)
 
 Cyborg Unplug firmware files for the retail 16M SPI flash, 32M RAM RT5350f
-_USA-destined_ edition of _Little Snipper_. Unlike the International version (due
+_USA-destined_, non-premium edition of _Little Snipper_. Unlike the International version (due
 to changing FCC regulations in mid-2015) this firmware does not have the ability
 to deauthenticate WiFi clients. We spent a huge amount on legal fees trying to
 resolve this and, well, here's a branch to tell the tale.
