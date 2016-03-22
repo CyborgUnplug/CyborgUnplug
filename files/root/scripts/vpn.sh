@@ -128,7 +128,7 @@ routetoggle() {
         # IMPORTANT: DNS LEAKS
         # Bring up dnsmasq with opts pushing all DNS queries to VPN server,
         # mitigating dangerous leaks
-        dnsmasq -C /var/etc/dnsmasq.conf --dhcp-option=6,10.10.12.1
+        dnsmasq -C /var/etc/dnsmasq.conf --dhcp-option=6,10.10.13.1
         sleep 1
         route add -net $VPNSERVER netmask 255.255.255.255 gw $GATEWAY
         sleep 1

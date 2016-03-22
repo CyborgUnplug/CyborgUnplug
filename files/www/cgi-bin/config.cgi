@@ -56,7 +56,7 @@ case "$EVENT" in
         fi
         if [ $(cat $CONFIG/vpnstatus) == "unconfigured" ]; then
             rm -f $UPLOAD/*
-            html vpnchoose.php
+            html vpnconf.php
         else 
             html vpn.php
         fi
