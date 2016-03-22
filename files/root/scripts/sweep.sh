@@ -161,7 +161,6 @@ if [[ $(cat $CONFIG/networkstate) == "online" && ! -f $LOGS/detected ]]; then
         $SCRIPTS/alert.sh none 
 fi
 
-echo idle > /tmp/blink
 echo NULL > $CONFIG/mode
 cp /www/index.php.conf /www/index.php
 
@@ -182,4 +181,4 @@ echo unconfigured > $CONFIG/vpnstatus
 rm -f $CONFIG/armed
 killall dnsmasq # For some reason using /etc/init.d/ to pull it down doesn't work
 /etc/init.d/dnsmasq start
-
+echo idle > /tmp/blink

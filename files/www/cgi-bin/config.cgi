@@ -56,7 +56,7 @@ case "$EVENT" in
         fi
         if [ $(cat $CONFIG/vpnstatus) == "unconfigured" ]; then
             rm -f $UPLOAD/*
-            html vpnchoose.php
+            html vpnconf.php
         else 
             html vpn.php
         fi
@@ -123,7 +123,7 @@ case "$EVENT" in
 	;;
 	*newvpn*)
         echo unconfigured > $CONFIG/vpnstatus
-        html vpnchoose.php
+        html vpnconf.php
 	;;
     *checkvpn*)
         html vpn.php #we need a full refresh to call the checking code in vpn.php
