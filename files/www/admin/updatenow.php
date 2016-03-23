@@ -1,7 +1,7 @@
 <?php include '../header.php';?>
 
                 <center>
-                <h1 id='headline'>Now updating...</h1>";
+                <h1 id='headline'>Now updating...</h1>
                 </center>
                 <div class='warning'>
                     <br> 
