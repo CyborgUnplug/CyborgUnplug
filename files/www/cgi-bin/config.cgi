@@ -133,7 +133,7 @@ case "$EVENT" in
 	;;
 	*newvpn*)
         echo unconfigured > $CONFIG/vpnstatus
-        html vpnchoose.php
+        html vpnconf.php
 	;;
     *checkvpn*)
         html vpn.php #we need a full refresh to call the checking code in vpn.php
