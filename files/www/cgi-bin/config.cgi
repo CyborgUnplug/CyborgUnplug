@@ -83,11 +83,12 @@ case "$EVENT" in
         html admin/wlanrestart.php
     ;; 
     *authrestart*)
-        sed -i "s/:.*/:$(cat /tmp/config/adminpass)/" /root/keys/lighttpdpassword
-        sleep 1
-        rm -fr /tmp/config/adminpass
-        /etc/init.d/lighttpd restart
-        html admin/authrestart.php
+        if [ -f /tmp/config/adminpass ]; then
+            sed -i "s/:.*/:$(cat /tmp/config/adminpass)/" /root/keys/lighttpdpassword
+            rm -fr /tmp/config/adminpass
+            sleep 1
+            html admin/configure.php
+        fi
     ;; 
 	*devices*)
 		echo $EVENT | cut -d "=" -f 2 | sed -e 's/%3D/=/g' -e 's/\ //g' | base64 -d | sed 's/^\ //' > $CONFIG/targets
