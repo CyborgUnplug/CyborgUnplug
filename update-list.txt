@@ -21,7 +21,7 @@ www/admin
 www/allout.php
 www/armed.php
 www/cgi-bin
-www/data
+www/data/devices
 www/detect.php
 www/dir_img
 www/finish.php
