@@ -57,9 +57,12 @@ if [ -f $CONFIG/upgrade ]; then
     echo "upgrading..." 
     # run the update script now
     $UDIR/upgrade.sh &> $LOG
-    rm -f $CONFIG/upgrade
-    # we'll handle reboots in the update script itself, for more control
-    # reboot 
+    if [[ ! $? -eq 0 ]]; then 
+        echo "Something went wrong with the update. Check log"
+    else
+        rm -f $CONFIG/upgrade
+    fi
+    # reboot # make this decision inside the upgrade script 
 fi
 
 #Start networking
