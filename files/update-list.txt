@@ -21,7 +21,6 @@ www/admin
 www/allout.php
 www/armed.php
 www/cgi-bin
-www/config
 www/data
 www/detect.php
 www/dir_img
@@ -47,3 +46,4 @@ www/tos.php
 www/vpnconf.php
 www/vpnchoose.php
 www/vpn.php
+www/config/rev
