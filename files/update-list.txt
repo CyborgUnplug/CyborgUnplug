@@ -20,7 +20,6 @@ www/active.php
 www/admin
 www/armed.php
 www/cgi-bin
-www/config
 www/data
 www/detect.php
 www/dir_img
