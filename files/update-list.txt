@@ -18,7 +18,6 @@ root/scripts/wifi.sh
 root/scripts/wifi-up-down.sh
 www/active.php
 www/admin
-www/allout.php
 www/armed.php
 www/cgi-bin
 www/config
@@ -42,8 +41,6 @@ www/share-visits.php
 www/start.php
 www/status.php
 www/style.css
-www/territorial.php
 www/tos.php
-www/vpnchoose.php
 www/vpnconf.php
 www/vpn.php
