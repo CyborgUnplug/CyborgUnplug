@@ -105,7 +105,7 @@ if [ ! -f $CONFIG/since ]; then
     cp /www/start.php /www/index.php                                 
     /etc/init.d/cron enable 
     echo "<center><footer><hr>" >  /www/footer.php
-    echo "model: World 'Solo' | id: " $(cat $CONFIG/wlanmac | sed 's/://g')" | rev: " $(cat $CONFIG/rev) >> /www/footer.php 
+    echo "model: World solo | id: " $(cat $CONFIG/wlanmac | sed 's/://g')" | rev: " $(cat $CONFIG/rev) >> /www/footer.php 
     echo "</footer></center></div></body></html>" >> /www/footer.php
     ln -s /www/img /www/admin/img
     ln -s /www/cgi-bin /www/admin/cgi-bin
