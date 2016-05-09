@@ -18,6 +18,9 @@ the browser to change it.
         Set a new channel: 
         <input name="channel" type="text" placeholder="channel" />
         <br><br>
+        Set the TX power (20 is default and maximum)
+        <input name="txpower" type="text" placeholder="txpower" />
+        <br><br>
         <input type="submit" value="save" />
       </form>
       </div>

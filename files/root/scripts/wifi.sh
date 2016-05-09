@@ -1,6 +1,7 @@
 #!/bin/bash
 
 CONFIG=/www/config
+TXPOWER=20 #default
 
 # Derive a unique ESSID from wifi NIC's MAC on first boot
 if [ ! -f $CONFIG/since ]; then
@@ -37,6 +38,13 @@ if [ -f $CONFIG/channel ]; then
     CHANNEL=$(cat $CONFIG/channel)
 	uci set wireless.@wifi-iface[0].channel=$CHANNEL
     rm -f /www/config/channel
+fi
+if [ -f $CONFIG/txpower ]; then
+    TXPOWER=$(cat $CONFIG/txpower)
+    uci set wireless.@wifi-iface[0].txpower=$TXPOWER 
+    # iw, called from mac80211.sh doesn't set txpower! have to do it with
+    iwconfig wlan0 txpower $TXPOWER
+    #rm -f /www/config/txpower
 fi
 
 uci commit wireless

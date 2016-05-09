@@ -484,6 +484,18 @@ html[xmlns] .slides {display: block;}
 	margin-bottom: 15px!important;
 	background: #222; 
 }
+.changelog { 
+	background: #f7f7f7;
+	color: black;
+	text-align: left; 
+	padding: 15px; 
+	padding-top: 0px;
+	margin: 0px; 
+	font-size: 1.2em;
+	line-height: 1.3em;
+	font-weight: 400;
+	border-radius: 2px;
+}
 
 #reports_container{
 	margin-left: -15px!important;
