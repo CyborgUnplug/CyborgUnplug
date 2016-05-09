@@ -32,6 +32,8 @@ set $EVENT
 #EVENT=${EVENT/=*/} 
 env > environment
 
+echo $EVENT > $CONFIG/event
+
 # Remove each time script is invoked to disarm in case the user goes back
 rm -f $CONFIG/armed
 
@@ -173,6 +175,11 @@ case "$EVENT" in
         $SCRIPTS/update.sh 1 >> /dev/null &
         html admin/updatenow.php 
     ;;
+    *changelog*)
+        cp $SITE/index.php.conf $SITE/index.php
+        html index.php
+    ;;
+
 	*)
 esac
 IFS=$OLDIFS
