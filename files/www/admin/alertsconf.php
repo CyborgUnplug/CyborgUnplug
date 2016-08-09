@@ -1,4 +1,4 @@
-<?php include '../header.php';?>
+<?php include 'header.php';?>
 
 <center>
 <h1 id="headline">Change your alerts email</h1>
@@ -12,7 +12,7 @@
         if ($g) {
             echo "<br>";
             echo "<div class='warning warning3'>";
-            echo "The current email we have for you is: ";
+            echo "The email we have for you is: ";
             echo "<center>". $g ."</center>";
             echo "</div>";
             echo "<div id='container_general'>";
@@ -29,4 +29,4 @@
             echo "</div>";
         }
     }
-include '../footer.php';?>
+include 'footer.php';?>

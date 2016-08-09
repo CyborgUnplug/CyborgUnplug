@@ -19,7 +19,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-readonly SITE=/www
+readonly SITE=/www/admin/
 readonly DATA=$SITE/data
 readonly CONFIG=$SITE/config
 readonly EVENT=$(echo $QUERY_STRING | sed 's/\+/\ /g')
@@ -39,9 +39,11 @@ html() {
     echo Content-type: text/html
     echo
     echo '<html>'
-    echo '<meta http-equiv="Refresh" content="1; url=/'"$1"'">'
+    echo '<meta http-equiv="Refresh" content="1; url=/'"admin/$1"'">'
     echo '</html>'
 }
+
+echo $EVENT > $CONFIG/event.log
 
 case "$EVENT" in
     *registered*)
@@ -61,17 +63,6 @@ case "$EVENT" in
             html vpn.php
         fi
     ;; 
-    *sharerefresh*)
-        block umount
-        block mount
-        sleep 1
-        html share.php
-    ;; 
-    *sharelock*)
-        cp $SITE/share-visits.php $SITE/index.php
-        sleep 1
-        html index.php
-    ;; 
     *umount*)
         block umount
         cp $SITE/index.php.conf $SITE/index.php
@@ -80,15 +71,14 @@ case "$EVENT" in
     ;; 
     *wlanrestart*)
         touch $CONFIG/setwifi
-        html admin/wlanrestart.php
+        html wlanrestart.php
     ;; 
     *authrestart*)
-       if [ -f /tmp/config/adminpass ]; then
-            sed -i "s/:.*/:$(cat /tmp/config/adminpass)/" /root/keys/lighttpdpassword
-            rm -fr /tmp/config/adminpass
-            sleep 1
-            html admin/configure.php
-       fi
+        sed -i "s/:.*/:$(cat /tmp/config/adminpass)/" /root/keys/lighttpdpassword
+        sleep 1
+        rm -fr /tmp/config/adminpass
+        /etc/init.d/lighttpd restart
+        html authrestart.php
     ;; 
 	*devices*)
 		echo $EVENT | cut -d "=" -f 2 | sed -e 's/%3D/=/g' -e 's/\ //g' | base64 -d | sed 's/^\ //' > $CONFIG/targets
@@ -137,10 +127,18 @@ case "$EVENT" in
 	#	cat $DATA/networks > $CONFIG/networks
     #    html finish.php
 	#;;
+    *bridgechoose*)
+        $SCRIPTS/wifi.sh scan 
+        html bridge.php
+    ;;
+    *bridgeset*)
+        #$SCRIPTS/wifi.sh sta  >> /dev/null &
+        touch $CONFIG/setbridge
+        html index.php
+    ;;
 	*armed*)
         killall openvpn vpn.sh # stop existing instance
         rm -f $CONFIG/vpn
-		echo $EVENT > $CONFIG/event.log
 		touch $CONFIG/armed	
 		sleep 2
         html active.php
@@ -149,7 +147,7 @@ case "$EVENT" in
         update=$(echo "$EVENT" | cut -d '=' -f 2)
         if [[ "$update" == "disabled" ]]; then
             #comment out the update line in crontab
-            sed -i '/update/ s/^/#/' /etc/crontabs/root                                                                                                        
+            sed -i '/update/ s/^/#/' /etc/crontabs/root
             echo disabled > $CONFIG/autoupdate
         elif [[ "$update" == "enabled" ]]; then
             #uncomment the update line in crontab
@@ -157,11 +155,15 @@ case "$EVENT" in
             echo enabled > $CONFIG/autoupdate
         fi
         sleep 1
-        html admin/updateconf.php 
+        html updateconf.php 
     ;;
     *updatenow*)
         $SCRIPTS/update.sh 1 >> /dev/null &
-        html admin/updatenow.php 
+        html updatenow.php 
+    ;;
+    *reboot*)
+        reboot -n
+        html rebooting.php 
     ;;
 	*)
 esac

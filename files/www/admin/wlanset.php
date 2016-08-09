@@ -1,4 +1,4 @@
-<?php include '../header.php';
+<?php include 'header.php';
 
 $gtg=1;
 if (! isset($_POST['ssid']) || ! isset($_POST['password']) || ! isset($_POST['channel'])) {
@@ -84,11 +84,11 @@ if (! isset($_POST['ssid']) || ! isset($_POST['password']) || ! isset($_POST['ch
         echo "Select reboot below to restart the WiFi.\n";
         echo "You'll need to log in with the new settings.\n";
         echo "</div>";
-        echo "<form method='get' id='wlanrestart' action='../cgi-bin/config.cgi'>";
+        echo "<form method='get' id='wlanrestart' action='cgi-bin/config.cgi'>";
         echo "<input name='wlanrestart' type='hidden' value='wlanrestart'>";
         echo "<input type='submit' value='reboot wifi' class='button'>";
         echo "</form>";
     }
 }
 
-include '../footer.php';?>
+include 'footer.php';?>

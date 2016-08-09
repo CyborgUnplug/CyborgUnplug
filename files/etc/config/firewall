@@ -30,6 +30,17 @@ config zone
 	option masq		1
 	option mtu_fix		1
 
+
+config zone
+        option name             wwan
+        list   network          'wwan'
+        option input            ACCEPT 
+        option output           ACCEPT
+        option forward          ACCEPT
+        option masq             1
+        option mtu_fix          1
+
+
 config zone
 	option name vpn
 	option input ACCEPT
@@ -45,6 +56,14 @@ config forwarding
 config forwarding
 	option src		wifi
 	option dest		wan
+
+config forwarding
+	option src		wwan
+	option dest		wifi
+
+config forwarding		
+	option src		wifi
+	option dest		wwan
 
 config forwarding
         option src        lan
@@ -69,6 +88,8 @@ config forwarding
 config forwarding
         option src              vpn 
         option dest             wifi
+
+
 
 # We need to accept udp packets on port 68,
 # see https://dev.openwrt.org/ticket/4108
@@ -102,6 +123,15 @@ config rule
 	option family		ipv4
 
 config rule
+	option name		Block-SSH-WWAN
+	option src		    wwan
+	option proto		tcp
+	option dest_port	22
+	option device	    wlan0.1 
+	option target	    REJECT	
+	option family		ipv4
+
+config rule
 	option name		Allow-DHCP-Renew
 	option src		    wan
 	option proto		udp
@@ -109,10 +139,18 @@ config rule
 	option target		ACCEPT
 	option family		ipv4
 
+config rule
+	option name		Block-WWAN-Ping
+	option src		    wwan
+	option proto		icmp
+	option icmp_type	echo-request
+	option family		ipv4
+	option target	    REJECT	
+
 # Allow IPv4 ping
 config rule
-	option name		Allow-Ping
-	option src		wan
+	option name		    Allow-Ping
+	option src		    wan
 	option proto		icmp
 	option icmp_type	echo-request
 	option family		ipv4

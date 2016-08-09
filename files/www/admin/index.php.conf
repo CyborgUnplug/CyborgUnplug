@@ -1,9 +1,8 @@
 <?php include 'header.php';?>
 
     <center>
-	<h1 id="headline">I would like to...</h1>
+	<h1 id="headline">I want to...</h1>
     </center>
-    <br>
 	<div id="container_start">
         <form action="detect.php">
 			<input name="detect" type="submit" value="detect" class='button'>
@@ -11,11 +10,14 @@
 		<form method="get" id="encrypt" action="cgi-bin/config.cgi">
 			<input name="encrypt" type="submit" value="encrypt" class='button'>
         </form>
-        <form action="admin/configure.php">
+        <form action="configure.php">
 			<input name="configure" type="submit" value="configure" class='button'>
         </form>
-        <form action="share.php">
+        <form action="/share/index.php">
 			<input name="share" type="submit" value="share" class='button'>
+        </form>
+        <form method="get" action="cgi-bin/config.cgi">
+			<input name="reboot" type="submit" value="reboot" class='button'>
         </form>
 
 	</div>

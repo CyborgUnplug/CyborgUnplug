@@ -1,4 +1,4 @@
-<?php include '../header.php';?>
+<?php include 'header.php';?>
 
                 <center>
                 <h1 id='headline'>Now updating...</h1>";
@@ -16,4 +16,4 @@
                 <br>
     
 
-<?php include '../footer.php';?>
+<?php include 'footer.php';?>
