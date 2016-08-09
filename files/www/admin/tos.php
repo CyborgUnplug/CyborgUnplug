@@ -41,9 +41,11 @@ accepting, publishing, selling, linking, etc.</li>
 an infraction, a crime or the preparation or attempt thereof that is punishable
 according to Provider’s national legal order, EU law, international law,
 including the User’s national legal order.</li>
-<li>Not use any of the Services to persecute, harass, threaten or intimidate a third party;
-not use any means that are able to endanger or curb the use of the Services by
-other users; not use the Service for excessive data transfer.</li>
+<li>Not use any of the Services to persecute, harass, threaten or intimidate a
+third party</li>
+<li>Not use any means that are able to endanger or curb the use of the Services by
+other users</li>
+<li>Not use the Service for excessive data transfer.</li>
 </ol>
 The Provider reserves the right to cancel and revoke the User’s VPN
 certificate if the User is found to be in breach of Acceptable Use.  Further,

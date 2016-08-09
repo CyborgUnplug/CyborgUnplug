@@ -8,6 +8,6 @@ config 'global'
         option 'from_fstab'     '1'
 
 config 'mount'
-        option  target          '/www/usb'
+        option  target          '/www/share/usb'
         option  device          '/dev/sda1'
         option 'enabled_fsck'   '0'

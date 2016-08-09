@@ -4,14 +4,14 @@ readonly CONFIG=/www/config/
 
 if [ ! -f $CONFIG/since ]; then
 
-	readonly RANGE=255
+	readonly RANGE=254 # Need max of 255, making room for max $f val below 
 	readonly VENDOR='00:1F:1F' # Edimax
 	readonly VENDOR2='00:17:A5' # Ralink
 
 	rangen() {
-		local NUM=$RANDOM
-		let "NUM %= $RANGE"
-		local oct=$(echo "obase=16;$NUM" | bc)
+		local num=$RANDOM
+		let "num %= $RANGE"
+		local oct=$(echo "obase=16;$num" | bc)
 		if [ ${#oct} == 1 ]; then
 		    oct='0'$oct
 		fi
@@ -23,16 +23,24 @@ if [ ! -f $CONFIG/since ]; then
 	c=$(rangen)
 	d=$(rangen)
 	e=$(rangen)
+    # no idea why virtual NIC in sta mode /needs/ to be last field of radio MAC +1
+    # But it does
+    f=$(echo "obase=16;$(( 0x$e + 1 ))" | bc)
+    if [ ${#f} == 1 ]; then
+        f='0'$f
+    fi
 
 	eth0="${VENDOR}:${a}:${b}:${c}"
 	eth1="${VENDOR}:${a}:${b}:${d}"
 	eth2="${VENDOR}:${b}:${d}:${a}"
-	wlan="${VENDOR2}:${a}:${b}:${e}"
+	wlan0="${VENDOR2}:${a}:${b}:${e}"
+	wlan1="${VENDOR2}:${a}:${b}:${f}"
 
 	echo $eth0 > $CONFIG/eth0mac
 	echo $eth1 > $CONFIG/eth1mac
 	echo $eth2 > $CONFIG/eth2mac
-	echo $wlan > $CONFIG/wlanmac
+	echo $wlan0 > $CONFIG/wlan0mac
+	echo $wlan1 > $CONFIG/wlan1mac
 
 fi
 

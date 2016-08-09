@@ -1,4 +1,4 @@
-<?php include '../header.php';
+<?php include 'header.php';
 
     echo "<br>";
     echo "<div class='warning'>";
@@ -7,4 +7,4 @@
     echo "</div>";
     echo "<br>";
     echo "<br>";
-include '../footer.php';?>
+include 'footer.php';?>
