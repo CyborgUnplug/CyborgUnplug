@@ -17,8 +17,7 @@
 readonly SCRIPTS=/root/scripts
 readonly BINPATH=/usr/sbin/
 readonly CONFIG=/www/config
-readonly POLLTIME=15
-readonly ETH=eth0.2 # WAN interface
+readonly POLLTIME=10
 
 while true;
 	do

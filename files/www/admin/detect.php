@@ -1,7 +1,7 @@
 <?php include 'header.php';?>
 
     <center>
-	<h1 id="headline">Select devices to detect</h1>
+	<h1 id="headline">Select devices</h1>
     </center>
 	<div id="container_devices">
 		

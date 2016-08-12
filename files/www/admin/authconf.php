@@ -1,4 +1,4 @@
-<?php include '../header.php';?>
+<?php include 'header.php';?>
 
     <center>
     <h1 id="headline">Change admin password</h1>
@@ -20,4 +20,4 @@ using a command line utility or reset it. See <a href="https://plugunplug.net/gu
         <input type="submit" value="save" />
       </form>
       </div>
-<?php include '../footer.php';?>
+<?php include 'footer.php';?>

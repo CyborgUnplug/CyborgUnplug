@@ -1,7 +1,7 @@
-<?php include '../header.php';?>
+<?php include 'header.php';?>
 
     <center>
-    <h1 id="headline">Configure the WiFi</h1>
+    <h1 id="headline">Configure WiFi</h1>
     </center>
      <div id="container_general">
 	<div class='warning'>
@@ -18,10 +18,8 @@ the browser to change it.
         Set a new channel: 
         <input name="channel" type="text" placeholder="channel" />
         <br><br>
-        Set the TX power (20 is default and maximum)
-        <input name="txpower" type="text" placeholder="txpower" />
-        <br><br>
         <input type="submit" value="save" />
       </form>
       </div>
-<?php include '../footer.php';?>
+     <div id="container_general">
+<?php include 'footer.php';?>
