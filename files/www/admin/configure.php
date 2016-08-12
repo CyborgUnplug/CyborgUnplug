@@ -1,21 +1,23 @@
-<?php include '../header.php';?>
+<?php include 'header.php';?>
 
     <center>
-	<h1 id="headline">Configure Little Snipper</h1>
+	<h1 id="headline">Configuration</h1>
     </center>
-    <br>
 	<div id="container_general">
-        <form action="wlanconf.php">
-			<input name="wifi" type="submit" value="wifi" class='button'>
-        </form>
-        <form action="updateconf.php">
-			<input name="updates" type="submit" value="updates" class='button'>
-        </form>
         <form action="alertsconf.php">
 			<input name="alerts" type="submit" value="alerts" class='button'>
         </form>
         <form action="authconf.php">
 			<input name="auth" type="submit" value="auth" class='button'>
         </form>
+        <form action="updateconf.php">
+			<input name="updates" type="submit" value="updates" class='button'>
+        </form>
+        <form action="wlanconf.php">
+			<input name="wifi" type="submit" value="wifi" class='button'>
+        </form>
+        <form method="get" action="cgi-bin/config.cgi">
+			<input name="bridgechoose" type="submit" value="bridge" class='button'>
+        </form>
 	</div>
-<?php include '../footer.php';?>
+<?php include 'footer.php';?>

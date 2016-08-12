@@ -37,7 +37,7 @@
                                 $g=fgets($f);
                                 if ($g) {
                                     $parts=explode(',',$g);
-                                    echo "$parts[1]<br/>";
+                                    echo base64_decode($parts[1])."<br/>";
                                 }
                             }
                             fclose($f);

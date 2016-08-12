@@ -27,7 +27,7 @@ if (! isset($_POST['email']) ) {
                 echo "<div>";
                 echo "<form method='get' id='registered' action='cgi-bin/config.cgi'>";
                 echo "<input name='registered' type='hidden' value='registered'>";
-                echo "<input type='submit' value='Go' class='button'>";
+                echo "<input type='submit' value='go' class='button'>";
                 echo "</form>";
                 echo "</div>";
     //echo "$ret bytes written to auth file";
@@ -37,7 +37,7 @@ if (! isset($_POST['email']) ) {
             echo "</div>";
             echo "<div>";
             echo "<form method='get' id='again' action='start.php'>";
-            echo "<input type='submit' value='Try again' class='button'>";
+            echo "<input type='submit' value='try again' class='button'>";
             echo "</form>";
             echo "</div>";
         }

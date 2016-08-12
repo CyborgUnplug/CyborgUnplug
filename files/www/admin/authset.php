@@ -1,4 +1,4 @@
-<?php include '../header.php';
+<?php include 'header.php';
 
 $gtg=1;
 if (! isset($_POST['password']) ) {
@@ -42,11 +42,11 @@ if (! isset($_POST['password']) ) {
         echo "Select reboot below to restart the configuration interface.\n";
         echo "You'll need to log in with the new settings.\n";
         echo "</div>";
-        echo "<form method='get' id='authrestart' action='../cgi-bin/config.cgi'>";
+        echo "<form method='get' id='authrestart' action='cgi-bin/config.cgi'>";
         echo "<input name='authrestart' type='hidden' value='authrestart'>";
         echo "<input type='submit' value='restart' class='button'>";
         echo "</form>";
     }
 }
 
-include '../footer.php';?>
+include 'footer.php';?>

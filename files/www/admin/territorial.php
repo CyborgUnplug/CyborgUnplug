@@ -11,7 +11,7 @@
 			    if ($parts[1]) {
 				    $data=base64_encode($parts[0].','.$parts[1].','.$parts[2]);
 				    echo "<input type='checkbox' class='css-checkbox' id=$data>
-				    <label for=$data class='css-label css-label-narrow'> $parts[1]<macaddr><br></label><br/>";
+				    <label for=$data class='css-label css-label-narrow'>".base64_decode($parts[1])."<span class='macaddr'>".$parts[0]."</span><br></label><br/>";
 			    }
 			}
 			fclose($f);

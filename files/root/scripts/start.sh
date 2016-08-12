@@ -105,10 +105,10 @@ if [ ! -f $CONFIG/since ]; then
     #ln -s /www/cgi-bin /www/admin/cgi-bin
 else
     if [ ! -f $CONFIG/email ]; then
-        cp /www/start.php /www/index.php                                 
+        cp /www/admin/start.php /www/admin/index.php                                 
     else
         # Copy our config site page to index.php                              
-        cp /www/index.php.conf /www/index.php                                 
+        cp /www/admin/index.php.conf /www/admin/index.php                                 
     fi
     # Update the revision string 
     sed -i "/rev:/ s/rev:.*/rev:\ $(cat $CONFIG/rev)/" /www/footer.php

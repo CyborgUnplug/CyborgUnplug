@@ -1,4 +1,4 @@
-<?php include '../header.php';
+<?php include 'header.php';
 
 $gtg=1;
 if (! isset($_POST['ssid']) || ! isset($_POST['password']) || ! isset($_POST['channel'])) {
@@ -13,92 +13,63 @@ if (! isset($_POST['ssid']) || ! isset($_POST['password']) || ! isset($_POST['ch
 } else {
     if(isset($_POST['ssid'])) {
         $ssid = $_POST['ssid'];
-        if (strlen($ssid) != 0) {
-            $fn1 ='/www/config/ssid'; 
-            $f1 = fopen($fn1, 'w');
-            $ret = fwrite($f1, $ssid);
-            fclose($f1); 
-            if($ret === false) {
-                die('There was an error writing this file');
-            }
+        $fn1 ='/www/config/ssid'; 
+        $f1 = fopen($fn1, 'w');
+        $ret = fwrite($f1, $ssid);
+        fclose($f1); 
+        if($ret === false) {
+            die('There was an error writing this file');
         }
     }
     if(isset($_POST['password'])) {
         $pw = $_POST['password'];
         $min = 8;
         $max = 63;
-        $pwlen = strlen($pw);
-        if ($pwlen != 0) {
-            if ($pwlen > $max ) {
-                $gtg=0;
-                echo "<div class='warning'>";
-                echo "Password too long: must not be longer than 63 characters.\n";
-                echo "</div>";
-                echo "<form method='get' id='wlanconf' action='wlanconf.php'>";
-                echo "<input name='wlanconf' type='hidden' value='wlanconf'>";
-                echo "<input type='submit' value='try again' class='button'>";
-                echo "</form>";
-            } elseif ($pwlen < $min) {
-                $gtg=0;
-                echo "<div class='warning'>";
-                echo "Password too short: must be 8 characters or longer.\n";
-                echo "</div>";
-                echo "<form method='get' id='wlanconf' action='wlanconf.php'>";
-                echo "<input name='wlanconf' type='hidden' value='wlanconf'>";
-                echo "<input type='submit' value='try again' class='button'>";
-                echo "</form>";
-            } else {
-                $fn2 ='/tmp/config/wlanpw'; 
-                $f2 = fopen($fn2, 'w');
-                $ret = fwrite($f2, $pw);
-                fclose($f2); 
-                if($ret === false) {
-                    die('There was an error writing this file');
-                } 
-            }
-        }
-    }
-    if(isset($_POST['channel'])) {
-        $channel = $_POST['channel'];
-        if (strlen($channel) != 0) {
-            $max = 13;
-            if ($channel > $max) {
-                $gtg=0;
-                echo "<div class='warning'>";
-                echo "Channels cannot be higher than 13. Please choose a lower number.\n";
-                echo "</div>";
-                echo "<form method='get' id='wlanconf' action='wlanconf.php'>";
-                echo "<input name='wlanconf' type='hidden' value='wlanconf'>";
-                echo "<input type='submit' value='try again' class='button'>";
-                echo "</form>";
-            } else {
-                $fn3 ='/www/config/channel'; 
-                $f3 = fopen($fn3, 'w');
-                $ret = fwrite($f3, $channel);
-                fclose($f3); 
-                if($ret === false) {
-                    die('There was an error writing this file');
-                } 
-            }
-        }
-    }
-    if(isset($_POST['txpower'])) {
-        $txpower = $_POST['txpower'];
-        $max = 20;
-        if ($txpower > $max || $txpower < 1 ) {
+        if (strlen($pw) > $max ) {
             $gtg=0;
             echo "<div class='warning'>";
-            echo "TX power cannot be higher than 20 or lower than 1. Please another value.\n";
+            echo "Password too long: must not be longer than 63 characters.\n";
+            echo "</div>";
+            echo "<form method='get' id='wlanconf' action='wlanconf.php'>";
+            echo "<input name='wlanconf' type='hidden' value='wlanconf'>";
+            echo "<input type='submit' value='try again' class='button'>";
+            echo "</form>";
+        } elseif (strlen($pw) < $min) {
+            $gtg=0;
+            echo "<div class='warning'>";
+            echo "Password too short: must be 8 characters or longer.\n";
             echo "</div>";
             echo "<form method='get' id='wlanconf' action='wlanconf.php'>";
             echo "<input name='wlanconf' type='hidden' value='wlanconf'>";
             echo "<input type='submit' value='try again' class='button'>";
             echo "</form>";
         } else {
-            $fn4 ='/www/config/txpower'; 
-            $f4 = fopen($fn4, 'w');
-            $ret = fwrite($f4, $txpower);
-            fclose($f4); 
+            $fn2 ='/tmp/config/wlanpw'; 
+            $f2 = fopen($fn2, 'w');
+            $ret = fwrite($f2, $pw);
+            fclose($f2); 
+            if($ret === false) {
+                die('There was an error writing this file');
+            } 
+        }
+    }
+    if(isset($_POST['channel'])) {
+        $channel = $_POST['channel'];
+        $max = 13;
+        if ($channel > $max) {
+            $gtg=0;
+            echo "<div class='warning'>";
+            echo "Channels cannot be higher than 13. Please choose a lower number.\n";
+            echo "</div>";
+            echo "<form method='get' id='wlanconf' action='wlanconf.php'>";
+            echo "<input name='wlanconf' type='hidden' value='wlanconf'>";
+            echo "<input type='submit' value='try again' class='button'>";
+            echo "</form>";
+        } else {
+            $fn3 ='/www/config/channel'; 
+            $f3 = fopen($fn3, 'w');
+            $ret = fwrite($f3, $channel);
+            fclose($f3); 
             if($ret === false) {
                 die('There was an error writing this file');
             } 
@@ -113,11 +84,11 @@ if (! isset($_POST['ssid']) || ! isset($_POST['password']) || ! isset($_POST['ch
         echo "Select reboot below to restart the WiFi.\n";
         echo "You'll need to log in with the new settings.\n";
         echo "</div>";
-        echo "<form method='get' id='wlanrestart' action='../cgi-bin/config.cgi'>";
+        echo "<form method='get' id='wlanrestart' action='cgi-bin/config.cgi'>";
         echo "<input name='wlanrestart' type='hidden' value='wlanrestart'>";
         echo "<input type='submit' value='reboot wifi' class='button'>";
         echo "</form>";
     }
 }
 
-include '../footer.php';?>
+include 'footer.php';?>
