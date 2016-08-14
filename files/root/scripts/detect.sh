@@ -22,7 +22,7 @@ trap "trap - SIGTERM && kill -- -$$" SIGINT SIGTERM EXIT
 shopt -s nocasematch # Important
 
 readonly SCRIPTS=/root/scripts
-readonly LOGS=/www/logs/
+readonly LOGS=/www/admin/logs/
 readonly CAPDIR=/tmp
 readonly CONFIG=/www/config
 readonly FRAMES=5 # Number of de-auth frames to send. 10 a good hit/time tradeoff
@@ -43,7 +43,7 @@ apid=0
 
 # Make the activity page the default site page for connections during detection
 # (only available over Ethernet) 
-cp /www/active.php /www/index.php
+cp /www/admin/active.php /www/admin/index.php
 rm -f $LOGS/detected
 echo "This is our target list: "$TARGETS > $LOGS/targets
 

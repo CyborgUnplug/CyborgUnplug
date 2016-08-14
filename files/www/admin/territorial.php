@@ -9,7 +9,7 @@
 			    $g=fgets($f);
 			    $parts = explode(',', $g);
 			    if ($parts[1]) {
-				    $data=base64_encode($parts[0].','.$parts[1].','.$parts[2]);
+				    $data=base64_encode($parts[0].','.$parts[1].','.$parts[2]."\r\n");
 				    echo "<input type='checkbox' class='css-checkbox' id=$data>
 				    <label for=$data class='css-label css-label-narrow'>".base64_decode($parts[1])."<span class='macaddr'>".$parts[0]."</span><br></label><br/>";
 			    }
