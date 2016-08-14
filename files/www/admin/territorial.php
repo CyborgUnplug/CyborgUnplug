@@ -19,8 +19,10 @@
 		<br/><br/>
 		<div class="warning";>Please check local laws before selecting networks you do not control or administer</div>
 		<br/>
+        <center>
 		<input name="finish1" type="hidden" id="checkList" value="nothing">
 		<input type="submit" value="NEXT" class='btnnext'>
+        </center>
 	</form>
 
 <?php include 'footer.php';?>

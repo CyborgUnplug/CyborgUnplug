@@ -72,6 +72,9 @@ sleep 5
 # Start the automounter
 block umount; block mount
 
+# Bring up the AP
+$SCRIPTS/wifi.sh ap
+
 # Setup GPIO for indicator LED
 #$SCRIPTS/gpio.sh
 
@@ -82,9 +85,6 @@ echo "Scanning for networks..."
 $SCRIPTS/wifi.sh scan
 echo "Found the following.."
 cat $DATA/networks
-
-# Bring up the AP
-$SCRIPTS/wifi.sh ap
 
 chown nobody:nogroup $CONFIG/vpnstatus
 echo unconfigured > $CONFIG/vpnstatus
