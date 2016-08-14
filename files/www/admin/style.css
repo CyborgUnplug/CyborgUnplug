@@ -655,10 +655,9 @@ input[type=radio].css-radio:checked + label.css-label {
 }
 
 .macaddr { 
-	font-size: 18px; 
+	font-size: 10px; 
 	text-align: right; 
 	color: #999; 
-	padding-left: 20px
 }
 
 .button, input[type="submit"], button, .toggle-title {

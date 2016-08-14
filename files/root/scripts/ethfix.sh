@@ -23,18 +23,25 @@ if [ ! -f $CONFIG/since ]; then
 	c=$(rangen)
 	d=$(rangen)
 	e=$(rangen)
+
     # no idea why virtual NIC in sta mode /needs/ to be last field of radio MAC +1
     # But it does
-    f=$(echo "obase=16;$(( 0x$e + 1 ))" | bc)
-    if [ ${#f} == 1 ]; then
-        f='0'$f
-    fi
+    plusone() {
+        p=$(echo "obase=16;$(( 0x$1 + 1 ))" | bc)
+        if [ ${#1} == 1 ]; then
+            p='0'$1
+        fi
+        echo $p
+    }
+
+    d_=$(plusone $d)
+    e_=$(plusone $e)
 
 	eth0="${VENDOR}:${a}:${b}:${c}"
 	eth1="${VENDOR}:${a}:${b}:${d}"
-	eth2="${VENDOR}:${b}:${d}:${a}"
+	eth2="${VENDOR}:${a}:${b}:${d_}"
 	wlan0="${VENDOR2}:${a}:${b}:${e}"
-	wlan1="${VENDOR2}:${a}:${b}:${f}"
+	wlan1="${VENDOR2}:${a}:${b}:${e_}"
 
 	echo $eth0 > $CONFIG/eth0mac
 	echo $eth1 > $CONFIG/eth1mac
