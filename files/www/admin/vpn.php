@@ -162,6 +162,9 @@ if ($vpnup == 0) {
         echo "<input name='newvpn' type='hidden' value='newvpn'>";
         echo "<input type='submit' value='start over' class='button'>";
         echo "</form>";
+        echo "<form action='index.php'>";
+        echo "<input type='submit' value='main menu' class='button'>";
+        echo "</form>";
     }
 
     if (!$conffile == false) {
