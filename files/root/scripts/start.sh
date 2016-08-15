@@ -20,7 +20,7 @@
 
 readonly SCRIPTS=/root/scripts
 readonly UDIR=/root/update
-readonly LOGS=/www/logs                               
+readonly LOGS=/www/admin/logs                               
 readonly CONFIG=/www/config                                                                       
 readonly DATA=/www/data                                             
 readonly RESETDIR=/root/reset
@@ -101,8 +101,7 @@ if [ ! -f $CONFIG/since ]; then
     echo "<center><footer><hr>" >  /www/admin/footer.php
     echo "model: World | id: " $(cat $CONFIG/wlan0mac | sed 's/://g')" | rev: " $(cat $CONFIG/rev) >> /www/admin/footer.php 
     echo "</footer></center></div></body></html>" >> /www/admin/footer.php
-    #ln -s /www/img /www/admin/img
-    #ln -s /www/cgi-bin /www/admin/cgi-bin
+    ln -s /www/admin/footer.php /www/share/footer.php
 else
     if [ ! -f $CONFIG/email ]; then
         cp /www/admin/start.php /www/admin/index.php                                 
@@ -111,7 +110,7 @@ else
         cp /www/admin/index.php.conf /www/admin/index.php                                 
     fi
     # Update the revision string 
-    sed -i "/rev:/ s/rev:.*/rev:\ $(cat $CONFIG/rev)/" /www/footer.php
+    sed -i "/rev:/ s/rev:.*/rev:\ $(cat $CONFIG/rev)/" /www/admin/footer.php
     rm -f $CONFIG/armed                            
     rm -f $CONFIG/networks        
     rm -f $CONFIG/targets

@@ -86,6 +86,7 @@ case "$EVENT" in
 	;;
 	*mode1*)
 		echo territory > $CONFIG/mode
+        $SCRIPTS/wifi.sh scan
         html territorial.php
 	;;
 	*mode2*)
