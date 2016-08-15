@@ -20,7 +20,7 @@
 
 readonly SCRIPTS=/root/scripts
 readonly UDIR=/root/update
-readonly LOGS=/www/logs                               
+readonly LOGS=/www/admin/logs                               
 readonly CONFIG=/www/config                                                                       
 readonly DATA=/www/data                                             
 readonly RESETDIR=/root/reset
@@ -72,8 +72,8 @@ sleep 5
 # Start the automounter
 block umount; block mount
 
-# Setup GPIO for indicator LED
-#$SCRIPTS/gpio.sh
+# Bring up the AP
+$SCRIPTS/wifi.sh ap
 
 # Scanning is done with a randomly generated NIC (TY mac80211!)
 # The scan.sh script brings up the wireless NIC for us and sets 
@@ -82,9 +82,6 @@ echo "Scanning for networks..."
 $SCRIPTS/wifi.sh scan
 echo "Found the following.."
 cat $DATA/networks
-
-# Bring up the AP
-$SCRIPTS/wifi.sh ap
 
 chown nobody:nogroup $CONFIG/vpnstatus
 echo unconfigured > $CONFIG/vpnstatus
@@ -101,8 +98,7 @@ if [ ! -f $CONFIG/since ]; then
     echo "<center><footer><hr>" >  /www/admin/footer.php
     echo "model: USA | id: " $(cat $CONFIG/wlan0mac | sed 's/://g')" | rev: " $(cat $CONFIG/rev) >> /www/admin/footer.php 
     echo "</footer></center></div></body></html>" >> /www/admin/footer.php
-    #ln -s /www/img /www/admin/img
-    #ln -s /www/cgi-bin /www/admin/cgi-bin
+    ln -s /www/admin/footer.php /www/share/footer.php
 else
     if [ ! -f $CONFIG/email ]; then
         cp /www/admin/start.php /www/admin/index.php                                 
