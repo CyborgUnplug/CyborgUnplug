@@ -1,11 +1,11 @@
-<?php include '../header.php';?>
+<?php include 'header.php';?>
 
     <center>
     <h1 id="headline">Configure updates</h1>
     </center>
 	<div id="container_general">
         <center>
-        <form method="get" id="updatenow" action="../cgi-bin/config.cgi">
+        <form method="get" id="updatenow" action="cgi-bin/config.cgi">
             <input name="updatenow" type="hidden" value="nothing">
             <input type="submit" value="UPDATE NOW" class="btnnext">
         </form>
@@ -18,24 +18,24 @@
         <br>
 
         <hr>
-		<form method="get" id="autoupdate" action="../cgi-bin/config.cgi">
+		<form method="get" id="autoupdate" action="cgi-bin/config.cgi">
 			<?php
-                $fn='../config/autoupdate';
+                $fn='config/autoupdate';
                 if (file_exists($fn)) {
-                    $f = fopen("../config/autoupdate", "r");
+                    $f = fopen("config/autoupdate", "r");
                     $g=fgets($f);                                                                                                                              
                     if ($g) {
                         if (preg_match('/enabled/', $g) == 1) {
                             echo "<center><h3>Auto updates are enabled</h3></center>";
                             echo "<br>";
-                            echo "<form method='get' id='autoupdate' action='../cgi-bin/config.cgi'>";
+                            echo "<form method='get' id='autoupdate' action='cgi-bin/config.cgi'>";
                             echo "<input name='autoupdate' type='hidden'value='disabled'>";
                             echo "<input type='submit' value='disable' class='button'>";
                             echo "</form>";
                         } else {
                             echo "<center><h3>Auto updates are disabled</h3></center>";
                             echo "<br>";
-                            echo "<form method='get' id='autoupdate' action='../cgi-bin/config.cgi'>";
+                            echo "<form method='get' id='autoupdate' action='cgi-bin/config.cgi'>";
                             echo "<input name='autoupdate' type='hidden'value='enabled'>";
                             echo "<input type='submit' value='enable' class='button'>";
                             echo "</form>";
@@ -52,4 +52,4 @@ code repository</a>.
             </center>
     </div>
 
-<?php include '../footer.php';?>
+<?php include 'footer.php';?>

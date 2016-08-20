@@ -34,6 +34,8 @@ while true;
             echo $count
             if [[ $count -gt 10 ]]; then
                 echo "resetting"
+		rm -f /www/config/since
+		rm -f /www/config/email
                 mkdir $RESETDIR/fs
                 tar xvzf /usr/share/reset/reset.tar.gz -C $RESETDIR/fs 
                 touch $RESETDIR/resetnow

@@ -60,9 +60,8 @@ if [ -f $CONFIG/networkstate ]; then
                             ./upgrade.sh &> $LOG 
                             if [[ ! $? -eq 0 ]]; then 
                                 echo "Something went wrong with the update. Check log"
-                            else
-                                rm -f $CONFIG/upgrade
                             fi
+                            rm -f $CONFIG/upgrade
                         fi
                 fi
             fi

@@ -26,26 +26,36 @@
             </div>
         </li>
    
-        <li>
-            <a href='#networks' class='navLink'><h4 class='toggle-title'>networks to watch</h4></a>
-            <div id='networks' class='page'>
-                <form id="networks"> 
-                    <div class="config_container">
-                        <?php
+        <?php
+        $fn='config/mode';
+        if (file_exists($fn)) {
+            $f = fopen("config/mode", "r");
+            $g=fgets($f);                                                                                                                              
+            if ($g) {
+                if (preg_match('/allout/', $g) != 1) {
+            echo "<li>";
+            echo "<a href='#networks' class='navLink'><h4 class='toggle-title'>networks to watch</h4></a>";
+            echo "<div id='networks' class='page'>";
+            echo "<form id='networks'>"; 
+            echo "        <div class='config_container'>";
                             $f = fopen("config/networks", "r");
                             while(!feof($f)) {
                                 $g=fgets($f);
                                 if ($g) {
                                     $parts=explode(',',$g);
-                                    echo "$parts[1]<br/>";
+                                    echo base64_decode($parts[1])."<br/>";
                                 }
                             }
                             fclose($f);
-                        ?>
-                    </div>
-                </form>
-            </div>
-        </li>
+                    echo "</div>";
+                echo "</form>";
+            echo "</div>";
+        echo "</li>";
+
+            }
+        }
+    }
+    ?>
     </ul>
 
     <form method="get" id="armed" action="cgi-bin/config.cgi">

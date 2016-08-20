@@ -16,9 +16,9 @@
 #headline{
 	margin-top: 30px;
 	margin-bottom: 35px;
-	font-weight: 400;
-	color: black;
-	font-size: 3.7em;
+	font-weight: 200;
+	color: #666;
+	font-size: 2.7em;
 }
 .headline_net{
 	margin-bottom: 30px!important;
@@ -64,6 +64,13 @@
 	text-align: left;
 	background-color: #f7f7f7;
 }
+#container_networks{
+	width:80%; 
+	padding-left:20%;
+	padding-right:0%;
+	text-align: left;
+	background-color: #f7f7f7;
+}
 #container_caption{
 	width:95%; 
 	padding-left:0%;
@@ -84,6 +91,15 @@
     font-size: .5em;
     color: #00ff00;
 	text-align: center;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	-o-border-radius: 3px;
+	-ms-border-radius: 3px;
+	-khtml-border-radius: 3px;
+	border-radius: 3px;
+	-moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+	-webkit-box-shadow:0 1px 3px rgba(0, 0, 0, 0.3);
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 }
 .device{
 	
@@ -156,6 +172,15 @@ html, button, input, select, textarea {
 	-webkit-font-smoothing: antialiased;
 	font-smoothing: antialiased;
 	text-shadow: 1px 1px 1px rgba(0,0,0,0.004);}
+
+select.networks {
+    font-size: 1.2em; 
+	color: #555; 
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    text-indent: 1px;
+    text-overflow: '';
+}
 
 body {   margin: 0; font-size: 13px; line-height: 1.6; color: #555 }
 	
@@ -348,13 +373,13 @@ h1,h2,h3,h4,h5,h6{
 }
 
 h1 {
-	font-size: 3.5em; 
+	font-size: 2.0em; 
 	letter-spacing: -0.01em; 
 	line-height: 0.9; 
 	color: #555;
 	margin: 0 0 0.5em; 
 }
-h2 { font-size: 2.5em; margin: 0 0 20px; letter-spacing: -0.05em; color: #555; line-height: 1; }
+h2 { font-size: 1.75em; margin: 0 0 20px; letter-spacing: -0.05em; color: #555; line-height: 1; }
 h3 { font-size: 1.75em; }
 h4 { font-size: 1.5em; }
 h5 { font-size: 1.17em; text-transform: uppercase; margin-left: 5em; margin-top: -2em; color: #555; }
@@ -554,6 +579,7 @@ html[xmlns] .slides {display: block;}
 /* -- BUTTONS 
 ------------------------------------------------------------- */
 
+
 input[type=checkbox].css-checkbox {						
 	position:absolute;
 	z-index:-1000;
@@ -597,21 +623,51 @@ label.css-label {
 	margin-left: 0px!important;
 }
 
+input[type=radio].css-radio {						
+	position:absolute;
+	z-index:-1000;
+	left:-1000px;
+	overflow: hidden;
+	clip: rect(0 0 0 0);
+	height:1px;
+	width:1px;
+	margin:-1px;
+	padding:0;
+	border:0;
+	background: #ccc;
+}
+input[type=radio].css-radio + label.css-label {
+	padding-left:60px;
+	height:44px; 
+	display:inline-block;
+	background-repeat:no-repeat;
+	background-position: 0 0;
+	font-size:2em;
+	vertical-align:middle;
+	cursor:pointer;
+	margin-left: 20px;
+	margin-bottom: 0px;
+	margin-top: 20px;
+	color: #666;
+}
+input[type=radio].css-radio:checked + label.css-label {
+	background-position: 0 -44px;
+}
+
 .macaddr { 
-	font-size: 22px; 
+	font-size: 10px; 
 	text-align: right; 
 	color: #999; 
-	padding-left: 10px
 }
 
 .button, input[type="submit"], button, .toggle-title {
-	color: #555;
+	color: #666;
 	font-size: 2.2em;
-	font-weight: 400;
+	font-weight: 800;
 	padding: 0.6em 1.2em;
-	border: solid 2px #ddd;
-	text-decoration: none;
-	cursor: pointer;
+	border: solid 1px #999;
+    /*text-shadow: -2px 2px 4px rgba(0,0,0,0.9);*/
+    cursor: pointer;
 	
 	background: #efefef; /* Old browsers */
 	background: -moz-linear-gradient(top,  #f6f6f6 0%, #efefef 100%); /* FF3.6+ */
@@ -622,12 +678,15 @@ label.css-label {
 	background: linear-gradient(to bottom,  #f6f6f6 0%,#efefef 100%); /* W3C */
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f6f6f6', endColorstr='#efefef',GradientType=0 ); /* IE6-9 */
 		
-	-webkit-border-radius: 2px;
-	-moz-border-radius: 2px;
-	-o-border-radius: 2px;
-	-ms-border-radius: 2px;
-	-khtml-border-radius: 2px;
-	border-radius: 2px;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	-o-border-radius: 3px;
+	-ms-border-radius: 3px;
+	-khtml-border-radius: 3px;
+	border-radius: 3px;
+	-moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+	-webkit-box-shadow:0 1px 3px rgba(0, 0, 0, 0.15);
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
 	
 	-webkit-transition: 0.1s linear all;
 	-moz-transition: 0.1s linear all;
@@ -638,19 +697,10 @@ label.css-label {
 	color: #333;
 	text-decoration: none;
 	border-color: #BBB;
-	-moz-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-	-webkit-box-shadow:0 1px 2px rgba(0, 0, 0, 0.1);
-	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 	background: #e8e8e8;}
 .button:focus, input[type="submit"]:focus, button:focus, .toggle-title:focus {
 	color: #333;
 	border-color: #BBB;
-}
-.button:active, input[type="submit"]:active, button:active, .toggle-title:active {
-	color: #000;
-	background: #F5F5F5;
-	border-color: #444;
-	position: relative; top:1px;
 }
 
 .btn {
@@ -695,6 +745,15 @@ label.css-label {
 	color:black!important;
 	font-weight: 500!important;
 	max-width: 350px;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	-o-border-radius: 3px;
+	-ms-border-radius: 3px;
+	-khtml-border-radius: 3px;
+	border-radius: 3px;
+	-moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+	-webkit-box-shadow:0 1px 3px rgba(0, 0, 0, 0.3);
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 }
 
 .btnnext:hover {
@@ -727,6 +786,15 @@ label.css-label {
 	color:red!important;
 	font-weight: 500!important;
 	max-width: 350px;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	-o-border-radius: 3px;
+	-ms-border-radius: 3px;
+	-khtml-border-radius: 3px;
+	border-radius: 3px;
+	-moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+	-webkit-box-shadow:0 1px 3px rgba(0, 0, 0, 0.3);
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 }
 
 .btnarm:hover {
@@ -761,6 +829,7 @@ label.css-label {
 .tactive:after {
     content: "\25BC";
     color: #555;
+
 }
 .toggle {
     padding: 1em 2em;

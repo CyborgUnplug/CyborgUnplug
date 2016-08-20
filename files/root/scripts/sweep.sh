@@ -22,7 +22,7 @@ trap "trap - SIGTERM && kill -- -$$" SIGINT SIGTERM EXIT
 shopt -s nocasematch # Important
 
 readonly SCRIPTS=/root/scripts
-readonly LOGS=/www/logs/
+readonly LOGS=/www/admin/logs/
 readonly CAPDIR=/tmp
 readonly CONFIG=/www/config
 readonly FRAMES=5 # Number of de-auth frames to send. 10 a good hit/time tradeoff
@@ -31,12 +31,14 @@ readonly FRAMES=5 # Number of de-auth frames to send. 10 a good hit/time tradeof
 readonly SRCT=$(cat $CONFIG/targets | cut -d "," -f 2)
 readonly TARGETS='@('$(echo $SRCT | sed 's/\ /\*\|/g')'*)'
 
+readonly NIC=wlan0
+
 seen=()
 apid=0
 
 # Make the activity page the default site page for connections during detection
 # (only available over Ethernet) 
-cp /www/active.php /www/index.php
+cp /www/admin/active.php /www/admin/index.php
 rm -f $LOGS/detected
 echo "This is our target list: "$TARGETS > $LOGS/targets
 
@@ -47,6 +49,7 @@ killall horst
 wifi down
 uci set wireless.@wifi-iface[0].mode="sta"
 uci set wireless.@wifi-iface[0].disabled="0"
+uci set wireless.@wifi-iface[1].disabled="1"
 uci commit wireless
 wifi up
 sleep 3 # Important
@@ -55,7 +58,6 @@ sleep 3 # Important
 # mode. We use $NIC to capture rather than the mon0 device created below. This
 # is useful as we can set the channel of $NIC on the fly with iwconfig,
 # automatically setting the channel of the mon0 device used to de-auth in turn.
-readonly NIC=$(iw dev | grep Interface | awk '{ print $2 }')
 ifconfig $NIC down
 iwconfig $NIC mode Monitor
 ifconfig $NIC up
@@ -163,7 +165,7 @@ fi
 
 echo idle > /tmp/blink
 echo NULL > $CONFIG/mode
-cp /www/index.php.conf /www/index.php
+cp /www/admin/index.php.conf /www/admin/index.php
 
 killall horst 
 #kill -9 $hpid 

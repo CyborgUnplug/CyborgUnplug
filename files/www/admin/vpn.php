@@ -73,11 +73,11 @@ if ($vpnup == 0) {
     echo "<br>";
     echo "<form method='get' id='stopvpn' action='cgi-bin/config.cgi'>";
     echo "<input name='stopvpn' type='hidden' value='stopvpn'>";
-    echo "<input type='submit' value='Stop VPN' class='button'>";
+    echo "<input type='submit' value='stop vpn' class='button'>";
     echo "</form>";
     echo "<form method='get' id='checkvpn' action='cgi-bin/config.cgi'>";
     echo "<input name='checkvpn' type='hidden' value='checkvpn'>";
-    echo "<input type='submit' value='Check VPN' class='button'>";
+    echo "<input type='submit' value='check vpn' class='button'>";
     echo "</form>";
 } else if ($vpnup == 3) {
     echo "<br>";
@@ -87,7 +87,7 @@ if ($vpnup == 0) {
     echo "</div>";
     echo "<form method='get' id='newvpn' action='cgi-bin/config.cgi'>";
     echo "<input name='newvpn' type='hidden' value='newvpn'>";
-    echo "<input type='submit' value='Start over' class='button'>";
+    echo "<input type='submit' value='start over' class='button'>";
     echo "</form>";
     echo "<div class='warning warning3'>";
     echo "If you've just tried to connect and it failed, check usernames and passwords (if any).\n";
@@ -160,7 +160,10 @@ if ($vpnup == 0) {
         echo "<br>";
         echo "<form method='get' id='newvpn' action='cgi-bin/config.cgi'>";
         echo "<input name='newvpn' type='hidden' value='newvpn'>";
-        echo "<input type='submit' value='Start over' class='button'>";
+        echo "<input type='submit' value='start over' class='button'>";
+        echo "</form>";
+        echo "<form action='index.php'>";
+        echo "<input type='submit' value='main menu' class='button'>";
         echo "</form>";
     }
 
@@ -175,7 +178,7 @@ if ($vpnup == 0) {
         
         echo "<form method='get' id='extvpn' action='cgi-bin/config.cgi'>";
         echo "<input name='extvpn' type='hidden' value=".$extvpn.">";
-        echo "<input type='submit' value='Start VPN' class='button'>";
+        echo "<input type='submit' value='start vpn' class='button'>";
         echo "</form>";
     }
 }

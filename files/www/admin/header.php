@@ -5,8 +5,8 @@
 	 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
 	<title>Cyborg Unplug Configuration</title>
-	<link rel="stylesheet" href="/style.css"/>
-	<script src="/jquery-1.11.1.min.js"></script>
+	<link rel="stylesheet" href="style.css"/>
+	<script src="jquery-1.11.1.min.js"></script>
 	<script> 
 		var $checkboxes;
 		function chooser() {         
@@ -35,8 +35,8 @@
     var auto_refresh = setInterval(
     function()
     {
-        $('#status').fadeOut('slow').load('/status.php').fadeIn("slow");
-    }, 5000);
+        $('#status').fadeOut('slow').load('status.php').fadeIn("slow");
+    }, 10000);
 </script>
 
 </head>

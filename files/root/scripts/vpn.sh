@@ -23,6 +23,7 @@ readonly VPN=/root/keys/plugunplug.ovpn
 readonly POLLTIME=5
 readonly ETH=eth0.2 # WAN interface
 readonly VPNSERVER=89.238.81.42
+readonly GATEWAY=$(route -n | grep UG[^H] | awk '{ print $2 }')
 
 STATUS=$(cat $CONFIG/vpnstatus)
 TUN=""
@@ -31,7 +32,9 @@ STARTED=0
 vpnstart () {
     if [[ $STATUS == "start" && $STARTED != 1 ]]; then
         echo "Attempting to bring up VPN..."
-        ifconfig $ETH up # in case taken down here earlier
+        if [ ! -f $CONFIG/bridge ]; then
+            ifconfig $ETH up # in case taken down here earlier
+        fi
         killall -SIGTERM openvpn
         killall stunnel
         local vpnargs=($(cat $CONFIG/vpn)) # array
@@ -60,7 +63,7 @@ vpnstart () {
                 STARTED=1
                 STATUS=$(cat $CONFIG/vpnstatus)
                 if [[ "$STATUS" != "up" ]]; then
-                    if [ $count -lt 60 ]; then
+                    if [ $count -lt 120 ]; then
                         let "count+=1"
                         echo "Count $count. Waiting for tun/tap to come up"
                         sleep 1 
@@ -89,7 +92,9 @@ vpncheck () {
     if [ -z "$TUN" ]; then
         echo "VPN is down, do stuff here...."
         # VPN was in use, so take down WAN NIC immediately, to avoid leaks
-        ifconfig $ETH down
+        if [ ! -f $CONFIG/bridge ]; then
+            ifconfig $ETH down 
+        fi
         routetoggle down
         echo down > $CONFIG/vpnstatus
         killall -SIGTERM openvpn # zombie processes
@@ -121,7 +126,6 @@ vpnstop() {
 routetoggle() {
     #/etc/init.d/dnsmasq stop
     killall dnsmasq
-    GATEWAY=$(route -n | grep UG[^H] | awk '{ print $2 }')
     if [ "$1" == up ]; then
         # Add our route
         # Take down the dnsmasq pocess
