@@ -63,7 +63,7 @@ vpnstart () {
                 STARTED=1
                 STATUS=$(cat $CONFIG/vpnstatus)
                 if [[ "$STATUS" != "up" ]]; then
-                    if [ $count -lt 60 ]; then
+                    if [ $count -lt 120 ]; then
                         let "count+=1"
                         echo "Count $count. Waiting for tun/tap to come up"
                         sleep 1 
