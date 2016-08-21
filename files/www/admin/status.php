@@ -13,7 +13,7 @@ GeoIP status updates end-to-end encrypted */
             if (preg_match('/online/', $g) == 1) {
                 $url = 'https://plugunplug.net/geoip/yourip.php';
                 $ch = curl_init();
-                $timeout = 5;
+                $timeout = 10;
                 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
                 curl_setopt($ch, CURLOPT_HEADER, 0); 
                 curl_setopt($ch,CURLOPT_URL, $url);

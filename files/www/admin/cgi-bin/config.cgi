@@ -100,6 +100,7 @@ case "$EVENT" in
 	;;
 	*mode4*)
 		echo sweep > $CONFIG/mode
+        $SCRIPTS/wifi.sh scan
 		cat $DATA/networks > $CONFIG/networks
         html finish.php
 	;;
