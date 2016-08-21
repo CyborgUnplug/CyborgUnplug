@@ -31,3 +31,7 @@ available with Little Snipper hardware sold due to the work involved, alongside
 the financial and administrative costs of having thousands of people on the
 project VPN.
 
+## KEYS
+
+You may note that the branches have an /etc/shadow published here. The password is a dummy and will be ineffective in a physical attack on the device. For-sale devices are all given a unique /etc/shadow just prior to shipping.
+More so, remote SSH attempts are not possible against shipped devices, which are blocked by a firewall for all WAN clients (including the Cyborg Unplug VPN admins!).
