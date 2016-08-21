@@ -1,5 +1,5 @@
 config system
-	option hostname LittleSnipperSolo	
+	option hostname LittleSnipper	
 	option timezone	UTC
 
 config timeserver ntp
