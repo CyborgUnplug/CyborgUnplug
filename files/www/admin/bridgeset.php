@@ -14,6 +14,11 @@ if (! isset($_POST['bridge'])) {
 
 } else {
     $parts=$_POST['bridge'];
+    if (isset($_POST['saved'])) {
+        $save=0;
+    } else {
+        $save=1;
+    }
     if(isset($_POST['password'])) {
         $pw = $_POST['password'];
         $min = 8;
@@ -39,7 +44,8 @@ if (! isset($_POST['bridge'])) {
         } else {
             // encode after we've check pw for length, rather than do it in bridge.php
             $pw=base64_encode($pw);
-            $parts=$parts.','.$pw;
+            //$parts=$parts.','.$pw;
+            $parts=$parts.','.$pw.','.$save;
         }
     }
     $fn ='/www/config/bridge'; 
@@ -49,21 +55,20 @@ if (! isset($_POST['bridge'])) {
     if($ret === false) {
         die('There was an error writing this file');
     } else {
-        $gtg=1;
+        $gtg=1; // this is ridiculous, fix it 
     }
-    if ( $gtg == 1 ){
+    if ( $gtg == 1 ){ // ...and here...
         echo "<div class='warning warning3'>";
-        echo "Bridge data saved.\n";
+        echo "Bridge data stored.\n";
         //echo "$ret bytes written to auth file";
         echo "</div>";
         echo "<div class='warning warning3'>";
         echo "Select reboot below to restart the WiFi.\n";
-        echo "Be sure to check you are online. If not, check the password used
-with the selected network\n";
+        echo "Be sure to check you are online. If not, check the password used with the selected network\n";
         echo "</div>";
         echo "<form method='get' id='bridgeset' action='cgi-bin/config.cgi'>";
         echo "<input name='bridgeset' type='hidden' value='bridgeset'>";
-        echo "<input type='submit' value='reboot wifi' class='button'>";
+        echo "<input type='submit' value='start bridge' class='button'>";
         echo "</form>";
     }
 }

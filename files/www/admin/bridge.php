@@ -103,13 +103,30 @@
             }
             fclose($f);
             echo "</select>";
+            echo "<br>";
+            echo "<br>";
+            echo "<center>";
+            echo "Save this network? <input type='checkbox' name='saved'>";
             echo "<div id='bridgepw' style='visibility:hidden'>";
             echo "<input name='password'min='8' max='63' type='text' value='' placeholder='wifi passphrase' >";
             echo "</div>";
-            echo "<center>";
             echo "<input type='submit' value='NEXT' class='btnnext'>";
             echo "</form>";
-            echo "</center>";
+            echo "<br>";
+            $fn = "config/bridgesaved";
+            if (file_exists($fn)) {
+                $f = fopen($fn, "r");
+                $g=fgets($f);
+                $parts = explode(',', $g);
+		        $ap=$parts[0].','.base64_decode($parts[1]);
+                echo "Or choose a saved network..."; 
+                echo "<form method='get' id='savedbridge' action='cgi-bin/config.cgi'>";
+                echo "<input name='savedbridge' type='hidden' value='savedbridge'>";
+                echo "<input type='submit' value=".$ap." class='button'>";
+                echo "</form>";
+                fclose($f);
+                echo "</center>";
+           }
         }
     ?>
 
