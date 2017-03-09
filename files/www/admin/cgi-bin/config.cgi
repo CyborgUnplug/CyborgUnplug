@@ -144,9 +144,14 @@ case "$EVENT" in
         html bridge.php
     ;;
     *bridgeset*)
-        #$SCRIPTS/wifi.sh sta  >> /dev/null &
-        touch $CONFIG/setbridge
+        touch $CONFIG/bridgeset
         html index.php
+    ;;
+    *savedbridge*)
+        # copy our saved bridge data to the bridge file for use this turn
+        touch $CONFIG/bridgeset
+        cp $CONFIG/bridgesaved $CONFIG/bridge 
+        html index.php 
     ;;
 	*armed*)
         killall openvpn vpn.sh # stop existing instance

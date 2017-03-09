@@ -83,7 +83,8 @@ bridge () {
         uci set wireless.@wifi-iface[1].channel=""
         uci set wireless.@wifi-iface[1].encryption=""
         uci set wireless.@wifi-iface[1].key=""
-        WWAN=($(cat $CONFIG/bridge | awk -F ',' '{ print $1" "$2" "$3" "$4" "$5}'))
+        WWAN=($(cat $CONFIG/bridge | awk -F ',' '{ print $1" "$2" "$3" "$4" "$5" "$6}'))
+        echo "${WWAN[@]}" > /tmp/wifievent.log
         WSSID=$(echo ${WWAN[1]} | base64 -d)
         if [ ! -z ${WWAN[4]} ]; then
             PW=$(echo ${WWAN[4]} | base64 -d)
@@ -94,7 +95,7 @@ bridge () {
                 uci set wireless.@wifi-iface[1].encryption='wep'
             fi
         fi
-        uci set wireless.@wifi-iface[1].ssid=$WSSID
+        uci set wireless.@wifi-iface[1].ssid="$WSSID"
         uci set wireless.@wifi-iface[1].mode="sta"
         
         # Have to use same channel for our AP as that of that we're connected to
@@ -104,10 +105,16 @@ bridge () {
         uci commit wireless
         # bring down our WAN ethernet NIC
         ifconfig eth0.2 down
+        # Check if we're saving this network
+        saved=${WWAN[5]}
+        if [ $saved == 0 ]; then
+            cp $CONFIG/bridge $CONFIG/bridgesaved
+        fi
         # Bring up the wifi
         echo "Bringing up STA on $WSSID.."
         wifi
         /etc/init.d/dnsmasq restart
+        rm -f $CONFIG/bridge # delete this file, containing volatile pw data
     fi
 }
 

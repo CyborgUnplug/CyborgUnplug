@@ -152,10 +152,9 @@ while true;
         elif [ -f $CONFIG/setwifi ]; then
                 $SCRIPTS/wifi.sh ap 
                 rm -f $CONFIG/setwifi
-        elif [ -f $CONFIG/setbridge ]; then
+        elif [ -f $CONFIG/bridgeset ]; then
                 $SCRIPTS/wifi.sh bridge 
-                rm -f $CONFIG/setbridge
-                rm -f $CONFIG/bridge
+                rm -f $CONFIG/bridgeset
         elif [[ -f $CONFIG/vpn && ! -f $CONFIG/armed ]]; then
                 $SCRIPTS/vpn.sh 
         fi
