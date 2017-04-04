@@ -115,9 +115,15 @@ else
     rm -f $CONFIG/networks        
     rm -f $CONFIG/targets
     rm -f $CONFIG/mode                                 
-    rm -f $CONFIG/vpn
     rm -f $CONFIG/setwifi
     rm -f $LOGS/detected                                           
+    if [ -f $CONFIG/vpn ]; then
+       if [[ -z $(grep saved $CONFIG/vpn) ]]; then
+            rm -f $CONFIG/vpn
+       else
+            echo start > $CONFIG/vpnstatus
+       fi
+    fi
 fi
 
 # Update the date on this file if it exists, create it if not

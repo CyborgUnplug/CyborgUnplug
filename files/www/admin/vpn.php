@@ -39,7 +39,7 @@ if ($vpnup == 0) {
     echo '<meta http-equiv="refresh" content="20">';
     $url = 'https://plugunplug.net/geoip/yourip.php';
     $ch = curl_init();
-    $timeout = 5;
+    $timeout = 10;
     curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
     curl_setopt($ch, CURLOPT_HEADER, 0); 
     curl_setopt($ch,CURLOPT_URL, $url);
@@ -55,30 +55,40 @@ if ($vpnup == 0) {
     $fn='/www/config/vpn';
     if (file_exists($fn)) {
         $f1 = fopen("/www/config/vpn", "r");
-        $g=fgets($f1);                                                                                                                              
-        if ($g) {
-            if (! preg_match('/plugunplug.ovpn/', $g) == 1) {
-                echo "<br><br>NOTE: if the status bar reads 'OFFLINE', it may be because this VPN blocks ICMP ('ping') packets. Try browsing to see if you're really online";
-            }
+        $g=fgets($f1);                                                                                                                              if ($g) {
+                if (! preg_match('/plugunplug.ovpn/', $g) == 1) {
+                    echo "<br><br>NOTE: if the status bar reads 'OFFLINE', it may be because this VPN blocks ICMP ('ping') packets. Try browsing to see if you're really online";
+                }
+                echo "</center>";
+                echo "</div>";
+                echo "<div class='warning'>";
+                echo "<center>";
+                echo "Devices connected before VPN was active should immediately reconnect<br>";
+                echo "</center>";
+                echo "</div>";
+                echo "<br>";
+                echo "<form method='get' id='stopvpn' action='cgi-bin/config.cgi'>";
+                echo "<input name='stopvpn' type='hidden' value='stopvpn'>";
+                echo "<input type='submit' value='stop vpn' class='button'>";
+                echo "</form>";
+                echo "<form method='get' id='checkvpn' action='cgi-bin/config.cgi'>";
+                echo "<input name='checkvpn' type='hidden' value='checkvpn'>";
+                echo "<input type='submit' value='check vpn' class='button'>";
+                echo "</form>";
+                if (preg_match('/saved/', $g) == 0) {
+                    echo "<form method='get' id='savevpn' action='cgi-bin/config.cgi'>";
+                    echo "<input name='savevpn' type='hidden' value='savevpn'>";
+                    echo "<input type='submit' value='make this vpn my default' class='button'>";
+                    echo "</form>";
+                } else {
+                    echo "<div class='warning warning3'>";
+                    echo "This is your default VPN";
+                    echo "</div>";
+                }
         fclose($f1);
         }
     }
-    echo "</center>";
-    echo "</div>";
-    echo "<div class='warning'>";
-    echo "<center>";
-    echo "Devices connected before VPN was active should immediately reconnect<br>";
-    echo "</center>";
-    echo "</div>";
-    echo "<br>";
-    echo "<form method='get' id='stopvpn' action='cgi-bin/config.cgi'>";
-    echo "<input name='stopvpn' type='hidden' value='stopvpn'>";
-    echo "<input type='submit' value='stop vpn' class='button'>";
-    echo "</form>";
-    echo "<form method='get' id='checkvpn' action='cgi-bin/config.cgi'>";
-    echo "<input name='checkvpn' type='hidden' value='checkvpn'>";
-    echo "<input type='submit' value='check vpn' class='button'>";
-    echo "</form>";
+    
 } else if ($vpnup == 3) {
     echo "<br>";
     echo "<div class='warning'>";
