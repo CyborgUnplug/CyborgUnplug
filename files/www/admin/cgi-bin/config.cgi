@@ -131,6 +131,10 @@ case "$EVENT" in
     *checkvpn*)
         html vpn.php #we need a full refresh to call the checking code in vpn.php
     ;;
+    *savevpn*)
+        sed -i 's/$/\ saved\ /' $CONFIG/vpn
+        html vpn.php
+    ;;
 	*finish1*)
 		echo $EVENT | cut -d "=" -f 2 | sed -e 's/%3D/=/g' -e 's/\ //g' | base64 -d  > $CONFIG/networks
         html finish.php

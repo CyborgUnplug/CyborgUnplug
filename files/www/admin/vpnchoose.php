@@ -28,14 +28,6 @@ if (file_exists($fn)) {
              echo "</center>";
              echo "</div>";
         } else {
-            echo "<form action='vpnconf.php'>";
-            echo "<input type='submit' value='configure new vpn' class='button'>";
-            echo "</form>";
-            echo "<br>";
-            echo "<div id='container_caption'>
-            Load in a file ending in <em>.ovpn</em> from<br>a VPN provider like <a href='http://vpnbook.com'>VPNBook</a> or 
-            <a href='http://ipredator.se'>IPredator</a>.</div>";
-            echo "<hr>";
             echo "<form method='get' id='unplugvpn' action='cgi-bin/config.cgi'>
             <input name='unplugvpn' type='hidden' value='unplugvpn'>
             <input type='submit' value='use the unplug vpn' class='button'>
@@ -46,6 +38,14 @@ if (file_exists($fn)) {
             No DNS leaks (DNS servers of VPN host)<br>
             By using this VPN you agree to <a href='tos.php'>these terms</a></div>";
             echo "</div>";
+            echo "<hr>";
+            echo "<form action='vpnconf.php'>";
+            echo "<input type='submit' value='configure new vpn' class='button'>";
+            echo "</form>";
+            echo "<br>";
+            echo "<div id='container_caption'>
+            Load in a file ending in <em>.ovpn</em> from<br>a VPN provider like <a href='http://vpnbook.com'>VPNBook</a> or 
+            <a href='http://ipredator.se'>IPredator</a>.</div>";
         }
     }
 }
