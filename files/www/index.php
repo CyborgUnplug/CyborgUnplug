@@ -6,7 +6,7 @@
              echo "<div id='container_general'>";
              echo "<center>";
              echo "<form action='admin/index.php'>";
-             echo "<input name='detect' type='submit' value='log in' class='button'>";
+             echo "<input name='login' type='submit' value='log in' class='button'>";
              echo "</form>";
              echo "</center>";
              echo "</div>";
