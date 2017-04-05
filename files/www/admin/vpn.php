@@ -83,6 +83,10 @@ if ($vpnup == 0) {
                 } else {
                     echo "<div class='warning warning3'>";
                     echo "This is your default VPN";
+                    echo "<form method='get' id='removevpn' action='cgi-bin/config.cgi'>";
+                    echo "<input name='removevpn' type='hidden' value='removevpn'>";
+                    echo "<input type='submit' value='unset as default' class='button'>";
+                    echo "</form>";
                     echo "</div>";
                 }
         fclose($f1);
