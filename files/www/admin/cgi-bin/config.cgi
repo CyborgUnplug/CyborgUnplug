@@ -51,7 +51,7 @@ case "$EVENT" in
         cp $SITE/index.php.conf $SITE/index.php
         html index.php
     ;;
-    *encrypt*)
+    *protect*)
         if [ $(cat $CONFIG/vpnstatus) == "start" ]; then
             # Owner will only get here riding the back button after a failed/broken connection attempt
             # Reset config to 'unconfigured' 
@@ -140,6 +140,15 @@ case "$EVENT" in
         fi  
         html vpn.php
     ;;
+    *removevpn*)
+        sed -i 's/saved\ //' $CONFIG/vpn
+        ovpn=$(cat $CONFIG/vpn | cut -d ' ' -f 2)
+        if [[ $ovpn != "plugunplug.ovpn" ]]; then 
+            rm -f $KEYS/$ovpn* #remove .ovpn files and auth file, if present
+        fi  
+        html vpn.php
+    ;;
+        
 	*finish1*)
 		echo $EVENT | cut -d "=" -f 2 | sed -e 's/%3D/=/g' -e 's/\ //g' | base64 -d  > $CONFIG/networks
         html finish.php
