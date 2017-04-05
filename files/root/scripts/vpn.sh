@@ -47,7 +47,7 @@ vpnstart () {
         fi
         if [[ $arg1 == 1 ]]; then
             local auth=$KEYS/$arg2.auth 
-            $BINPATH/openvpn --config $KEYS/$arg2 --up-restart --up "/root/scripts/up.sh" --down "/root/scripts/down.sh" --script-security 2 --auth-user-pass $auth > /dev/null & 
+            $BINPATH/openvpn --config $KEYS/$arg2 --up-restart --up "/root/scripts/up.sh" --down "/root/scripts/down.sh" --script-security 2 --auth-user-pass $auth > $LOG & 
         else
             if [[ $arg2 == "plugunplug.ovpn" ]]; then 
                 # Get us a fresh stunnel
@@ -55,11 +55,11 @@ vpnstart () {
                 # We need to call this function here as can't seem to be done
                 # with --push directive in OpenVPN server side; the local gateway
                 # is not known to the server.
-                $BINPATH/openvpn --config $VPN --up-restart --up "/root/scripts/up.sh" --down "/root/scripts/down.sh" --script-security 2 > /dev/null &
+                $BINPATH/openvpn --config $VPN --up-restart --up "/root/scripts/up.sh" --down "/root/scripts/down.sh" --script-security 2 > $LOG &
                 echo "Started Unplug VPN"
                 routetoggle up
             else
-                $BINPATH/openvpn --config $KEYS/$arg2 --up-restart --up "/root/scripts/up.sh" --down "/root/scripts/down.sh" --script-security 2 > /dev/null &
+                $BINPATH/openvpn --config $KEYS/$arg2 --up-restart --up "/root/scripts/up.sh" --down "/root/scripts/down.sh" --script-security 2 > $LOG &
             fi
         fi
         count=0

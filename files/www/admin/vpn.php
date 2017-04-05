@@ -55,7 +55,8 @@ if ($vpnup == 0) {
     $fn='/www/config/vpn';
     if (file_exists($fn)) {
         $f1 = fopen("/www/config/vpn", "r");
-        $g=fgets($f1);                                                                                                                              if ($g) {
+        $g=fgets($f1);
+            if ($g) {
                 if (! preg_match('/plugunplug.ovpn/', $g) == 1) {
                     echo "<br><br>NOTE: if the status bar reads 'OFFLINE', it may be because this VPN blocks ICMP ('ping') packets. Try browsing to see if you're really online";
                 }
@@ -88,6 +89,19 @@ if ($vpnup == 0) {
                     echo "<input type='submit' value='unset as default' class='button'>";
                     echo "</form>";
                     echo "</div>";
+                }
+                $vpnlog='/var/log/openvpn.log';
+                if (file_exists($vpnlog)) {
+                    $f2 = fopen("/var/log/openvpn.log", "r");
+                    echo "<hr>";
+                    echo "<h3>Debug output</h3>";
+                    echo "<div class='stdout'>";
+                    while(! feof($f2))
+                    {
+                        echo fgets($f2). "<br />";
+                    }
+                    echo "</div>";
+                fclose($f2);
                 }
         fclose($f1);
         }
