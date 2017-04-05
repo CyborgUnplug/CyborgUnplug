@@ -156,13 +156,9 @@
 /* -------------------------------------------------------------
 ======	RESET
 ------------------------------------------------------------- */
-article, aside, details, figcaption, figure, 
 footer, header, hgroup, menu, nav, section {display: block}
-audio, canvas, video { display: inline-block; *display: inline; *zoom: 1; }
-audio:not([controls]) { display: none; }
-html { font-size: 100%; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; }
+canvas, html { font-size: 100%; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; }
 :hover, :focus, :active { outline: none; }
-
 
 html, button, input, select, textarea {
 	font-family: "Open sans", "Helvetica Neue", "HelveticaNeue", Helvetica, Arial, sans-serif;
@@ -405,12 +401,6 @@ footer li { float: left; margin-right: 1em; padding-right: 1em; border-right: 1p
 footer li:last-child { margin-right: 0; padding-right: 0; border-right: none; }
 
 
-/* -- HOME-PAGE
-------------------------------------------------------------- */
-/* Services */
-.services aside { color: #999; padding-top: 1em; border-top: 1px solid #DDD;}
-.services aside:after, .services h5:after { content: ""; display: block; height: 1px; width: 1em; background: #DDD; margin: 1em 0; }
-
 /* Slider */
 	/* Browser Resets */
 .flex-container a:active,.flexslider a:active,.flex-container a:focus,.flexslider a:focus  {outline: none;}
@@ -437,36 +427,10 @@ html[xmlns] .slides {display: block;}
 .flex-prev:hover, .flex-next:hover{ color: #0078CF}
 
 
-/* -- WORKS / Home-page and Works-page
-------------------------------------------------------------- */
-.works figure > a{ 
-	display: block; 
-	height: 100%; width: 100%; 
-	overflow: hidden; 
-	position: relative;
-	border-top: 1px solid #DDD; padding-top: 1em; }
- 	
-.works figure .zoom{ 
-	display: block; 
-	position: absolute; top: 10px; left: 0; 
-	background: url(../img/zoom.png) no-repeat center; 
-	width: 100%; height: 100%; 
-	*zoom: 1;
-	opacity: 0;
-	-ms-filter: progid:DXImageTransform.Microsoft.Alpha(Opacity = 0);
-	filter: alpha(opacity = 0); }
-
-.works figure figcaption{ margin-top: 1em; padding: 0 0.5em; white-space: nowrap; }
-.works figure figcaption a{line-height:2em; color: #555; font-weight: 700; }
-.works figure figcaption p{ margin: 0; }
-
-.works-page .works figure { margin-bottom: 3em;}
-
 .main aside{margin-bottom: 3em}
 .main aside menu{padding: 0 0 0 1em; line-height: 2em;}
 .main aside menu a{color: #999;}
 .main aside menu .buttonactive {color: #0078CF }
-
 
 /* -- SUBPAGES 
 ------------------------------------------------------------- */
@@ -474,11 +438,6 @@ html[xmlns] .slides {display: block;}
 .main:not(.home-page) > section article h2 { margin-top: 1em; padding-top: 1em; border-top: 1px solid #DDD; }
 .main:not(.home-page) > section article:first-child h2 { margin-top: 0;}
 
-/* Work-page (single) */
-.work-page figure {margin-bottom: 3em;}
-.work-page figcaption {text-align: center; margin-top: 1em;}
-
-/* Services-page */
 .warning { 
 	background: #ce5252; 
 	color: white;
