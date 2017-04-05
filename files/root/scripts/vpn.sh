@@ -17,7 +17,6 @@
 readonly SCRIPTS=/root/scripts
 readonly BINPATH=/usr/sbin/
 readonly CONFIG=/www/config
-readonly EXTVPN=/tmp/keys # chmod'd root-only read/write 
 readonly LOG=/var/log/openvpn.log # only used for debugging
 readonly VPN=/root/keys/plugunplug.ovpn
 readonly POLLTIME=5
@@ -28,6 +27,7 @@ readonly GATEWAY=$(route -n | grep UG[^H] | awk '{ print $2 }')
 STATUS=$(cat $CONFIG/vpnstatus)
 TUN=""
 STARTED=0
+KEYS=/tmp/keys # chmod'd root-only read/write 
 
 vpnstart () {
     if [[ $STATUS == "start" && $STARTED != 1 ]]; then
@@ -40,9 +40,14 @@ vpnstart () {
         local vpnargs=($(cat $CONFIG/vpn)) # array
         local arg1=${vpnargs[0]}
         local arg2=${vpnargs[1]}
+        local arg3=${vpnargs[2]}
+        if [[ $arg3 == saved ]]; then
+            # point to our archived .ovpn and .auth file 
+            KEYS=/root/keys/
+        fi
         if [[ $arg1 == 1 ]]; then
-            local auth=$EXTVPN/$arg2.auth 
-            $BINPATH/openvpn --config $EXTVPN/$arg2 --up-restart --up "/root/scripts/up.sh" --down "/root/scripts/down.sh" --script-security 2 --auth-user-pass $auth > /dev/null & 
+            local auth=$KEYS/$arg2.auth 
+            $BINPATH/openvpn --config $KEYS/$arg2 --up-restart --up "/root/scripts/up.sh" --down "/root/scripts/down.sh" --script-security 2 --auth-user-pass $auth > /dev/null & 
         else
             if [[ $arg2 == "plugunplug.ovpn" ]]; then 
                 # Get us a fresh stunnel
@@ -54,7 +59,7 @@ vpnstart () {
                 echo "Started Unplug VPN"
                 routetoggle up
             else
-                $BINPATH/openvpn --config $EXTVPN/$arg2 --up-restart --up "/root/scripts/up.sh" --down "/root/scripts/down.sh" --script-security 2 > /dev/null &
+                $BINPATH/openvpn --config $KEYS/$arg2 --up-restart --up "/root/scripts/up.sh" --down "/root/scripts/down.sh" --script-security 2 > /dev/null &
             fi
         fi
         count=0
@@ -98,7 +103,9 @@ vpncheck () {
         routetoggle down
         echo down > $CONFIG/vpnstatus
         killall -SIGTERM openvpn # zombie processes
-        rm $CONFIG/vpn
+        if [[ -z $(grep saved $CONFIG/vpn) ]]; then
+            rm -f $CONFIG/vpn
+        fi
     else
         # do test ping here
         echo "VPN status is: " $(cat $CONFIG/vpnstatus)
@@ -115,11 +122,13 @@ vpnstop() {
     fi
     echo "VPN is down"
     #ifconfig $ETH down
-    #rm -f $EXTVPN/*
+    #rm -f $KEYS/*
     routetoggle down
     echo unconfigured > $CONFIG/vpnstatus
     echo idle > /tmp/blink
-    rm $CONFIG/vpn
+    if [[ -z $(grep saved $CONFIG/vpn) ]]; then
+        rm -f $CONFIG/vpn
+    fi
     exit
 }
 

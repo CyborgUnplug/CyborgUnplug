@@ -27,6 +27,7 @@ readonly OLDIFS=$IFS
 readonly SCRIPTS=/root/scripts
 readonly IFS="&"
 readonly UPLOAD=/tmp/keys
+readonly KEYS=/root/keys
 
 set $EVENT
 #EVENT=${EVENT/=*/} 
@@ -133,6 +134,10 @@ case "$EVENT" in
     ;;
     *savevpn*)
         sed -i 's/$/\ saved\ /' $CONFIG/vpn
+        ovpn=$(cat $CONFIG/vpn | cut -d ' ' -f 2)
+        if [[ $ovpn != "plugunplug.ovpn" ]]; then 
+            cp $UPLOAD/$ovpn* $KEYS/ #copy auth file also
+        fi  
         html vpn.php
     ;;
 	*finish1*)
