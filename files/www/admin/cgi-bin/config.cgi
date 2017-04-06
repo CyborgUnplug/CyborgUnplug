@@ -82,6 +82,7 @@ case "$EVENT" in
         html index.php 
     ;; 
 	*devices*)
+		#echo $EVENT | cut -d "=" -f 2 | sed -e 's/%3D/=/g' -e 's/\ //g' | base64 -d | sed 's/^\ //' > $CONFIG/targets
         echo ${EVENT##*devices=} | sed -e 's/%3D/=/g' -e 's/\ //g' -e 's/selectall//' | base64 -d | sed 's/^\ //' > $CONFIG/targets 
         html mode.php
 	;;
@@ -168,7 +169,7 @@ case "$EVENT" in
     *savedbridge*)
         # copy our saved bridge data to the bridge file for use this turn
         touch $CONFIG/bridgeset
-        cp $CONFIG/bridgesaved $CONFIG/bridge 
+        cp $CONFIG/savedbridge $CONFIG/bridge 
         html index.php 
     ;;
 	*armed*)

@@ -509,6 +509,7 @@ html[xmlns] .slides {display: block;}
 	margin-bottom: 15px!important;
 	background: #222; 
 	width:101%;
+    font-size: .8em;
 }
 
 #reports_container{

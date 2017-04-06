@@ -83,7 +83,7 @@ bridge () {
         uci set wireless.@wifi-iface[1].channel=""
         uci set wireless.@wifi-iface[1].encryption=""
         uci set wireless.@wifi-iface[1].key=""
-        WWAN=($(cat $CONFIG/bridge | awk -F ',' '{ print $1" "$2" "$3" "$4" "$5" "$6}'))
+        WWAN=($(cat $CONFIG/bridge | awk -F ',' '{ print $1" "$2" "$3" "$4" "$5" "$6" "$7}'))
         echo "${WWAN[@]}" > /tmp/wifievent.log
         WSSID=$(echo ${WWAN[1]} | base64 -d)
         if [ ! -z ${WWAN[4]} ]; then
@@ -107,8 +107,8 @@ bridge () {
         ifconfig eth0.2 down
         # Check if we're saving this network
         saved=${WWAN[5]}
-        if [ $saved == 0 ]; then
-            cp $CONFIG/bridge $CONFIG/bridgesaved
+        if [ $saved == 1 ]; then
+            cp $CONFIG/bridge $CONFIG/savedbridge
         fi
         # Bring up the wifi
         echo "Bringing up STA on $WSSID.."
