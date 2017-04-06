@@ -4,7 +4,25 @@
 	<h1 id="headline">Select devices</h1>
     </center>
 	<div id="container_devices">
-		
+	    <script>	
+            function checkall(ele) {
+                 var checkboxes = document.getElementsByTagName('input');
+                 if (ele.checked) {
+                     for (var i = 0; i < checkboxes.length; i++) {
+                         if (checkboxes[i].type == 'checkbox') {
+                             checkboxes[i].checked = true;
+                         }
+                     }
+                 } else {
+                     for (var i = 0; i < checkboxes.length; i++) {
+                         console.log(i)
+                         if (checkboxes[i].type == 'checkbox') {
+                             checkboxes[i].checked = false;
+                         }
+                     }
+                 }
+             }
+        </script>
 		<form method="get" id="devices" action="cgi-bin/config.cgi">
 			<?php
 				$f = fopen("data/devices", "r");
@@ -33,6 +51,11 @@
 						}
 				    }
 				}
+                echo "<div class='device'>";
+                echo "<input type='checkbox' onchange='checkall(this)' id='selectall' class='css-checkbox'>";
+                echo "<label for='selectall' class='css-label'>Select all</label>";
+                echo "</div>";
+                echo "<br><br>";
 				fclose($f);
 			?>
             <center>
