@@ -14,10 +14,13 @@ if (! isset($_POST['bridge'])) {
 
 } else {
     $parts=$_POST['bridge'];
-    if (isset($_POST['saved'])) {
-        $save=0;
-    } else {
+    $save=0;
+    $defaultroute=0;
+    if (isset($_POST['save'])) {
         $save=1;
+    }
+    if (isset($_POST['defaultroute'])) {
+        $defaultroute=1;
     }
     if(isset($_POST['password'])) {
         $pw = $_POST['password'];
@@ -45,7 +48,7 @@ if (! isset($_POST['bridge'])) {
             // encode after we've check pw for length, rather than do it in bridge.php
             $pw=base64_encode($pw);
             //$parts=$parts.','.$pw;
-            $parts=$parts.','.$pw.','.$save;
+            $parts=$parts.','.$pw.','.$save.','.$defaultroute;
         }
     }
     $fn ='/www/config/bridge'; 

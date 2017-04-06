@@ -117,6 +117,17 @@ else
     rm -f $CONFIG/mode                                 
     rm -f $CONFIG/setwifi
     rm -f $LOGS/detected                                           
+    # Check to see if we have a bridge saved
+    if [ -f $CONFIG/savedbridge ]; then
+        WWAN=($(cat $CONFIG/savedbridge | awk -F ',' '{ print $1" "$2" "$3" "$4" "$5" "$6" "$7}'))
+        # Check if it is set to be used as our default route
+        if [[ ${WWAN[6]} == 1 ]]; then
+            # Copy it to the bridge file
+            cp $CONFIG/savedbridge $CONFIG/bridge
+            # Start the bridge
+            $SCRIPTS/wifi.sh bridge 
+        fi
+    fi
     if [ -f $CONFIG/vpn ]; then
        if [[ -z $(grep saved $CONFIG/vpn) ]]; then
             rm -f $CONFIG/vpn
@@ -158,7 +169,7 @@ while true;
         elif [ -f $CONFIG/setwifi ]; then
                 $SCRIPTS/wifi.sh ap 
                 rm -f $CONFIG/setwifi
-        elif [ -f $CONFIG/bridgeset ]; then
+        elif [ -f $CONFIG/bridgeset ]; then # used during runtime switch to bridge
                 $SCRIPTS/wifi.sh bridge 
                 rm -f $CONFIG/bridgeset
         elif [[ -f $CONFIG/vpn && ! -f $CONFIG/armed ]]; then
