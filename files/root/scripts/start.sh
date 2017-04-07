@@ -128,12 +128,11 @@ else
             $SCRIPTS/wifi.sh bridge 
         fi
     fi
-    if [ -f $CONFIG/vpn ]; then
-       if [[ -z $(grep saved $CONFIG/vpn) ]]; then
-            rm -f $CONFIG/vpn
-       else
-            echo start > $CONFIG/vpnstatus
-       fi
+    if [ -f $CONFIG/savedvpn ]; then
+        cp $CONFIG/savedvpn $CONFIG/vpn
+        echo start > $CONFIG/vpnstatus
+    else
+        rm -f $CONFIG/vpn
     fi
 fi
 

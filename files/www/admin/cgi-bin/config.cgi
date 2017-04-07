@@ -134,7 +134,8 @@ case "$EVENT" in
         html vpn.php #we need a full refresh to call the checking code in vpn.php
     ;;
     *savevpn*)
-        sed -i 's/$/\ saved\ /' $CONFIG/vpn
+        cp $CONFIG/vpn $CONFIG/savedvpn
+        #sed -i 's/$/\ saved\ /' $CONFIG/vpn
         ovpn=$(cat $CONFIG/vpn | cut -d ' ' -f 2)
         if [[ $ovpn != "plugunplug.ovpn" ]]; then 
             cp $UPLOAD/$ovpn* $KEYS/ #copy auth file also
@@ -142,11 +143,11 @@ case "$EVENT" in
         html vpn.php
     ;;
     *removevpn*)
-        sed -i 's/saved\ //' $CONFIG/vpn
         ovpn=$(cat $CONFIG/vpn | cut -d ' ' -f 2)
         if [[ $ovpn != "plugunplug.ovpn" ]]; then 
             rm -f $KEYS/$ovpn* #remove .ovpn files and auth file, if present
         fi  
+        rm -f $CONFIG/savedvpn
         html vpn.php
     ;;
         
