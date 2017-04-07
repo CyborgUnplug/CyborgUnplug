@@ -40,9 +40,8 @@ vpnstart () {
         local vpnargs=($(cat $CONFIG/vpn)) # array
         local arg1=${vpnargs[0]}
         local arg2=${vpnargs[1]}
-        local arg3=${vpnargs[2]}
-        if [[ $arg3 == saved ]]; then
-            # point to our archived .ovpn and .auth file 
+        if [[ -z $(cmp $CONFIG/vpn $CONFIG/savedvpn) ]]; then
+            # The saved vpn is the same we wish to run, so point to our archived .ovpn and .auth file 
             KEYS=/root/keys/
         fi
         if [[ $arg1 == 1 ]]; then
@@ -103,9 +102,7 @@ vpncheck () {
         routetoggle down
         echo down > $CONFIG/vpnstatus
         killall -SIGTERM openvpn # zombie processes
-        if [[ -z $(grep saved $CONFIG/vpn) ]]; then
-            rm -f $CONFIG/vpn
-        fi
+        rm -f $CONFIG/vpn
     else
         # do test ping here
         echo "VPN status is: " $(cat $CONFIG/vpnstatus)
@@ -126,9 +123,9 @@ vpnstop() {
     routetoggle down
     echo unconfigured > $CONFIG/vpnstatus
     echo idle > /tmp/blink
-    if [[ -z $(grep saved $CONFIG/vpn) ]]; then
-        rm -f $CONFIG/vpn
-    fi
+    #if [ -f $CONFIG/savedvpn ]; then
+    rm -f $CONFIG/vpn
+    #fi
     exit
 }
 
