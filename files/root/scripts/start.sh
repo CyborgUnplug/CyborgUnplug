@@ -130,6 +130,17 @@ else
     fi
     if [ -f $CONFIG/savedvpn ]; then
         cp $CONFIG/savedvpn $CONFIG/vpn
+        if [ -f $CONFIG/savedbridge ]; then
+            while [ $count -lt 30 ]; 
+                do
+                    netstate=$(cat $CONFIG/networkstate)
+                    if [[ "$netstate" != "online" ]]; then
+                        let "count+=1"
+                        echo "Count: $count. Waiting for bridge to come up" 
+                        sleep 1 
+                    fi
+            done
+        fi
         echo start > $CONFIG/vpnstatus
     else
         rm -f $CONFIG/vpn
