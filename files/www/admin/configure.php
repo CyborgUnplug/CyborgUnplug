@@ -16,8 +16,5 @@
         <form action="wlanconf.php">
 			<input name="wifi" type="submit" value="wifi" class='button'>
         </form>
-        <form method="get" action="cgi-bin/config.cgi">
-			<input name="bridgechoose" type="submit" value="bridge" class='button'>
-        </form>
 	</div>
 <?php include 'footer.php';?>

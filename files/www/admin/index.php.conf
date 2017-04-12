@@ -8,13 +8,16 @@
 			<input name="detect" type="submit" value="detect spy devices" class='button'>
         </form>
 		<form method="get" id="protect" action="cgi-bin/config.cgi">
-			<input name="protect" type="submit" value="protect network traffic" class='button'>
+			<input name="protect" type="submit" value="connect through a vpn" class='button'>
+        </form>
+        <form method="get" action="cgi-bin/config.cgi">
+			<input name="bridgechoose" type="submit" value="create a wifi bridge" class='button'>
+        </form>
+        <form action="/share/index.php">
+			<input name="share" type="submit" value="share files over wifi" class='button'>
         </form>
         <form action="configure.php">
 			<input name="configure" type="submit" value="configure" class='button'>
-        </form>
-        <form action="/share/index.php">
-			<input name="share" type="submit" value="share files to wifi" class='button'>
         </form>
         <form method="get" action="cgi-bin/config.cgi">
 			<input name="reboot" type="submit" value="reboot" class='button'>
