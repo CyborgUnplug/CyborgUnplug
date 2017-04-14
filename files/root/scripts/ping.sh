@@ -22,9 +22,10 @@ readonly POLLTIME=10
 while true;
 	do
         #LOC=$(wget http://getcitydetails.geobytes.com/GetCityDetails?fqcn=123.45.67.8 -O - | awk -F'fqcn":"|","geobyteslatit' '{print $2}')
-		p=$(ping -c 1 plugunplug.net|grep "1 packets received")
-		if [[ ! -z $p ]]; then
-            echo online > $CONFIG/networkstate
+		#p=$(ping -c 1 plugunplug.net|grep "1 packets received")
+        loc=$(php-cgi /www/admin/curl.php | tr -d $'\r' | tail -n +4 | head -n 1)
+		if [[ ! -z $loc ]]; then
+            echo online $loc > $CONFIG/networkstate
 		else
 			echo offline > $CONFIG/networkstate
 		fi
