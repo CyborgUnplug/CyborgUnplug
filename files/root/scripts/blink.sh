@@ -2,13 +2,16 @@
 
 readonly SCRIPTS=/root/scripts
 readonly SLEEP=/usr/bin/sleep
-readonly GPIO=/sys/class/gpio/gpio9
-echo 1 > $GPIO/value
+#readonly GPIO=/sys/class/gpio/gpio9
+#echo 1 > $GPIO/value
+echo 255 > /sys/class/leds/rt2800soc-phy0::radio/brightness
 
 wink() {
-    echo 0 > $GPIO/value
+    #echo 0 > $GPIO/value
+    echo 0 > /sys/class/leds/rt2800soc-phy0::radio/brightness
     $SLEEP $1                             
-    echo 1 > $GPIO/value
+    #echo 1 > $GPIO/value
+    echo 255 > /sys/class/leds/rt2800soc-phy0::radio/brightness
     $SLEEP $2                             
 }
 
@@ -77,16 +80,3 @@ while true;
         esac            
 	$pattern
    done < /tmp/blink
-
-# Will come up with a less murderous way of doing this at some point
-#killold() {
-#        PID=($(ps | grep [blin]k.sh | awk '{ print $1 }'))
-#        echo ${PID[@]}
-#        if [ ${#PID[@]} -gt 1 ]; then
-#                endindex=$(( ${#PID[@]} -1 ))
-#                unset PID[$endindex] # Spare the youngest PID
-#                kill -9 $(echo ${PID[@]}) # Kill the rest
-#        fi
-#}
-#
-#killold
