@@ -13,12 +13,12 @@ config switch
 config switch_vlan
 	option device 'rt305x'
 	option vlan '1'
-	option ports '0 1 2 3 6t'
+	option ports '1 6t'
 
 config switch_vlan
 	option device 'rt305x'
 	option vlan '2'
-	option ports '4 6t'
+	option ports '0 6t'
 
 config interface 'lan'
 	option ifname 'eth0.1'
@@ -36,6 +36,7 @@ config 'interface' 'wifi'
 config interface 'wan'
 	option ifname 'eth0.2'
 	option proto 'dhcp'
+	option auto '1'
 
 config interface 'wwan'
 	option ifname 'wlan0.1'
