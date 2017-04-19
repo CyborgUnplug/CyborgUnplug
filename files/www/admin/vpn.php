@@ -48,8 +48,9 @@ if ($vpnup == 0) {
                 $h=fgets($vpnstatus);
                 if (preg_match('/up/', $h) == 1) {
                     echo "<div class='warning warning3'>";
-                    echo "<b>VPN is up. You are tunneled via</b>.$parts[1]";
-                    echo "<br>Check at <a href='http://checkip.com'>checkip.com</a>";
+                    echo "<b>The VPN is up.</b><br>";
+                    echo "You are now tunneled via.$parts[1]";
+                    echo "<br>Check your IP via <a href='http://checkip.com'>checkip.com</a> before browsing.";
                     echo "</div>";
                     $fn='/www/config/vpn';
                     if (file_exists($fn)) {
@@ -113,6 +114,13 @@ if ($vpnup == 0) {
                     }
                 } 
                 
+            } else {
+                echo "<div class='warning'>";
+                echo "It seems we're currently offline.<br>";
+                echo "Please check any Ethernet cables and that the device "; 
+                echo "we're connected to is online. <br>";
+                echo "Please note that I'll time out shortly...";
+                echo "</div>";
             }
         }
         fclose($f);
