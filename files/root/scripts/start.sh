@@ -72,9 +72,6 @@ sleep 5
 # Start the automounter
 block umount; block mount
 
-# Bring up the AP
-$SCRIPTS/wifi.sh ap
-
 # Setup GPIO for indicator LED
 #$SCRIPTS/gpio.sh
 
@@ -126,6 +123,9 @@ else
             cp $CONFIG/savedbridge $CONFIG/bridge
             # Start the bridge
             $SCRIPTS/wifi.sh bridge 
+        else
+            # Bring up the AP
+            $SCRIPTS/wifi.sh ap
         fi
     fi
     if [ -f $CONFIG/savedvpn ]; then

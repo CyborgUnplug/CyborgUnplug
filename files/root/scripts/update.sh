@@ -27,7 +27,7 @@ readonly LOG=/var/log/update.log
 #REBOOT=0
 
 if [ -f $CONFIG/networkstate ]; then
-    if [[ $(cat $CONFIG/networkstate) == "online" ]]; then
+    if [[ $(cat $CONFIG/networkstate) == *online* ]]; then
         cd $UPDIR
         # Check to see if update should be for "now"
         if [[ $NOW -ne 1 ]]; then
