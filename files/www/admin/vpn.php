@@ -37,83 +37,93 @@ if ($vpnup == 0) {
     echo '<meta http-equiv="refresh" content="'.$secondsWait.'">';
 } else if ($vpnup == 1) {
     echo '<meta http-equiv="refresh" content="20">';
-    $url = 'https://plugunplug.net/geoip/yourip.php';
-    $ch = curl_init();
-    $timeout = 10;
-    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-    curl_setopt($ch, CURLOPT_HEADER, 0); 
-    curl_setopt($ch,CURLOPT_URL, $url);
-    curl_setopt($ch,CURLOPT_CONNECTTIMEOUT,$timeout);
-    curl_setopt($ch,CURLOPT_CAINFO,'/etc/stunnel/server.crt');
-    echo "<br>";
-    echo "<div class='warning warning3'>";
-    echo "<center>";
-    echo "VPN is up, now tunneled via <br>";
-    curl_exec($ch);
-    curl_close($ch);
-    echo "<br>Check at <a href='http://checkip.com'>checkip.com</a>";
-    $fn='/www/config/vpn';
+    $fn='/www/admin/config/networkstate';
     if (file_exists($fn)) {
-        $f1 = fopen("/www/config/vpn", "r");
-        $g=fgets($f1);
-            if ($g) {
-                if (! preg_match('/plugunplug.ovpn/', $g) == 1) {
-                    echo "<br><br>NOTE: if the status bar reads 'OFFLINE', it may be because this VPN blocks ICMP ('ping') packets. Try browsing to see if you're really online";
-                }
-                echo "</center>";
-                echo "</div>";
-                echo "<div class='warning'>";
-                echo "<center>";
-                echo "Devices connected before VPN was active should immediately reconnect<br>";
-                echo "</center>";
-                echo "</div>";
-                echo "<br>";
-                echo "<form method='get' id='stopvpn' action='cgi-bin/config.cgi'>";
-                echo "<input name='stopvpn' type='hidden' value='stopvpn'>";
-                echo "<input type='submit' value='stop vpn' class='button'>";
-                echo "</form>";
-                echo "<form method='get' id='checkvpn' action='cgi-bin/config.cgi'>";
-                echo "<input name='checkvpn' type='hidden' value='checkvpn'>";
-                echo "<input type='submit' value='check vpn' class='button'>";
-                echo "</form>";
-                $savedvpn='/www/config/savedvpn';
-                if (file_exists($savedvpn)) {
-                        // see if our current VPN is a saved VPN
-                        if (sha1_file($fn) == sha1_file($savedvpn)) {
-                            echo "<div class='warning warning3'>";
-                            echo "This is your default VPN";
-                            echo "<form method='get' id='removevpn' action='cgi-bin/config.cgi'>";
-                            echo "<input name='removevpn' type='hidden' value='removevpn'>";
-                            echo "<input type='submit' value='unset as default' class='button'>";
-                            echo "</form>";
-                            echo "</div>";
-                        } else {
-                            echo "<form method='get' id='savevpn' action='cgi-bin/config.cgi'>";
-                            echo "<input name='savevpn' type='hidden' value='savevpn'>";
-                            echo "<input type='submit' value='make this vpn my default' class='button'>";
-                            echo "</form>";
-                        }
-                } else { // TODO: messy double up here. fix
-                    echo "<form method='get' id='savevpn' action='cgi-bin/config.cgi'>";
-                    echo "<input name='savevpn' type='hidden' value='savevpn'>";
-                    echo "<input type='submit' value='make this vpn my default' class='button'>";
-                    echo "</form>";
-                }
-                $vpnlog='/var/log/openvpn.log';
-                if (file_exists($vpnlog)) {
-                    $f3 = fopen("/var/log/openvpn.log", "r");
-                    echo "<hr>";
-                    echo "<h3>Debug output</h3>";
-                    echo "<div class='stdout'>";
-                    while(! feof($f3))
-                    {
-                        echo fgets($f3). "<br />";
-                    }
+        $f = fopen("/www/admin/config/networkstate", "r");
+        $g=fgets($f);
+        if ($g) {
+            if (preg_match('/online/', $g) == 1) {
+                $parts = explode('online', $g);
+                $vpnstatus = fopen("/www/admin/config/vpnstatus", "r");
+                $h=fgets($vpnstatus);
+                if (preg_match('/up/', $h) == 1) {
+                    echo "<div class='warning warning3'>";
+                    echo "<b>The VPN is up.</b><br>";
+                    echo "You are now tunneled via.$parts[1]";
+                    echo "<br>Check your IP via <a href='http://checkip.com'>checkip.com</a> before browsing.";
                     echo "</div>";
-                fclose($f3);
-                }
-        fclose($f1);
+                    $fn='/www/config/vpn';
+                    if (file_exists($fn)) {
+                        $f1 = fopen("/www/config/vpn", "r");
+                        $g=fgets($f1);
+                            if ($g) {
+                                if (! preg_match('/plugunplug.ovpn/', $g) == 1) {
+                                    echo "<br><br>NOTE: if the status bar reads 'OFFLINE', it may be because this VPN blocks ICMP ('ping') packets. Try browsing to see if you're really online";
+                                }
+                                echo "<div class='warning'>";
+                                echo "<center>";
+                                echo "Devices connected before VPN was active should immediately reconnect<br>";
+                                echo "</center>";
+                                echo "</div>";
+                                echo "<form method='get' id='stopvpn' action='cgi-bin/config.cgi'>";
+                                echo "<input name='stopvpn' type='hidden' value='stopvpn'>";
+                                echo "<input type='submit' value='stop vpn' class='button'>";
+                                echo "</form>";
+                                echo "<form method='get' id='checkvpn' action='cgi-bin/config.cgi'>";
+                                echo "<input name='checkvpn' type='hidden' value='checkvpn'>";
+                                echo "<input type='submit' value='check vpn' class='button'>";
+                                echo "</form>";
+                                $savedvpn='/www/config/savedvpn';
+                                if (file_exists($savedvpn)) {
+                                        // see if our current VPN is a saved VPN
+                                        if (sha1_file($fn) == sha1_file($savedvpn)) {
+                                            echo "<div class='warning warning3'>";
+                                            echo "This is your default VPN";
+                                            echo "<form method='get' id='removevpn' action='cgi-bin/config.cgi'>";
+                                            echo "<input name='removevpn' type='hidden' value='removevpn'>";
+                                            echo "<input type='submit' value='unset as default' class='button'>";
+                                            echo "</form>";
+                                            echo "</div>";
+                                        } else {
+                                            echo "<form method='get' id='savevpn' action='cgi-bin/config.cgi'>";
+                                            echo "<input name='savevpn' type='hidden' value='savevpn'>";
+                                            echo "<input type='submit' value='make this vpn my default' class='button'>";
+                                            echo "</form>";
+                                        }
+                                } else { // TODO: messy double up here. fix
+                                    echo "<form method='get' id='savevpn' action='cgi-bin/config.cgi'>";
+                                    echo "<input name='savevpn' type='hidden' value='savevpn'>";
+                                    echo "<input type='submit' value='make this vpn my default' class='button'>";
+                                    echo "</form>";
+                                }
+                                $vpnlog='/var/log/openvpn.log';
+                                if (file_exists($vpnlog)) {
+                                    $f3 = fopen("/var/log/openvpn.log", "r");
+                                    echo "<hr>";
+                                    echo "<h3>Debug output</h3>";
+                                    echo "<div class='stdout'>";
+                                    while(! feof($f3))
+                                    {
+                                        echo fgets($f3). "<br />";
+                                    }
+                                    echo "</div>";
+                                fclose($f3);
+                                }
+                        fclose($f1);
+                        }
+                    }
+                } 
+                
+            } else {
+                echo "<div class='warning'>";
+                echo "It seems we're currently offline.<br>";
+                echo "Please check any Ethernet cables and that the device "; 
+                echo "we're connected to is online. <br>";
+                echo "Please note that I'll time out shortly...";
+                echo "</div>";
+            }
         }
+        fclose($f);
     }
     
 } else if ($vpnup == 3) {
@@ -131,6 +141,19 @@ if ($vpnup == 0) {
     echo "Also, be sure an ethernet cable is connected from the WAN port to\n";
     echo "your wired Internet connection.\n";
     echo "</div>";
+    $vpnlog='/var/log/openvpn.log';
+    if (file_exists($vpnlog)) {
+        $f3 = fopen("/var/log/openvpn.log", "r");
+        echo "<hr>";
+        echo "<h3>Debug output</h3>";
+        echo "<div class='stdout'>";
+        while(! feof($f3))
+        {
+            echo fgets($f3). "<br />";
+        }
+        echo "</div>";
+    fclose($f3);
+    }
 
 } else {
     //Сcheck that we have a file
