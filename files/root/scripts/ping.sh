@@ -17,7 +17,7 @@
 readonly SCRIPTS=/root/scripts
 readonly BINPATH=/usr/sbin/
 readonly CONFIG=/www/config
-readonly POLLTIME=10
+readonly POLLTIME=5
 
 while true;
 	do
