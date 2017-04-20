@@ -1,4 +1,4 @@
-#container{
+#container {
 	max-width:780px;
 	min-width: 280px;
 	widows:100%;
@@ -9,21 +9,25 @@
 	background-color:white;
 	text-align: left;
 }
-#logo{
+
+#logo {
 	padding: 0px;	
 	max-width: 270px;
 }
-#headline{
+
+#headline {
 	margin-top: 30px;
 	margin-bottom: 35px;
 	font-weight: 200;
 	color: #666;
 	font-size: 2.7em;
 }
-.headline_net{
+
+.headline_net {
 	margin-bottom: 30px!important;
 }
-.page{ 
+
+.page {
 	display: none; 
 	margin-top: 1px;
 	padding-bottom: 20px;
@@ -35,7 +39,7 @@
 	transform: translate3d(0,0,0);
 }
 
-#container_general{
+#container_general {
 	width:100%; 
 	padding-left:0%;
 	text-align: left;
@@ -43,13 +47,14 @@
     margin-right: auto ;
 }
 
-#container_devices{
+#container_devices {
 	width:100%; 
 	margin:0px; 
 	padding:0px;
 	text-align: left;
 }
-#container_start{
+
+#container_start {
 	width:100%; 
 	padding-left:0%;
 	text-align: left;
@@ -57,39 +62,37 @@
     margin-right: auto ;
      vertical-align: middle; 
 }
-#container_files{
+
+#container_files {
 	width:80%; 
 	padding-left:20%;
 	padding-right:0%;
 	text-align: left;
 	background-color: #f7f7f7;
 }
-#container_networks{
+
+#container_networks {
 	width:80%; 
 	padding-left:20%;
 	padding-right:0%;
 	text-align: left;
 	background-color: #f7f7f7;
 }
-#container_caption{
+
+#container_caption {
 	width:95%; 
 	padding-left:0%;
 	text-align: left;
     margin-left: 10% ;
     margin-right: auto ;
 }
-.container_status{
 
+.container_status {
     width: auto;
-	padding-left: 5%;
-    padding-top: 4px;
-	padding-right: 5%;
-	height: 15px;
-	margin-top: 5px!important;
-	margin-bottom: 5px!important;
-	background: #333;
-    font-size: .5em;
-    color: #00ff00;
+	padding: 2% 5%;
+	margin-top: 5px !important;
+	margin-bottom: 2em !important;
+	font-size: 1.25em;
 	text-align: center;
 	-webkit-border-radius: 3px;
 	-moz-border-radius: 3px;
@@ -97,14 +100,39 @@
 	-ms-border-radius: 3px;
 	-khtml-border-radius: 3px;
 	border-radius: 3px;
-	-moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
-	-webkit-box-shadow:0 1px 3px rgba(0, 0, 0, 0.3);
-	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 }
-.device{
-	
+
+.container_status.waiting {
+	color: #333333;
+	background: #efefef;
 }
-.config_container{
+
+.container_status.connecting {
+	color: #111111;
+	background: #e6e6e6;
+}
+
+.container_status.connected {
+	color: #ffffff;
+	background: #182ac3;
+}
+
+.container_status.tunneled {
+	color: #ffffff;
+	background: #158f00;
+}
+
+.container_status.disconnected {
+	color: #111111;
+	background: #e9dc00;
+}
+
+.container_status.error {
+	color: #ffffff;
+	background: #ba1800;
+}
+
+.config_container {
 	margin: 0px;
 	margin-top: -25px;
 	margin-bottom: -10px;
@@ -113,35 +141,42 @@
 	padding-bottom: 0px;
 	font-size: 2em;
 }
-.loading{
+
+.loading {
 	margin-left: 10px;
 	height: 15px;
 	width: 30px;
 }
 
 
-/*responsive*/
+/* Responsive - phone */
 
 @media (max-width: 600px) {
+
 	#headline {
 		font-size: 2em;
 		margin-top: 10px;
 		margin-bottom: 10px;
 	}
+
 	.headline_net{
 		margin-bottom: -5px!important;
 	}
+
 	.button, input[type="submit"], button, .toggle-title {
   		font-size: 1.8em!important;
   	}
+
   	input[type=checkbox].css-checkbox + label.css-label {
   		font-size: 1.5em!important;
   		line-height: 2em!important;
   		margin-bottom: 2px!important;
   	}
+
   	.btnnext{
   		margin-bottom: 0px!important;
   	}
+
   	.warning{
   		font-size: 1.2em!important;
   		margin-top: 25px!important;
@@ -150,19 +185,23 @@
 }
 
 
-
-
-
 /* -------------------------------------------------------------
 ======	RESET
 ------------------------------------------------------------- */
+
 article, aside, details, figcaption, figure, 
 footer, header, hgroup, menu, nav, section {display: block}
 audio, canvas, video { display: inline-block; *display: inline; *zoom: 1; }
 audio:not([controls]) { display: none; }
-html { font-size: 100%; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; }
-:hover, :focus, :active { outline: none; }
+html {
+	font-size: 100%;
+	-webkit-text-size-adjust: 100%;
+	-ms-text-size-adjust: 100%;
+}
 
+:hover, :focus, :active {
+	outline: none;
+}
 
 html, button, input, select, textarea {
 	font-family: "Open sans", "Helvetica Neue", "HelveticaNeue", Helvetica, Arial, sans-serif;
@@ -171,7 +210,8 @@ html, button, input, select, textarea {
 	font-smooth:always;
 	-webkit-font-smoothing: antialiased;
 	font-smoothing: antialiased;
-	text-shadow: 1px 1px 1px rgba(0,0,0,0.004);}
+	text-shadow: 1px 1px 1px rgba(0,0,0,0.004);
+}
 
 select.networks {
     font-size: 1.2em; 
@@ -182,14 +222,29 @@ select.networks {
     text-overflow: '';
 }
 
-body {   margin: 0; font-size: 13px; line-height: 1.6; color: #555 }
-	
+body {
+	margin: 0;
+	font-size: 13px;
+	line-height: 1.6;
+	color: #555;
+}
 
-a { color: #0078CF; font-weight: normal;
-	cursor: pointer;  text-decoration: none;
-	transition:color 0.2s ease; -moz-transition:color 0.2s ease; -webkit-transition:color 0.2s ease; -o-transition:color 0.2s ease;}
+a {
+	color: #0078CF;
+	font-weight: normal;
+	cursor: pointer;
+	text-decoration: none;
+	transition:color 0.2s ease;
+	-moz-transition:color 0.2s ease;
+	-webkit-transition:color 0.2s ease;
+	-o-transition:color 0.2s ease;
+}
 
-a:hover { color: #000; text-decoration: no-underline; background: rgba(0, 0, 0, .025);} 
+a:hover {
+	color: #000;
+	text-decoration: no-underline;
+	background: rgba(0, 0, 0, .025);
+} 
 
 ::-moz-selection { background: #0078CF; color: #fff; text-shadow: none; }
 ::selection { background: #0078CF; color: #fff; text-shadow: none; }	
@@ -238,7 +293,6 @@ td{vertical-align:top}
 .chromeframe { margin: 1em 0; background: red; color: black; padding: 1em; }
 
 
-
 /* -------------------------------------------------------------
 ======	STYLES
 ------------------------------------------------------------- */
@@ -284,18 +338,23 @@ label.upload input[type="file"] {
     text-align: center;
     background: #DDD;
 }
+
 .upload:hover {
     background: #CCC;
 }
+
 .upload:active {
     background: #CCF;
 }
+
 .upload :invalid + span {
     color: red;
 }
+
 .upload :valid + span {
     color: red;
 }
+
 input[type="date"]{ width: auto;}
 select {height: auto;}
 /* Placeholders */
@@ -305,21 +364,25 @@ select {height: auto;}
 	font-size: 1.1em;
     text-align: center
 }
+
 :-moz-placeholder { /* Firefox 18- */
    color: red;  
 	font-size: 1.1em;
     text-align: center
 }
+
 ::-moz-placeholder {  /* Firefox 19+ */
    color: red;  
 	font-size: 1.1em;
     text-align: center
 }
+
 :-ms-input-placeholder {  
    color: red;  
 	font-size: 1.1em;
     text-align: center
 }
+
 /* validate.js */
 label.error { color: #0078CF; margin: 0.5em 0 0 0.5em; font-weight: normal; font-style: italic; }
 
@@ -338,8 +401,7 @@ a img:hover {
 	*zoom: 1;
 	opacity: 0.7;
 	-ms-filter: progid:DXImageTransform.Microsoft.Alpha(Opacity = 70);
-	filter: alpha(opacity = 70);}
-    
+	filter: alpha(opacity = 70);}    
     
 /* -------------------------------------------------------------
 ======	PAGES
@@ -347,27 +409,28 @@ a img:hover {
     
 /* -- HEADER
 ------------------------------------------------------------- */
+
 header#navtop { margin-bottom: 2em; clear: both; overflow: hidden; }
-    header nav ul { float: left; overflow: hidden; padding: 0 3em 0 2em; border-left: 1px solid #ddd; line-height: 2em; }
+header nav ul { float: left; overflow: hidden; padding: 0 3em 0 2em; border-left: 1px solid #ddd; line-height: 2em; }
 nav a, menu a { text-decoration: none; color: #555; }
 .navactive { color: #760000 }
 .logo {margin-bottom: 3em;}
 .logo:hover {background: none;}
-		
-		
+
 /* -- GENERAL 
 ------------------------------------------------------------- */
+
 .main > section { margin-bottom: 7em; }
 .main header{ color: #555; margin-bottom: 3em; }
-.main header hr{border-top-color:#999;}
-.arrow:after {content:" \27F6"; /* html unicode: &#10230; */ } 
-header .arrow {color: #999; font-style: italic;}
-.arrow:hover {color: #0078CF; }
-
+.main header hr { border-top-color:#999;}
+.arrow:after { content:" \27F6"; /* html unicode: &#10230; */ } 
+header .arrow { color: #999; font-style: italic; }
+.arrow:hover { color: #0078CF; }
 
 /* -- TYPO
 ------------------------------------------------------------- */
-h1,h2,h3,h4,h5,h6{
+
+h1, h2, h3, h4, h5, h6 {
 	margin:0 0 0em; 
 	font-weight: normal;
 }
@@ -379,15 +442,49 @@ h1 {
 	color: #555;
 	margin: 0 0 0.5em; 
 }
-h2 { font-size: 1.75em; margin: 0 0 20px; letter-spacing: -0.05em; color: #555; line-height: 1; }
-h3 { font-size: 1.75em; }
-h4 { font-size: 1.5em; }
-h5 { font-size: 1.17em; text-transform: uppercase; margin-left: 5em; margin-top: -2em; color: #555; }
-h6 { font-size: 1.6em; text-transform: uppercase; margin: 0; font-weight: 700; }
 
-h1 a,h2 a,h3 a,h4 a,h5 a,h6 a{color:#333; text-decoration: none;}
-h1 a:hover,h2 a:hover,h3 a:hover,h4 a:hover,h5 a:hover,h6 a:hover{color:#0078CF;text-decoration: underline;}
+h2 {
+	font-size: 1.75em;
+	margin: 0 0 20px;
+	letter-spacing: -0.05em;
+	color: #555;
+	line-height: 1;
+}
 
+h3 {
+	font-size: 1.75em;
+	color: #555;
+}
+
+h4 { 
+	font-size: 1.5em;
+	color: #555;
+}
+
+h5 {
+	font-size: 1.17em;
+	text-transform: uppercase;
+	margin-left: 5em;
+	margin-top: -2em;
+	color: #555;
+}
+
+h6 {
+	font-size: 1.6em;
+	text-transform: uppercase;
+	margin: 0;
+	font-weight: 700;
+}
+
+h1 a,h2 a,h3 a,h4 a,h5 a,h6 a {
+	color:#333;
+	text-decoration: none; 
+}
+
+h1 a:hover,h2 a:hover,h3 a:hover,h4 a:hover,h5 a:hover,h6 a:hover {	
+	color:#0078CF;
+	text-decoration: underline; 
+}
 
 /* -- FOOTER
 ------------------------------------------------------------- */
@@ -407,15 +504,18 @@ footer li:last-child { margin-right: 0; padding-right: 0; border-right: none; }
 
 /* -- HOME-PAGE
 ------------------------------------------------------------- */
+
 /* Services */
 .services aside { color: #999; padding-top: 1em; border-top: 1px solid #DDD;}
 .services aside:after, .services h5:after { content: ""; display: block; height: 1px; width: 1em; background: #DDD; margin: 1em 0; }
 
 /* Slider */
-	/* Browser Resets */
+	
+/* Browser Resets */
 .flex-container a:active,.flexslider a:active,.flex-container a:focus,.flexslider a:focus  {outline: none;}
 .slides,.flex-control-nav,.flex-direction-nav {margin: 0; padding: 0; list-style: none;} 
-	/* FlexSlider Necessary Styles */ 
+
+/* FlexSlider Necessary Styles */ 
 .flexslider {margin: 0; padding: 0; position: relative;}
 .flexslider .slides > .slide {display: none; -webkit-backface-visibility: hidden;}
 .flexslider .slides img {width: 100%; display: block;}
@@ -428,7 +528,9 @@ html[xmlns] .slides {display: block;}
 	position: absolute;
 	background: white; 
 	height: auto; min-height: 3em; width: 60%; padding: 1em; 
-	top: 3em; right: 0; }
+	top: 3em; right: 0;
+}
+
 .slide figcaption div { text-align: right; display: block; border-right: 1px solid #DDD; padding: 0 2em 0 0; margin: auto 5em auto 0; }
 .slide figcaption div p { margin: 0 }
 .flex-direction-nav{ position: absolute; top: 4em; right: 1.5em; z-index: 10;}
@@ -439,14 +541,16 @@ html[xmlns] .slides {display: block;}
 
 /* -- WORKS / Home-page and Works-page
 ------------------------------------------------------------- */
-.works figure > a{ 
+
+.works figure > a { 
 	display: block; 
 	height: 100%; width: 100%; 
 	overflow: hidden; 
 	position: relative;
-	border-top: 1px solid #DDD; padding-top: 1em; }
- 	
-.works figure .zoom{ 
+	border-top: 1px solid #DDD; padding-top: 1em;
+}
+
+.works figure .zoom { 
 	display: block; 
 	position: absolute; top: 10px; left: 0; 
 	background: url(../img/zoom.png) no-repeat center; 
@@ -454,7 +558,8 @@ html[xmlns] .slides {display: block;}
 	*zoom: 1;
 	opacity: 0;
 	-ms-filter: progid:DXImageTransform.Microsoft.Alpha(Opacity = 0);
-	filter: alpha(opacity = 0); }
+	filter: alpha(opacity = 0);
+}
 
 .works figure figcaption{ margin-top: 1em; padding: 0 0.5em; white-space: nowrap; }
 .works figure figcaption a{line-height:2em; color: #555; font-weight: 700; }
@@ -466,7 +571,6 @@ html[xmlns] .slides {display: block;}
 .main aside menu{padding: 0 0 0 1em; line-height: 2em;}
 .main aside menu a{color: #999;}
 .main aside menu .buttonactive {color: #0078CF }
-
 
 /* -- SUBPAGES 
 ------------------------------------------------------------- */
@@ -495,16 +599,18 @@ html[xmlns] .slides {display: block;}
     text-decoration: underline;
     color: #ffffff; 
 } 
-.warning2{ 
+.warning2 { 
 	background: #82cc51; 
 }
-.warning3{ 
+
+.warning3 {
 	margin-top: 15px!important;
 	margin-bottom: 15px!important;
 	background: #82cc51; 
     font-size: 1.2em;
 }
-.stdout{ 
+
+.stdout {
 	margin-top: 15px!important;
 	margin-bottom: 15px!important;
 	background: #222; 
@@ -512,7 +618,7 @@ html[xmlns] .slides {display: block;}
     font-size: .8em;
 }
 
-#reports_container{
+#reports_container {
 	margin-left: -15px!important;
 	margin-right: -20px!important;
 	background-color: #eaeaea;
@@ -524,7 +630,8 @@ html[xmlns] .slides {display: block;}
 	padding: 0px!important;
 	font-size: 12px!important;
 }
-.reports_entry{
+
+.reports_entry {
 	background-color: white;
 	padding-right: 5px;
 	padding-left: 5px;
@@ -543,9 +650,13 @@ html[xmlns] .slides {display: block;}
     display: block;
     margin: 0;
     padding: 0;
-    border-bottom: solid 1px #ddd; }
+    border-bottom: solid 1px #ddd;
+}
+
 .tabs li {
-    display: inline-block; margin-bottom: -1px; }
+    display: inline-block; margin-bottom: -1px; 
+}
+
 .tabs li a {
     display: block; 
     text-decoration: none;
@@ -554,9 +665,11 @@ html[xmlns] .slides {display: block;}
     padding: 0 2em; 
     margin: 0;
     background: #f5f5f5;
-    font-size: 1.1em;}
-.tabs li a:hover{color: #000;}
-.tabs li.active a{
+    font-size: 1.1em;
+}
+
+.tabs li a:hover { color: #000; }
+.tabs li.active a {
 	background: #fff;
 	position: relative;
 	border: 1px solid #DDD;
@@ -567,20 +680,22 @@ html[xmlns] .slides {display: block;}
 	border-top-left-radius: 2px;
 	-moz-border-radius-topright: 2px;
 	-webkit-border-top-right-radius: 2px;
-	border-top-right-radius: 2px; }
+	border-top-right-radius: 2px;
+}
 
-.tab_container { margin-bottom: 1em; display: block; border-left: 1px solid #ddd; padding: 15px 15px 0;}
+.tab_container {
+	margin-bottom: 1em;
+	display: block;
+	border-left: 1px solid #ddd;
+	padding: 15px 15px 0;
+}
+
 .tab_container > article { display:none; }
 .tab_container > article:first-child { display: block; }
 
 
-
-
-
-
 /* -- BUTTONS 
 ------------------------------------------------------------- */
-
 
 input[type=checkbox].css-checkbox {						
 	position:absolute;
@@ -595,6 +710,7 @@ input[type=checkbox].css-checkbox {
 	border:0;
 	background: #ccc;
 }
+
 input[type=checkbox].css-checkbox + label.css-label {
 	padding-left:60px;
 	height:44px; 
@@ -609,9 +725,11 @@ input[type=checkbox].css-checkbox + label.css-label {
 	margin-top: 20px;
 	color: #666;
 }
+
 input[type=checkbox].css-checkbox:checked + label.css-label {
 	background-position: 0 -44px;
 }
+
 label.css-label {
 	background-image:url(img/cb-bg_lg.png);
 	-webkit-touch-callout: none;
@@ -621,7 +739,8 @@ label.css-label {
 	-ms-user-select: none;
 	user-select: none;
 }
-.css-label-narrow{
+
+.css-label-narrow {
 	margin-left: 0px!important;
 }
 
@@ -638,6 +757,7 @@ input[type=radio].css-radio {
 	border:0;
 	background: #ccc;
 }
+
 input[type=radio].css-radio + label.css-label {
 	padding-left:60px;
 	height:44px; 
@@ -652,6 +772,7 @@ input[type=radio].css-radio + label.css-label {
 	margin-top: 20px;
 	color: #666;
 }
+
 input[type=radio].css-radio:checked + label.css-label {
 	background-position: 0 -44px;
 }
@@ -662,7 +783,11 @@ input[type=radio].css-radio:checked + label.css-label {
 	color: #999; 
 }
 
-.button, input[type="submit"], button, .toggle-title {
+.button,
+input[type="submit"],
+button,
+.toggle-title {
+	width: 100%;
 	color: #666;
 	font-size: 2.2em;
 	font-weight: 800;
@@ -670,9 +795,9 @@ input[type=radio].css-radio:checked + label.css-label {
 	border: solid 1px #999;
     /*text-shadow: -2px 2px 4px rgba(0,0,0,0.9);*/
     cursor: pointer;
-	
+
 	background: #efefef; /* Old browsers */
-	background: -moz-linear-gradient(top,  #f6f6f6 0%, #efefef 100%); /* FF3.6+ */
+	background: -moz-linear-gradient(top, #f6f6f6 0%, #efefef 100%); /* FF3.6+ */
 	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#f6f6f6), color-stop(100%,#efefef)); /* Chrome,Safari4+ */
 	background: -webkit-linear-gradient(top,  #f6f6f6 0%,#efefef 100%); /* Chrome10+,Safari5.1+ */
 	background: -o-linear-gradient(top,  #f6f6f6 0%,#efefef 100%); /* Opera 11.10+ */
@@ -686,21 +811,28 @@ input[type=radio].css-radio:checked + label.css-label {
 	-ms-border-radius: 3px;
 	-khtml-border-radius: 3px;
 	border-radius: 3px;
-	-moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
-	-webkit-box-shadow:0 1px 3px rgba(0, 0, 0, 0.15);
-	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
 	
 	-webkit-transition: 0.1s linear all;
 	-moz-transition: 0.1s linear all;
 	-ms-transition: 0.1s linear all;
 	-o-transition: 0.1s linear all;
-	transition: 0.1s linear all; }
-.button:hover, input[type="submit"]:hover, button:hover, .toggle-title:hover {
+	transition: 0.1s linear all;
+}
+
+.button:hover,
+input[type="submit"]:hover,
+button:hover,
+.toggle-title:hover {
 	color: #333;
 	text-decoration: none;
 	border-color: #BBB;
-	background: #e8e8e8;}
-.button:focus, input[type="submit"]:focus, button:focus, .toggle-title:focus {
+	background: #e8e8e8;
+}
+
+.button:focus,
+input[type="submit"]:focus,
+button:focus,
+.toggle-title:focus {
 	color: #333;
 	border-color: #BBB;
 }
@@ -713,7 +845,6 @@ input[type=radio].css-radio:checked + label.css-label {
 	background-image: -ms-linear-gradient(top, #ff3d3d, #d93434);
 	background-image: -o-linear-gradient(top, #ff3d3d, #d93434);
 	background-image: linear-gradient(to bottom, #ff3d3d, #d93434);
-
 	padding: 10px 20px 10px 20px;
 	text-decoration: none;
 	width:100%;
@@ -729,7 +860,6 @@ input[type=radio].css-radio:checked + label.css-label {
   text-decoration: none;
 }
 
-
 .btnnext {
 	margin-top: 20px;
 	margin-bottom: 20px;
@@ -743,8 +873,8 @@ input[type=radio].css-radio:checked + label.css-label {
 	border:2px solid black!important;
 	padding: 10px 20px 10px 20px;
 	text-decoration: none;
-	width:100%;
-	color:black!important;
+	width: 100%;
+	color: black!important;
 	font-weight: 500!important;
 	max-width: 350px;
 	-webkit-border-radius: 3px;
@@ -754,13 +884,13 @@ input[type=radio].css-radio:checked + label.css-label {
 	-khtml-border-radius: 3px;
 	border-radius: 3px;
 	-moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
-	-webkit-box-shadow:0 1px 3px rgba(0, 0, 0, 0.3);
+	-webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 }
 
 .btnnext:hover {
-	color:red!important;
-	border:2px solid red!important;
+	color: red!important;
+	border: 2px solid red!important;
 	background: #3c91fa;
 	background-image: -webkit-linear-gradient(top, #3c91fa, #347bd1);
 	background-image: -moz-linear-gradient(top, #3c91fa, #347bd1);
@@ -769,7 +899,6 @@ input[type=radio].css-radio:checked + label.css-label {
 	background-image: linear-gradient(to bottom, #3c91fa, #347bd1);
 	text-decoration: none;
 }
-
 
 .btnarm {
 	margin-top: 20px;
@@ -806,129 +935,142 @@ input[type=radio].css-radio:checked + label.css-label {
 	text-decoration: none;
 }
 
-
 /* - Toggles */  
 .toggle-view > li {
     margin-top: 1em;
     position: relative; }
+
 .toggle-title {
 	padding: 0.38em 1em;
 	text-align: center;
 }
+
 .toggle-title-detail {
     font-size: 0.8em;
     color: #999;
     font-weight: normal;
     text-transform: lowercase; }
+
 .toggle-title:after {
     content: "\25C0";
     float: right;
     color: #999; 
     display: none;
 }
-.toggle-title:hover:after { color: #555 }
-.tactive { background: #FFF }
+
+.toggle-title:hover:after {
+	color: #555;
+}
+
+.tactive {
+	background: #FFF;
+}
+
 .tactive:after {
     content: "\25BC";
     color: #555;
-
 }
+
 .toggle {
     padding: 1em 2em;
     display: none;
     overflow: hidden; 
 }
+
 .toggle > ul li { line-height: 2.5 }
 .toggle > ul li:before {
     content: "\2714 ";
     color: #ddd;
     margin-right: 1em; 
 }
+
 .php-file-tree {
 	font-family: "Open sans", "Helvetica Neue", "HelveticaNeue", Helvetica, Arial, sans-serif;
 	font-size: 12px;
-	letter-spacing: 1px;	line-height: 1.5;
+	letter-spacing: 1px;
+	line-height: 1.5;
 }
 
-	.php-file-tree A {
-		color: #000000;
-		text-decoration: none;
-	}
-	
-	.php-file-tree A:hover {
-		color: #666666;
-	}
+.php-file-tree A {
+	color: #000000;
+	text-decoration: none;
+}
 
-	.php-file-tree .open {
-		font-style: italic;
-	}
-	
-	.php-file-tree .closed {
-		font-style: normal;
-	}
-	
-	.php-file-tree .pft-directory {
-		list-style-image: url(dir_img/directory.png);
-	}
-	
-	/* Default file */
-	.php-file-tree LI.pft-file { list-style-image: url(dir_img/file.png); }
-	/* Additional file types */
-	.php-file-tree LI.ext-3gp { list-style-image: url(dir_img/film.png); }
-	.php-file-tree LI.ext-afp { list-style-image: url(dir_img/code.png); }
-	.php-file-tree LI.ext-afpa { list-style-image: url(dir_img/code.png); }
-	.php-file-tree LI.ext-asp { list-style-image: url(dir_img/code.png); }
-	.php-file-tree LI.ext-aspx { list-style-image: url(dir_img/code.png); }
-	.php-file-tree LI.ext-avi { list-style-image: url(dir_img/film.png); }
-	.php-file-tree LI.ext-bat { list-style-image: url(dir_img/application.png); }
-	.php-file-tree LI.ext-bmp { list-style-image: url(dir_img/picture.png); }
-	.php-file-tree LI.ext-c { list-style-image: url(dir_img/code.png); }
-	.php-file-tree LI.ext-cfm { list-style-image: url(dir_img/code.png); }
-	.php-file-tree LI.ext-cgi { list-style-image: url(dir_img/code.png); }
-	.php-file-tree LI.ext-com { list-style-image: url(dir_img/application.png); }
-	.php-file-tree LI.ext-cpp { list-style-image: url(dir_img/code.png); }
-	.php-file-tree LI.ext-css { list-style-image: url(dir_img/css.png); }
-	.php-file-tree LI.ext-doc { list-style-image: url(dir_img/doc.png); }
-	.php-file-tree LI.ext-exe { list-style-image: url(dir_img/application.png); }
-	.php-file-tree LI.ext-gif { list-style-image: url(dir_img/picture.png); }
-	.php-file-tree LI.ext-fla { list-style-image: url(dir_img/flash.png); }
-	.php-file-tree LI.ext-h { list-style-image: url(dir_img/code.png); }
-	.php-file-tree LI.ext-htm { list-style-image: url(dir_img/html.png); }
-	.php-file-tree LI.ext-html { list-style-image: url(dir_img/html.png); }
-	.php-file-tree LI.ext-jar { list-style-image: url(dir_img/java.png); }
-	.php-file-tree LI.ext-jpg { list-style-image: url(dir_img/picture.png); }
-	.php-file-tree LI.ext-jpeg { list-style-image: url(dir_img/picture.png); }
-	.php-file-tree LI.ext-js { list-style-image: url(dir_img/script.png); }
-	.php-file-tree LI.ext-lasso { list-style-image: url(dir_img/code.png); }
-	.php-file-tree LI.ext-log { list-style-image: url(dir_img/txt.png); }
-	.php-file-tree LI.ext-m4p { list-style-image: url(dir_img/music.png); }
-	.php-file-tree LI.ext-mov { list-style-image: url(dir_img/film.png); }
-	.php-file-tree LI.ext-mp3 { list-style-image: url(dir_img/music.png); }
-	.php-file-tree LI.ext-mp4 { list-style-image: url(dir_img/film.png); }
-	.php-file-tree LI.ext-mpg { list-style-image: url(dir_img/film.png); }
-	.php-file-tree LI.ext-mpeg { list-style-image: url(dir_img/film.png); }
-	.php-file-tree LI.ext-ogg { list-style-image: url(dir_img/music.png); }
-	.php-file-tree LI.ext-pcx { list-style-image: url(dir_img/picture.png); }
-	.php-file-tree LI.ext-pdf { list-style-image: url(dir_img/pdf.png); }
-	.php-file-tree LI.ext-php { list-style-image: url(dir_img/php.png); }
-	.php-file-tree LI.ext-png { list-style-image: url(dir_img/picture.png); }
-	.php-file-tree LI.ext-ppt { list-style-image: url(dir_img/ppt.png); }
-	.php-file-tree LI.ext-psd { list-style-image: url(dir_img/psd.png); }
-	.php-file-tree LI.ext-pl { list-style-image: url(dir_img/script.png); }
-	.php-file-tree LI.ext-py { list-style-image: url(dir_img/script.png); }
-	.php-file-tree LI.ext-rb { list-style-image: url(dir_img/ruby.png); }
-	.php-file-tree LI.ext-rbx { list-style-image: url(dir_img/ruby.png); }
-	.php-file-tree LI.ext-rhtml { list-style-image: url(dir_img/ruby.png); }
-	.php-file-tree LI.ext-rpm { list-style-image: url(dir_img/linux.png); }
-	.php-file-tree LI.ext-ruby { list-style-image: url(dir_img/ruby.png); }
-	.php-file-tree LI.ext-sql { list-style-image: url(dir_img/db.png); }
-	.php-file-tree LI.ext-swf { list-style-image: url(dir_img/flash.png); }
-	.php-file-tree LI.ext-tif { list-style-image: url(dir_img/picture.png); }
-	.php-file-tree LI.ext-tiff { list-style-image: url(dir_img/picture.png); }
-	.php-file-tree LI.ext-txt { list-style-image: url(dir_img/txt.png); }
-	.php-file-tree LI.ext-vb { list-style-image: url(dir_img/code.png); }
-	.php-file-tree LI.ext-wav { list-style-image: url(dir_img/music.png); }
-	.php-file-tree LI.ext-wmv { list-style-image: url(dir_img/film.png); }
-	.php-file-tree LI.ext-xls { list-style-image: url(dir_img/xls.png); }
-	.php-file-tree LI.ext-xml { list-style-image: url(dir_img/code.png); }
-	.php-file-tree LI.ext-zip { list-style-image: url(dir_img/zip.png); }
+.php-file-tree A:hover {
+	color: #666666;
+}
+
+.php-file-tree .open {
+	font-style: italic;
+}
+
+.php-file-tree .closed {
+	font-style: normal;
+}
+
+.php-file-tree .pft-directory {
+	list-style-image: url(dir_img/directory.png);
+}
+
+/* Default file */
+.php-file-tree LI.pft-file { list-style-image: url(dir_img/file.png); }
+
+/* Additional file types */
+.php-file-tree LI.ext-3gp { list-style-image: url(dir_img/film.png); }
+.php-file-tree LI.ext-afp { list-style-image: url(dir_img/code.png); }
+.php-file-tree LI.ext-afpa { list-style-image: url(dir_img/code.png); }
+.php-file-tree LI.ext-asp { list-style-image: url(dir_img/code.png); }
+.php-file-tree LI.ext-aspx { list-style-image: url(dir_img/code.png); }
+.php-file-tree LI.ext-avi { list-style-image: url(dir_img/film.png); }
+.php-file-tree LI.ext-bat { list-style-image: url(dir_img/application.png); }
+.php-file-tree LI.ext-bmp { list-style-image: url(dir_img/picture.png); }
+.php-file-tree LI.ext-c { list-style-image: url(dir_img/code.png); }
+.php-file-tree LI.ext-cfm { list-style-image: url(dir_img/code.png); }
+.php-file-tree LI.ext-cgi { list-style-image: url(dir_img/code.png); }
+.php-file-tree LI.ext-com { list-style-image: url(dir_img/application.png); }
+.php-file-tree LI.ext-cpp { list-style-image: url(dir_img/code.png); }
+.php-file-tree LI.ext-css { list-style-image: url(dir_img/css.png); }
+.php-file-tree LI.ext-doc { list-style-image: url(dir_img/doc.png); }
+.php-file-tree LI.ext-exe { list-style-image: url(dir_img/application.png); }
+.php-file-tree LI.ext-gif { list-style-image: url(dir_img/picture.png); }
+.php-file-tree LI.ext-fla { list-style-image: url(dir_img/flash.png); }
+.php-file-tree LI.ext-h { list-style-image: url(dir_img/code.png); }
+.php-file-tree LI.ext-htm { list-style-image: url(dir_img/html.png); }
+.php-file-tree LI.ext-html { list-style-image: url(dir_img/html.png); }
+.php-file-tree LI.ext-jar { list-style-image: url(dir_img/java.png); }
+.php-file-tree LI.ext-jpg { list-style-image: url(dir_img/picture.png); }
+.php-file-tree LI.ext-jpeg { list-style-image: url(dir_img/picture.png); }
+.php-file-tree LI.ext-js { list-style-image: url(dir_img/script.png); }
+.php-file-tree LI.ext-lasso { list-style-image: url(dir_img/code.png); }
+.php-file-tree LI.ext-log { list-style-image: url(dir_img/txt.png); }
+.php-file-tree LI.ext-m4p { list-style-image: url(dir_img/music.png); }
+.php-file-tree LI.ext-mov { list-style-image: url(dir_img/film.png); }
+.php-file-tree LI.ext-mp3 { list-style-image: url(dir_img/music.png); }
+.php-file-tree LI.ext-mp4 { list-style-image: url(dir_img/film.png); }
+.php-file-tree LI.ext-mpg { list-style-image: url(dir_img/film.png); }
+.php-file-tree LI.ext-mpeg { list-style-image: url(dir_img/film.png); }
+.php-file-tree LI.ext-ogg { list-style-image: url(dir_img/music.png); }
+.php-file-tree LI.ext-pcx { list-style-image: url(dir_img/picture.png); }
+.php-file-tree LI.ext-pdf { list-style-image: url(dir_img/pdf.png); }
+.php-file-tree LI.ext-php { list-style-image: url(dir_img/php.png); }
+.php-file-tree LI.ext-png { list-style-image: url(dir_img/picture.png); }
+.php-file-tree LI.ext-ppt { list-style-image: url(dir_img/ppt.png); }
+.php-file-tree LI.ext-psd { list-style-image: url(dir_img/psd.png); }
+.php-file-tree LI.ext-pl { list-style-image: url(dir_img/script.png); }
+.php-file-tree LI.ext-py { list-style-image: url(dir_img/script.png); }
+.php-file-tree LI.ext-rb { list-style-image: url(dir_img/ruby.png); }
+.php-file-tree LI.ext-rbx { list-style-image: url(dir_img/ruby.png); }
+.php-file-tree LI.ext-rhtml { list-style-image: url(dir_img/ruby.png); }
+.php-file-tree LI.ext-rpm { list-style-image: url(dir_img/linux.png); }
+.php-file-tree LI.ext-ruby { list-style-image: url(dir_img/ruby.png); }
+.php-file-tree LI.ext-sql { list-style-image: url(dir_img/db.png); }
+.php-file-tree LI.ext-swf { list-style-image: url(dir_img/flash.png); }
+.php-file-tree LI.ext-tif { list-style-image: url(dir_img/picture.png); }
+.php-file-tree LI.ext-tiff { list-style-image: url(dir_img/picture.png); }
+.php-file-tree LI.ext-txt { list-style-image: url(dir_img/txt.png); }
+.php-file-tree LI.ext-vb { list-style-image: url(dir_img/code.png); }
+.php-file-tree LI.ext-wav { list-style-image: url(dir_img/music.png); }
+.php-file-tree LI.ext-wmv { list-style-image: url(dir_img/film.png); }
+.php-file-tree LI.ext-xls { list-style-image: url(dir_img/xls.png); }
+.php-file-tree LI.ext-xml { list-style-image: url(dir_img/code.png); }
+.php-file-tree LI.ext-zip { list-style-image: url(dir_img/zip.png); }
