@@ -38,7 +38,7 @@
             echo "</select>";
             echo "<div id='bridgepw' style='visibility:hidden'>";
             echo "<br>";
-            echo "<input name='password'min='8' max='63' type='text' value='' placeholder='wifi passphrase' >";
+            echo "<input name='password'min='8' max='63' type='text' value='' placeholder='enter wifi passphrase' >";
             echo "</div>";
             echo "<input type='checkbox' name='save' id='save' class='css-checkbox'>";
             echo "<label for='save' class='css-label'>Save this network</label>";
