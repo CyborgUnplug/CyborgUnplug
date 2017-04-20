@@ -33,7 +33,7 @@ if ($vpnup == 0) {
     echo "<form action='vpn.php'>"; 
     echo "<input name='refresh' type='submit' class='button' value='refresh'>";
     echo "</form>";
-    $secondsWait = 5;
+    $secondsWait = 10;
     echo '<meta http-equiv="refresh" content="'.$secondsWait.'">';
 } else if ($vpnup == 1) {
     echo '<meta http-equiv="refresh" content="20">';
@@ -113,7 +113,6 @@ if ($vpnup == 0) {
                         }
                     }
                 } 
-                
             } else {
                 echo "<div class='warning'>";
                 echo "It seems we're currently offline.<br>";
