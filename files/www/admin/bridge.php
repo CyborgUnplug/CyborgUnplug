@@ -1,49 +1,6 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<meta charset="utf-8" />
-	 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-
-	<title>Cyborg Unplug Configuration</title>
-	<link rel="stylesheet" href="style.css"/>
-	<script src="jquery-1.11.1.min.js"></script>
-<script> 
-    var auto_refresh = setInterval(
-    function()
-    {
-        $('#status').fadeOut('slow').load('status.php').fadeIn("slow");
-    }, 5000);
-</script>
-<script>
-        var $r;
-        function checkForPw() {
-                var myselect = document.getElementById("bridge");
-                var rid=myselect.id;
-                console.log(rid);
-                if(myselect.value.slice(-1) != 'off') {
-                        document.getElementById("bridgepw").style.visibility = "visible";
-                } else {
-                        document.getElementById("bridgepw").style.visibility = "hidden";
-                }
-                
-        }
-</script>
-
-
-</head>
-<body>
-	<div id="container">
-        <div id="status" class="container_status">
-        Awaiting status...
-        </div>
-        <center>
-        <br>
-        <a href="index.php">
-		<img src="img/logo.png" alt="unplug" title="" width="510" height="166" id="logo" />
-        </a>
-        </center>
+<?php include 'header.php';?>
     <center>
-    <h1 id="headline">Setup WiFi bridge</h1>
+    <h1 id="headline">Create a Wifi bridge</h1>
     <?php
         $d = fopen("config/vpnstatus", "r");
         $e=fgets($d);
@@ -94,20 +51,20 @@
             $fn = "config/savedbridge";
             if (file_exists($fn)) {
                 $f = fopen($fn, "r");
-                $g=fgets($f);
+                $g = fgets($f);
                 $parts = explode(',', $g);
-		        $ap=$parts[0].','.base64_decode($parts[1]);
+				$ssid = base64_decode($parts[1]);
+		        $ap = $parts[0].','.$ssid;
                 echo "<hr>";
                 echo "<br>";
-                echo "<h1>Or choose a saved network...</h1>"; 
+                echo "<h1>Choose a saved wifi network</h1>"; 
                 echo "<form method='get' id='savedbridge' action='cgi-bin/config.cgi'>";
                 echo "<input name='savedbridge' type='hidden' value='savedbridge'>";
-                echo "<input type='submit' value=".$ap." class='button'>";
+				echo '<button class=button" value="'.$ap.'" type="submit">'.$ssid.'</button>';
                 echo "</form>";
                 fclose($f);
                 echo "</center>";
            }
         }
     ?>
-
 <?php include 'footer.php';?>
