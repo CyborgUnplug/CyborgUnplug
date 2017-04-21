@@ -614,7 +614,8 @@ html[xmlns] .slides {display: block;}
 	margin-top: 15px!important;
 	margin-bottom: 15px!important;
 	background: #222; 
-	width:101%;
+	width:100%;
+	padding: 1em 1.5em;
     font-size: .8em;
 }
 
