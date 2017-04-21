@@ -103,6 +103,7 @@ vpncheck () {
         echo down > $CONFIG/vpnstatus
         killall -SIGTERM openvpn # zombie processes
         rm -f $CONFIG/vpn
+        echo idle > /tmp/blink
     else
         # do test ping here
         echo "VPN status is: " $(cat $CONFIG/vpnstatus)
