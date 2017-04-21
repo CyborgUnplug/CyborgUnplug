@@ -2,4 +2,4 @@
 
 CONFIG=/www/config
 
-echo down > $CONFIG/vpnstatus
+echo stop > $CONFIG/vpnstatus
