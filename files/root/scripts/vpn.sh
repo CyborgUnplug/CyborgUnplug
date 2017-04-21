@@ -74,6 +74,7 @@ vpnstart () {
                     else
                         echo "Failed to reach remote host, bailing out..."
                         vpnstop
+                        echo failed > $CONFIG/vpnstatus
                         return 1 
                     fi
                 else
