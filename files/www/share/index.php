@@ -1,7 +1,7 @@
 <?php
 // PHP File Tree code by Cory LaViska, adapts code from here:
 //   http://abeautifulsite.net/notebook.php?article=21
-include 'header.php';
+include('/www/admin/header.php');
 include("php_file_tree.php");
 ?>
     <head>                                                                                                                                                     
@@ -41,4 +41,4 @@ include("php_file_tree.php");
     </div>
     </body>
 <br>
-<?php include 'footer.php';?>
+<?php include('/www/admin/footer.php'); ?>
