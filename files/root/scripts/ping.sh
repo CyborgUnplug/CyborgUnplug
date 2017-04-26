@@ -24,11 +24,11 @@ while true;
         # We call php-cgi here as /usr/bin/curl doesn't support SSL while PHP's
         # curl implementation does
         vpnstate=$(cat $CONFIG/vpnstatus)
-        if [[ $vpnstate == up ]]; then
-            echo "Waiting for VPN" > $CONFIG/networkstate
-        fi
         if [[ $vpnstate != start && $vpnstate != stop ]]; then
             loc=$(php-cgi /www/admin/curl.php | tr -d $'\r' | tail -n +3 | head -n 1)
+			if [[ $vpnstate == up ]]; then
+				echo "Waiting for VPN" > $CONFIG/networkstate
+			fi
             if [[ ! -z $loc ]]; then
                 echo online $loc > $CONFIG/networkstate
             else
