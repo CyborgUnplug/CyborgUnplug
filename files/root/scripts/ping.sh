@@ -32,11 +32,16 @@ while true;
             if [[ ! -z $loc ]]; then
                 echo online $loc > $CONFIG/networkstate
             else
-                echo offline > $CONFIG/networkstate
+                if [[ $vpnstate == up ]]; then
+                    echo "Waiting for VPN" > $CONFIG/networkstate
+                else
+                    echo offline > $CONFIG/networkstate
+                fi
             fi
         fi
         cat $CONFIG/networkstate 
 		sleep $POLLTIME
+
 
 	done
 			
