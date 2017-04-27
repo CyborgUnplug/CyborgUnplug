@@ -1,8 +1,10 @@
-<?php include 'header.php';?>
-
-    <center>
-	<h1 id="headline">Select devices</h1>
-    </center>
+<?php
+$page_title = "Select spy devices";
+include('header.php');
+?>
+    <div class="center">
+		<h1><i class="icon-scan"></i> Select spy devices</h1>
+    </div>
 	<div id="container_devices">
 	    <script>	
             function checkall(ele) {
@@ -64,5 +66,4 @@
             </center>
 		</form>
 	</div>
-
-<?php include 'footer.php';?>
+<?php include('footer.php'); ?>

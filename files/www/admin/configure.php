@@ -2,7 +2,7 @@
 $page_title = "Settings";
 include('header.php');
 ?>
-<div class="text-center">
+<div class="center">
 	<h1><i class="icon-settings"></i> Settings</h1>
 	<form action="wlanconf.php">
 		<input name="wifi" type="submit" value="Wifi Hotspot Setup">

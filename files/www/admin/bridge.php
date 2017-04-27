@@ -1,6 +1,9 @@
-<?php include 'header.php';?>
+<?php 
+$page_title = "Create a Wifi bridge";
+include('header.php');
+?>
     <center>
-    <h1 id="headline">Create a Wifi bridge</h1>
+    <h1><i class="icon-bridge"></i> Create a Wifi bridge</h1>
     <?php
         $d = fopen("config/vpnstatus", "r");
         $e=fgets($d);
@@ -67,4 +70,4 @@
            }
         }
     ?>
-<?php include 'footer.php';?>
+<?php include('footer.php') ;?>

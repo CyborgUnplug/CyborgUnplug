@@ -1,8 +1,6 @@
-<?php 
-$page_title = "Connect to VPN";
+<?php
+$page_title = "VPN";
 include('header.php');
-
-
 include('network-status.php');
 $network = get_network_status();
 
