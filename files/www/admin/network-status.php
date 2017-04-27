@@ -25,6 +25,10 @@ function get_network_status() {
 	$response["ssid"] = fgets($f1);
 	fclose($f1);
 
+	if (file_exists("/www/admin/config/armed")) {
+		$respone["ssid"] = "unvailable";
+	}
+
 	// Get Network Info
 	$fn='/www/admin/config/networkstate';
 	if (file_exists($fn)) {
@@ -39,10 +43,10 @@ function get_network_status() {
 				// Waiting to verify IP
 				if (preg_match('/Waiting/', $g1) == 1) {
 					$response["status"] = "connecting";
-					$response["message"] = "Connecting to the internet";
+					$response["message"] = "Connecting to internet";
 				} else {
 					$response["status"] = "connected";
-					$response["message"] = "Connected via ".$parts[2];
+					$response["message"] = "Connected to internet";
 					$response["ip"] = $parts[1];
 					$response["ip_country"] = $parts[2];
 					$response["ip_iso"] = str_replace(array("(", ")"), "", $parts[3]);
@@ -53,37 +57,30 @@ function get_network_status() {
 				$h=fgets($vpnstatus);
 
 				if (preg_match('/up/', $h) == 1) {
-					//$vpnup=1;
 					$response["status"] = "tunneled";
-					$response["message"] = "VPN tunneled via ".$parts[2];
+					$response["message"] = "VPN tunneled";
 					$response["vpn"] = "up";
 				}
 				else if (preg_match('/down/', $h) == 1) {
-					//$vpnup=3;
 					$response["vpn"] = "down";
 				}
 				else if (preg_match('/start/', $h) == 1) {
-					//$vpnup=0;
 					$response["status"] = "connecting";
-					$response["message"] = "Connecting to VPN...";
+					$response["message"] = "Connecting to VPN";
 					$response["vpn"] = "start";
 				}
 				else if (preg_match('/stop/', $h) == 1) {
-					//$vpnup=3;
 					$response["status"] = "connecting";
 					$response["message"] = "VPN is stopping";
 					$response["vpn"] = "stop";
 				}
 				else if (preg_match('/unconfigured/', $h) == 1) {
-					//$vpnup=2;
 					$response["vpn"] = "unconfigured";
 				}
 				else if (preg_match('/failed/', $h) == 1) {
-					//$vpnup=4;
 					$response["vpn"] = "failed";
 				}
 				else {
-					//$vpnup=5;
 					$response["vpn"] = "error";
 				}
 
@@ -91,11 +88,11 @@ function get_network_status() {
 			}
 			else if (preg_match('/offline/', $g) == 1) {
 				$response["status"] = "disconnected";
-				$response["message"] = "Not connected to the internet";
+				$response["message"] = "No internet connection";
 			}
 			else {
 				$response["status"] = "connecting";
-				$response["message"] = "Connecting to the internet";
+				$response["message"] = "Connecting to internet";
 			}
 		}
 		fclose($f2);
