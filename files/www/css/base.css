@@ -56,8 +56,9 @@ body {
 	color: #555;
 }
 
-a {
-	color: #0078CF;
+a,
+a:visited {
+	color: #ba1800;
 	font-weight: normal;
 	cursor: pointer;
 	text-decoration: none;
@@ -68,9 +69,8 @@ a {
 }
 
 a:hover {
-	color: #000;
+	color: #333;
 	text-decoration: no-underline;
-	background: rgba(0, 0, 0, .025);
 } 
 
 ::-moz-selection {
@@ -241,11 +241,11 @@ input[type="reset"],
 input[type="submit"] {
 	cursor:pointer;
 	width: 100%;
-	color: #666;
-	font-size: 2.2em;
+	color: #333;
+	font-size: 1.75em;
 	font-weight: 800;
 	padding: 0.6em 1.2em;
-	border: solid 1px #999;
+	border: 0px;
     cursor: pointer;
 	background: #efefef;
 
@@ -269,18 +269,18 @@ input[type="reset"]:hover,
 input[type="submit"]:hover {
 	color: #333;
 	text-decoration: none;
-	border-color: #BBB;
-	background: #e8e8e8;
+	border: 0px;
+	background: #d8d8d8;
 }
 
 button:focus,
 input[type="button"]:focus,
 input[type="reset"]:focus,
 input[type="submit"]:focus {
-	color: #333;
+	color: #111;
 	text-decoration: none;
-	border-color: #BBB;
-	background: #e8e8e8;
+	border: 0px;
+	background: #c3c3c3;
 }
 
 input[type="checkbox"],
@@ -473,7 +473,7 @@ input[type=checkbox].css-checkbox:checked + label.css-label {
 }
 
 label.css-label {
-	background-image:url(img/cb-bg_lg.png);
+	background-image:url(../img/cb-bg_lg.png);
 	-webkit-touch-callout: none;
 	-webkit-user-select: none;
 	-khtml-user-select: none;
