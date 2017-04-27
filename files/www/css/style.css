@@ -79,10 +79,16 @@ i {
 ====== HELPERS
 ---------------------------------------------------------------------------- */
 
+.center {
+	margin-right: auto;
+	margin-left: auto;
+	text-align: center;
+}
+
 .clearfix::after {
     content: "";
     clear: both;
-    display: table;
+    display: block;
 }
 
 
@@ -100,17 +106,6 @@ i {
 	padding:20px;
 	background-color:white;
 	text-align: left;
-}
-
-#headline {
-	margin-top: 30px;
-	margin-bottom: 35px;
-	font-weight: 200;
-	font-size: 2.7em;
-}
-
-.headline_net {
-	margin-bottom: 30px!important;
 }
 
 .page {
@@ -173,12 +168,12 @@ i {
     margin-right: auto ;
 }
 
+
 /* -- HEADER --------------------------------------------------------------- */
 
-#header {
+header {
     width: auto;
 	display: block;
-	padding: 1.5em 0 0 0;
 	margin-top: 5px !important;
 	margin-bottom: 2em !important;
 	font-size: 1.25em;
@@ -192,73 +187,81 @@ i {
 	border-radius: 3px;
 }
 
-#header-top {
-	position: relative;
+header #logo {
+	display: inline-block;
+	float: left;
+	margin: 1em 0 1em 2em;
 }
 
-#header-top a {
-	position: absolute;
-	left: 1em;
-}
-
-#logo {
+header #logo img {
 	height: 70px;
 }
 
-#header-buttons {
-	position: absolute;
-	right: 20px;
+header #header-buttons {
 	display: inline-block;
+	float: right;
+	margin: 1em 1em 1em 0;
 }
 
-#header-buttons form {
+header form {
 	margin: 0px;
 	display: inline-block;
 }
 
-#header-buttons form button {
+header form button {
 	width: auto;
-	margin: 0 1em;
+	margin: 0 .5em;
 	display: inline-block;
 	background-color: transparent;
 	border: 0px;
 	font-size: 14px;
 	font-weight: normal;
-	color: #000;
+	color: #111;
 }
 
-#header-buttons form button:hover {
+header form button:hover {
 	background-color: #efefef;
 }
 
-#header-buttons form button i {
+header form button i {
 	font-size: 30px;
 	display: block;
 }
 
-#header-buttons i.icon-wifi-off {
+header button.wifi-off,
+header button.wifi-off {
 	color: #d9d9d9;
 }
 
-#header-buttons i.icon-wifi-error {
-	color: #;
+header button.wifi-error,
+header button.wifi-error {
+	color: #ba1800;
 }
 
-#status {
-	clear: both;
-	padding: 1.5em 2em;
+header #status-bar {
 	border-top: 1px solid #111;	
+}
+
+header #status {
+	margin: 1em 2em;
+	display: table;
+}
+
+header #status-bar span {
+	display: table-cell;
+	padding: 0 1em;
+	color: #111;
 }
 
 #status_color {
 	display: inline-block;
 	width: 25px;
 	height: 25px;
-	-webkit-border-radius: 10px;
-	-moz-border-radius: 10px;
-	-o-border-radius: 10px;
-	-ms-border-radius: 10px;
-	-khtml-border-radius: 10px;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	-o-border-radius: 5px;
+	-ms-border-radius: 5px;
+	-khtml-border-radius: 5px;
 }
 
 #status_color.waiting {
@@ -290,7 +293,6 @@ i {
 	color: #ffffff;
 	background: #ba1800;
 }
-
 
 .config_container {
 	margin: 0px;
@@ -387,31 +389,8 @@ i {
 .btnnext {
 	margin-top: 20px;
 	margin-bottom: 20px;
-	text-align: center;
-	background: #ff3d3d;
-	border:2px solid black!important;
-	padding: 10px 20px 10px 20px;
-	text-decoration: none;
 	width: 100%;
-	color: black!important;
-	font-weight: 500!important;
 	max-width: 350px;
-	-webkit-border-radius: 3px;
-	-moz-border-radius: 3px;
-	-o-border-radius: 3px;
-	-ms-border-radius: 3px;
-	-khtml-border-radius: 3px;
-	border-radius: 3px;
-	-moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
-	-webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
-	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
-}
-
-.btnnext:hover {
-	color: red!important;
-	border: 2px solid red!important;
-	background: #3c91fa;
-	text-decoration: none;
 }
 
 .btnarm {
@@ -419,22 +398,10 @@ i {
 	margin-bottom: 20px;
 	text-align: center;
 	background: #ff3d3d;
-	border:2px solid red!important;
-	padding: 10px 20px 10px 20px;
-	text-decoration: none;
+	color: #fff !important;
 	width:100%;
-	color:red!important;
 	font-weight: 500!important;
 	max-width: 350px;
-	-webkit-border-radius: 3px;
-	-moz-border-radius: 3px;
-	-o-border-radius: 3px;
-	-ms-border-radius: 3px;
-	-khtml-border-radius: 3px;
-	border-radius: 3px;
-	-moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
-	-webkit-box-shadow:0 1px 3px rgba(0, 0, 0, 0.3);
-	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 }
 
 .btnarm:hover {
@@ -451,7 +418,7 @@ i {
     position: relative; }
 
 .toggle-title {
-	padding: 0.38em 1em;
+	padding: 0.38em 0;
 	text-align: center;
 }
 
@@ -532,32 +499,10 @@ i {
     
 /* ----------------------------------------------------------------------------
 ======	PAGES
----------------------------------------------------------------------------- */
-    
-/* -- HEADER --------------------------------------------------------------- */
-
-header#navtop {
-	margin-bottom: 2em;
-	clear: both;
-	overflow: hidden;
-}
-
-header nav ul {
-	float: left;
-	overflow: hidden;
-	padding: 0 3em 0 2em;
-	border-left: 1px solid #ddd;
-	line-height: 2em;
-}
-
-nav a, menu a {
-	text-decoration: none;
-	color: #555;
-}
+---------------------------------------------------------------------------- */ 
 
 .navactive { color: #760000 }
-.logo {margin-bottom: 3em;}
-.logo:hover {background: none;}
+
 
 /* -- GENERAL -------------------------------------------------------------- */
 
@@ -588,7 +533,7 @@ header .arrow { color: #999; font-style: italic; }
 }
 
 /* Slider */
-	
+
 /* Browser Resets */
 .flex-container a:active,
 .flexslider a:active,
