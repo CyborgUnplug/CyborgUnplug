@@ -1,28 +1,27 @@
-<?php include 'header.php';?>
-
+<?php include('header.php') ;?>
     <center>
 	<h1 id="headline">I want to...</h1>
     </center>
 	<div id="container_start">
         <form action="detect.php">
-			<input name="detect" type="submit" value="detect spy devices" class='button'>
+			<button name="detect" type="submit" value="detect">
+				<i class="icon-scan"></i> Detect spy devices
+			</button>
         </form>
 		<form method="get" id="protect" action="cgi-bin/config.cgi">
-			<input name="protect" type="submit" value="connect through a vpn" class='button'>
+			<button name="protect" type="submit" value="protect">
+				<i class="icon-vpn-tunneled"></i> Connect to VPN
+			</button>
         </form>
         <form method="get" action="cgi-bin/config.cgi">
-			<input name="bridgechoose" type="submit" value="create a wifi bridge" class='button'>
+			<button name="bridgechoose" type="submit" value="bridgechoose">
+				<i class="icon-bridge"></i> Create a Wifi bridge
+			</button>
         </form>
         <form action="/share/index.php">
-			<input name="share" type="submit" value="share files over wifi" class='button'>
+			<button name="share" type="submit" value="share">
+				<i class="icon-file-share"></i> Share files over Wifi
+			</button>
         </form>
-        <form action="configure.php">
-			<input name="configure" type="submit" value="configure" class='button'>
-        </form>
-        <form method="get" action="cgi-bin/config.cgi">
-			<input name="reboot" type="submit" value="reboot" class='button'>
-        </form>
-
 	</div>
-
-<?php include 'footer.php';?>
+<?php include('footer.php') ;?>
