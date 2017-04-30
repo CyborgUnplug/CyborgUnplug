@@ -1,32 +1,16 @@
 <?php
-/*Resourced by header.php
-GeoIP status updates end-to-end encrypted */
+/*	Resourced via an AJAX call in header.php
+	- Returns JSON response
+*/
 
-    $f1 = fopen("/www/admin/config/ssid", "r");
-    $ssid=fgets($f1);
-    fclose($f1);
-    $fn='/www/admin/config/networkstate';
-    if (file_exists($fn)) {
-        $f2 = fopen("/www/admin/config/networkstate", "r");
-        $g=fgets($f2);
-        if ($g) {
-            if (preg_match('/online/', $g) == 1) {
-                $parts = explode('online', $g);
-                echo $ssid."<b> Status</b> ONLINE "; 
-                $vpnstatus = fopen("/www/admin/config/vpnstatus", "r");
-                $h=fgets($vpnstatus);
-                if (preg_match('/up/', $h) == 1) {
-                    echo "<b>Tunneled via</b>.$parts[1]";
-                } 
-                else {
-                    echo "<b>Routed via</b>.$parts[1]";
-                }
-                fclose($vpnstatus);
-            }
-            else if (preg_match('/offline/', $g) == 1) {
-                echo $ssid."<b>Status</b> OFFLINE";
-            }
-        }
-        fclose($f2);
-    }
+// Headers
+header('Content-Type: application/json;charset=utf-8');
+header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+header("Cache-Control: post-check=0, pre-check=0", false);
+header("Pragma: no-cache");
+
+include('network-status.php');
+$network = get_network_status();
+
+echo json_encode($network);
 ?>
