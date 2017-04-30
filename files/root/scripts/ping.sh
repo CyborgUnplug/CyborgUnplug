@@ -17,20 +17,31 @@
 readonly SCRIPTS=/root/scripts
 readonly BINPATH=/usr/sbin/
 readonly CONFIG=/www/config
-readonly POLLTIME=5
+readonly POLLTIME=10
 
 while true;
 	do
         # We call php-cgi here as /usr/bin/curl doesn't support SSL while PHP's
         # curl implementation does
-        loc=$(php-cgi /www/admin/curl.php | tr -d $'\r' | tail -n +3 | head -n 1)
-		if [[ ! -z $loc ]]; then
-            echo online $loc > $CONFIG/networkstate
-		else
-			echo offline > $CONFIG/networkstate
-		fi
-
+        vpnstate=$(cat $CONFIG/vpnstatus)
+        if [[ $vpnstate != start && $vpnstate != stop ]]; then
+            loc=$(php-cgi /www/admin/curl.php | tr -d $'\r' | tail -n +3 | head -n 1)
+			if [[ $vpnstate == up ]]; then
+				echo "Waiting for VPN" > $CONFIG/networkstate
+			fi
+            if [[ ! -z $loc ]]; then
+                echo online $loc > $CONFIG/networkstate
+            else
+                if [[ $vpnstate == up ]]; then
+                    echo "Waiting for VPN" > $CONFIG/networkstate
+                else
+                    echo offline > $CONFIG/networkstate
+                fi
+            fi
+        fi
+        cat $CONFIG/networkstate 
 		sleep $POLLTIME
+
 
 	done
 			

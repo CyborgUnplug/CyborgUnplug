@@ -1,8 +1,10 @@
-<?php include 'header.php';?>
-
-    <center>
-	<h1 id="headline">Select devices</h1>
-    </center>
+<?php
+$page_title = "Select spy devices";
+include('header.php');
+?>
+    <div class="center">
+		<h1><i class="icon-scan"></i> Select spy devices</h1>
+    </div>
 	<div id="container_devices">
 	    <script>	
             function checkall(ele) {
@@ -52,17 +54,17 @@
 				    }
 				}
                 echo "<div class='device'>";
+				echo "<hr>";
                 echo "<input type='checkbox' onchange='checkall(this)' id='selectall' class='css-checkbox'>";
                 echo "<label for='selectall' class='css-label'>Select all</label>";
                 echo "</div>";
                 echo "<br><br>";
 				fclose($f);
 			?>
-            <center>
-			<input name="devices" type="hidden" id="checkList" value="nothing">
-			<input type="submit" value="NEXT" class='btnnext'>
-            </center>
+            <div class="center">
+				<input name="devices" type="hidden" id="checkList" value="nothing">
+				<button type="submit" value="NEXT" class="btnnext">Next</button>
+            </div>
 		</form>
 	</div>
-
-<?php include 'footer.php';?>
+<?php include('footer.php'); ?>

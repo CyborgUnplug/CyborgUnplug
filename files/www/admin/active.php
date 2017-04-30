@@ -1,12 +1,14 @@
-<?php include 'header-no-status.php';?>
-
-    <center>
+<?php
+$page_title = " Sweeping for spy devices";
+include('header-no-status.php');
+?>
+    <div class="center">
     <?php 
         $f = fopen("config/mode", "r");
         $g=fgets($f);                                                                                                                              
         if ($g) {
             if (preg_match('/sweep/', $g) == 1) {
-                echo "<h1 id='headline'>Sweeping for devices...</h1>";
+                echo "<h1><i class='icon-scan'></i> Sweeping for spy devices</h1>";
                 echo "<br>";
                 echo "<div class='warning'>";
                 echo "A sweep should take a little over 80 seconds. During this time your WiFi connection to Little Snipper will go down. Reconnect and refresh this page in a couple of minutes to read a report.<br>In the interim, check email for alerts.";
@@ -38,8 +40,7 @@
             }
         }
     ?>
-        <br>
-        </center>
+	</div>
 	<ul class='toggle-view'>
         <li>
             <a href='#reports' class='navLink'><h4 class='toggle-title'>reports</h4></a>
