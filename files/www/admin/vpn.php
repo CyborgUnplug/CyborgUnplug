@@ -9,14 +9,14 @@ if ($network["vpn"] == "start") {
     echo "<br><br>";
     echo "<div class='warning warning3'>";
     echo "Connecting to VPN...\n";
-    echo "<img src='img/loading.gif'>";
+    echo "<img src='../img/loading.gif'>";
     echo "</div>";
     echo "<form action='vpn.php'>"; 
     echo "<input name='refresh' type='submit' class='button' value='refresh'>";
     echo "</form>";
     // TODO: make this work via JavaScript instead
-    // $secondsWait = 5;
-    // echo '<meta http-equiv="refresh" content="'.$secondsWait.'">';
+    $secondsWait = 5;
+    echo '<meta http-equiv="refresh" content="'.$secondsWait.'">';
 
 // Successfully tunneled
 } else if ($network["status"] == "tunneled" && $network["vpn"] == "up") {
@@ -24,9 +24,7 @@ if ($network["vpn"] == "start") {
 	if ($network["status"] == "tunneled") {
 
 		echo "<div class='warning warning3'>";
-		echo "<b>The VPN is up.</b><br><br>";
-		echo "You are tunneled via ".$network["ip_country"]."<br>";
-		echo "Your IP address is: ".$network["ip"]."<br>";
+		echo "<b>The VPN is up.</b>";
 		echo "<br>Check your IP via <a href='http://checkip.com'>checkip.com</a> before browsing.";
 		echo "</div>";
 
@@ -37,10 +35,6 @@ if ($network["vpn"] == "start") {
 			$g=fgets($f1);
 				if ($g) {
 
-					// Use Cyborg Unplug VPN
-					if (!preg_match('/plugunplug.ovpn/', $g) == 1) {
-						echo "<br><br>NOTE: if the status bar reads 'OFFLINE', it may be because this VPN blocks ICMP ('ping') packets. Try browsing to see if you're really online";
-					}
 					echo "<div class='warning'>";
 					echo "<center>";
 					echo "Devices connected before VPN was active should immediately reconnect<br>";
@@ -115,7 +109,7 @@ if ($network["vpn"] == "start") {
     echo "</div>";
     echo "<form method='get' id='newvpn' action='cgi-bin/config.cgi'>";
     echo "<input name='newvpn' type='hidden' value='newvpn'>";
-    echo "<input type='submit' value='start over' class='button'>";
+    echo "<input type='submit' value='Start over' class='button'>";
     echo "</form>";
     echo "<div class='warning warning3'>";
     echo "If you've just tried to connect and it failed, check usernames and passwords (if any).\n";
@@ -201,7 +195,7 @@ if ($network["vpn"] == "start") {
         echo "<input type='submit' value='start over' class='button'>";
         echo "</form>";
         echo "<form action='index.php'>";
-        echo "<input type='submit' value='main menu' class='button'>";
+        echo "<input type='submit' value='Main menu' class='button'>";
         echo "</form>";
     }
 

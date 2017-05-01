@@ -5,6 +5,19 @@ include('header.php');
     <div class="center">
     	<h1><i class="icon-bridge"></i> Create a Wifi bridge</h1>
 	</div>
+    <script>                                                                                                                                    var $r;
+        function checkForPw() {
+                var myselect = document.getElementById("bridge");
+                var rid=myselect.id;
+                console.log(rid);
+                if(myselect.value.slice(-1) != 'off') {
+                        document.getElementById("bridgepw").style.visibility = "visible";
+                } else {
+                        document.getElementById("bridgepw").style.visibility = "hidden";
+                }
+                
+        }
+    </script>
     <?php
         $d = fopen("config/vpnstatus", "r");
         $e=fgets($d);
@@ -31,11 +44,9 @@ include('header.php');
                 if ($parts[1]) {
                     $data=$parts[0].','.$parts[1].','.$parts[2].','.$parts[3];
                     echo "<option id=$data name=$data value=$data>".base64_decode($parts[1])."</option>"; 
-                    /*
-                    if ($parts[3] == '1') {
+                    if ($parts[3] == 'wpa') {
                         echo "<input name='n$data' for=$data min='8' max='63' id='pw$data' type='text' placeholder='password' style='visibility:hidden' >";
                     }
-                    */
                 }
             }
             fclose($f);

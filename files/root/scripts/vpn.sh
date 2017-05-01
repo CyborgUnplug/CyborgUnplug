@@ -40,9 +40,11 @@ vpnstart () {
         local vpnargs=($(cat $CONFIG/vpn)) # array
         local arg1=${vpnargs[0]}
         local arg2=${vpnargs[1]}
-        if [[ -z $(cmp $CONFIG/vpn $CONFIG/savedvpn) ]]; then
-            # The saved vpn is the same we wish to run, so point to our archived .ovpn and .auth file 
-            KEYS=/root/keys/
+        if [ -f $CONFIG/savedvpn ]; then
+            if [[ -z $(cmp $CONFIG/vpn $CONFIG/savedvpn) ]]; then
+                # The saved vpn is the same we wish to run, so point to our archived .ovpn and .auth file 
+                KEYS=/root/keys/
+            fi
         fi
         if [[ $arg1 == 1 ]]; then
             local auth=$KEYS/$arg2.auth 

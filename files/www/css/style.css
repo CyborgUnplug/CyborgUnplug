@@ -333,11 +333,28 @@ footer img.little-snipper {
 }
 
 .upload {
-    border: 0px solid #AAA;
+	cursor:pointer;
+	color: #333;
+	font-size: 1.75em;
+	font-weight: 800;
 	padding: 0.6em 1.2em;
-    margin: 0px;
+	border: 0px;
+    cursor: pointer;
+	background: #efefef;
     text-align: center;
-    background: #DDD;
+
+	border-radius: 3px;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	-o-border-radius: 3px;
+	-ms-border-radius: 3px;
+	-khtml-border-radius: 3px;
+	
+	-webkit-transition: 0.1s linear all;
+	-moz-transition: 0.1s linear all;
+	-ms-transition: 0.1s linear all;
+	-o-transition: 0.1s linear all;
+	transition: 0.1s linear all;
 }
 
 .upload:hover {
@@ -354,6 +371,46 @@ footer img.little-snipper {
 
 .upload :valid + span {
     color: red;
+}
+
+
+.button,
+.toggle-title {
+	width: 100%;
+	color: #333;
+	font-size: 1.75em;
+	font-weight: 800;
+	padding: 0.6em 1.2em;
+	border: 0px;
+    cursor: pointer;
+	background: #efefef;
+
+	border-radius: 3px;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	-o-border-radius: 3px;
+	-ms-border-radius: 3px;
+	-khtml-border-radius: 3px;
+	
+	-webkit-transition: 0.1s linear all;
+	-moz-transition: 0.1s linear all;
+	-ms-transition: 0.1s linear all;
+	-o-transition: 0.1s linear all;
+	transition: 0.1s linear all;
+}
+
+.button:hover,
+.toggle-title:hover {
+	color: #333;
+	text-decoration: none;
+	border-color: #BBB;
+	background: #e8e8e8;
+}
+
+.button:focus,
+.toggle-title:focus {
+	color: #333;
+	border-color: #BBB;
 }
 
 .btn {
