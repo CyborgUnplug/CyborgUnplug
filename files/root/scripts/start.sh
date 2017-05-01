@@ -98,10 +98,6 @@ if [ ! -f $CONFIG/since ]; then
     # First boot!
     cp /www/admin/start.php /www/admin/index.php                                 
     /etc/init.d/cron enable 
-    echo "<center><footer><hr>" >  /www/admin/footer.php
-    echo "World (v2) | id: " $(cat $CONFIG/wlan0mac | sed 's/://g')" | rev: " $(cat $CONFIG/rev) >> /www/admin/footer.php 
-    echo "</footer></center></div></body></html>" >> /www/admin/footer.php
-    ln -s /www/admin/footer.php /www/share/footer.php
 else
     if [ ! -f $CONFIG/email ]; then
         cp /www/admin/start.php /www/admin/index.php                                 
