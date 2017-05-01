@@ -30,7 +30,7 @@ if (file_exists($fn)) {
 <?php } else { ?>
 	<form method="get" id="unplugvpn" action="cgi-bin/config.cgi">
 		<input name="unplugvpn" type="hidden" value="unplugvpn">
-		<input type="submit" value="use the unplug vpn" class="button">
+		<input type="submit" value="Use the unplug VPN" class="button">
 	</form>
 	<br>
 	<div id="container_caption">
@@ -41,7 +41,7 @@ if (file_exists($fn)) {
 	</div>
 	<hr>
 	<form action="vpnconf.php">
-		<input type="submit" value="configure new vpn" class="button">
+		<input type="submit" value="Configure new VPN" class="button">
 	</form>
 	<br>
 	<div id="container_caption">

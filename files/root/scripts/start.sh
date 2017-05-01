@@ -68,12 +68,12 @@ fi
 # Give the network some time to come up
 sleep 5
 
+# renice the hungry spi/mtd process
+spipid=$(ps | grep spi32[766] | awk '{ print $1 }')
+renice -10 $spipid 
 
 # Start the automounter
 block umount; block mount
-
-# Bring up the AP
-$SCRIPTS/wifi.sh ap
 
 # Setup GPIO for indicator LED
 #$SCRIPTS/gpio.sh
@@ -126,6 +126,9 @@ else
             cp $CONFIG/savedbridge $CONFIG/bridge
             # Start the bridge
             $SCRIPTS/wifi.sh bridge 
+        else
+            # Bring up the AP
+            $SCRIPTS/wifi.sh ap
         fi
     fi
     if [ -f $CONFIG/savedvpn ]; then

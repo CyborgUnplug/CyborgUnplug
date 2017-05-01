@@ -35,6 +35,9 @@ first () {
 scan () {
 
     NIC=wlan0
+    #ifconfig $NIC up
+    wifi up
+    
     rm -f $NETWORKS
 
     /usr/sbin/iwlist $NIC scan > $TMPSCAN

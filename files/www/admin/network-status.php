@@ -26,7 +26,7 @@ function get_network_status() {
 	fclose($f1);
 
 	if (file_exists("/www/admin/config/armed")) {
-		$respone["ssid"] = "unvailable";
+		$response["ssid"] = "unavailable";
 	}
 
 	// Get Network Info
@@ -48,8 +48,10 @@ function get_network_status() {
 					$response["status"] = "connected";
 					$response["message"] = "Connected to internet";
 					$response["ip"] = $parts[1];
-					$response["ip_country"] = $parts[2];
-					$response["ip_iso"] = str_replace(array("(", ")"), "", $parts[3]);
+                    //TODO need a better fix for country names with multiple words. Renders commas. Consider base64.
+					$response["ip_country"] = array_slice($parts,2,-2);
+                    end($parts); // uses array's internal pointer
+					$response["ip_iso"] = str_replace(array("(", ")"), "", prev($parts));
 				}
 
 				// Determine VPN Status (up, down, start, stop, failed)

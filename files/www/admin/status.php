@@ -1,6 +1,6 @@
-<?php
-/*	Resourced via an AJAX call in header.php
-	- Returns JSON response
+<?php                                                                                                                                   
+/*  Resourced via an AJAX call in header.php
+    - Returns JSON response
 */
 
 // Headers
