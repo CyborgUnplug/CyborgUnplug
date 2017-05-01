@@ -20,14 +20,11 @@ if ($network["vpn"] == "start") {
 
 // Successfully tunneled
 } else if ($network["status"] == "tunneled" && $network["vpn"] == "up") {
-
 	if ($network["status"] == "tunneled") {
-
 		echo "<div class='warning warning3'>";
 		echo "<b>The VPN is up.</b>";
 		echo "<br>Check your IP via <a href='http://checkip.com'>checkip.com</a> before browsing.";
 		echo "</div>";
-
 		// Load specified VPN file
 		$fn='/www/config/vpn';
 		if (file_exists($fn)) {
@@ -42,11 +39,11 @@ if ($network["vpn"] == "start") {
 					echo "</div>";
 					echo "<form method='get' id='stopvpn' action='cgi-bin/config.cgi'>";
 					echo "<input name='stopvpn' type='hidden' value='stopvpn'>";
-					echo "<input type='submit' value='stop vpn' class='button'>";
+					echo "<input type='submit' value='Stop vpn' class='button'>";
 					echo "</form>";
 					echo "<form method='get' id='checkvpn' action='cgi-bin/config.cgi'>";
 					echo "<input name='checkvpn' type='hidden' value='checkvpn'>";
-					echo "<input type='submit' value='check vpn' class='button'>";
+					echo "<input type='submit' value='Check vpn' class='button'>";
 					echo "</form>";
 
 					// Use Custom VPN
@@ -54,24 +51,24 @@ if ($network["vpn"] == "start") {
 					if (file_exists($savedvpn)) {
 							// see if our current VPN is a saved VPN
 							if (sha1_file($fn) == sha1_file($savedvpn)) {
-								echo "<div class='warning warning3'>";
-								echo "This is your default VPN";
+                                echo "<br>";
+                                echo "<hr>";
+								echo "<h3>This is your default VPN</h3>";
 								echo "<form method='get' id='removevpn' action='cgi-bin/config.cgi'>";
 								echo "<input name='removevpn' type='hidden' value='removevpn'>";
-								echo "<input type='submit' value='unset as default' class='button'>";
+								echo "<input type='submit' value='Unset as default' class='button'>";
 								echo "</form>";
-								echo "</div>";
 							} else {
 								echo "<form method='get' id='savevpn' action='cgi-bin/config.cgi'>";
 								echo "<input name='savevpn' type='hidden' value='savevpn'>";
-								echo "<input type='submit' value='make this vpn my default' class='button'>";
+								echo "<input type='submit' value='Make this vpn my default' class='button'>";
 								echo "</form>";
 							}
 					} else {
 						// TODO: messy double up here. fix
 						echo "<form method='get' id='savevpn' action='cgi-bin/config.cgi'>";
 						echo "<input name='savevpn' type='hidden' value='savevpn'>";
-						echo "<input type='submit' value='make this vpn my default' class='button'>";
+						echo "<input type='submit' value='Make this vpn my default' class='button'>";
 						echo "</form>";
 					}
 
@@ -192,7 +189,7 @@ if ($network["vpn"] == "start") {
         echo "<br>";
         echo "<form method='get' id='newvpn' action='cgi-bin/config.cgi'>";
         echo "<input name='newvpn' type='hidden' value='newvpn'>";
-        echo "<input type='submit' value='start over' class='button'>";
+        echo "<input type='submit' value='Start over' class='button'>";
         echo "</form>";
         echo "<form action='index.php'>";
         echo "<input type='submit' value='Main menu' class='button'>";

@@ -39,6 +39,7 @@ config interface 'wwan'
 
 config interface 'wan'
 	option ifname 'eth0.2'
+	option auto '1'
 	option proto 'dhcp'
 
 config interface 'vpn0'
