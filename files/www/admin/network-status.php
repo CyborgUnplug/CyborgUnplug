@@ -12,6 +12,9 @@ function get_network_status() {
 	// Default
 	$response = [
 		"ssid" => "unknown",
+		"mac" => "unknown",
+		"version" => "unknown",
+		"rev" => "unknown",
 		"status" => "waiting", 
 		"message" => "Waiting to connect",
 		"ip" => "0.0.0.0",
@@ -24,6 +27,18 @@ function get_network_status() {
 	$f1 = fopen("/www/admin/config/ssid", "r");
 	$response["ssid"] = fgets($f1);
 	fclose($f1);
+
+	$w1 =  fopen("/www/admin/config/wlan0mac", "r");
+	$response["mac"] = fgets($w1);
+	fclose($w1);
+
+	$v1 =  fopen("/www/admin/config/version", "r");
+	$response["version"] = fgets($v1);
+	fclose($v1);
+
+	$r1 = fopen("/www/admin/config/rev", "r");
+	$response["rev"] = fgets($r1);
+	fclose($r1);
 
 	if (file_exists("/www/admin/config/armed")) {
 		$response["ssid"] = "unavailable";
@@ -60,7 +75,7 @@ function get_network_status() {
 
 				if (preg_match('/up/', $h) == 1) {
 					$response["status"] = "tunneled";
-					$response["message"] = "VPN tunneled";
+					$response["message"] = "Secure VPN tunnel";
 					$response["vpn"] = "up";
 				}
 				else if (preg_match('/down/', $h) == 1) {

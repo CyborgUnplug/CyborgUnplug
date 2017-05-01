@@ -39,7 +39,7 @@
 			<div id="status-bar">
 				<div id="status">
 					<div id="status-type" class="status-section">
-						<span id="status_color" class="waiting">
+						<span id="status_icon" class="waiting">
 							<i class="icon-waiting"></i>
 						</span>
 						<span id="status_message">
@@ -48,10 +48,7 @@
 					</div>
 					<div id="status-route" class="status-section">
 						<span class="flag"></span>
-						<span class="route">	
-							<span class="country"></span>
-							<span class="ip"></span>
-						</span>
+						<span class="country"></span>
 					</div>
 				</div>
 			</div>
