@@ -789,12 +789,11 @@ html[xmlns] .slides {
 	color: white;
 	text-align: center; 
 	padding: 15px; 
-	padding-top: 12px;
-	margin: 0px; 
+	margin-top: 25px; 
 	font-size: 1.2em;
 	line-height: 1.3em;
 	font-weight: 400;
-	border-radius: 2px;
+	border-radius: 5px;
 }
 
 .warning a {
@@ -804,10 +803,13 @@ html[xmlns] .slides {
 
 .warning2 { 
 	background: #82cc51; 
+	padding: 0.6em 1.2em;
+	margin-top: 25px; 
 }
 
 .warning3 {
-	margin-top: 15px!important;
+	padding: 0.6em 1.2em;
+	margin-top: 25px!important;
 	margin-bottom: 15px!important;
 	background: #82cc51; 
     font-size: 1.2em;

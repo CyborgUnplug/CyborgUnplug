@@ -12,7 +12,7 @@ include('header.php');
 	<div class="warning">
     For added security ensure no one else is connected to Little Snipper during this step. 
     If you forget your new password you'll have to either log into the device
-using a command line utility or reset it. See <a href="https://plugunplug.net/guides">https://plugunplug.net/guides</a>
+using the command line utility <em>ssh</em> or reset it. See <a href="https://plugunplug.net/guides">https://plugunplug.net/guides</a>
 	</div>
     <form enctype="multipart/form-data" action="authset.php" method="post">
     	<input name="password" type="text" placeholder="plugunplug" />
