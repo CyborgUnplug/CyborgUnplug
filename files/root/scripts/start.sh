@@ -68,6 +68,9 @@ fi
 # Give the network some time to come up
 sleep 5
 
+# renice the hungry spi/mtd process
+spipid=$(ps | grep spi32[766] | awk '{ print $1 }')
+renice -10 $spipid 
 
 # Start the automounter
 block umount; block mount
