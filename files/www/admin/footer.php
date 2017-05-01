@@ -1,9 +1,9 @@
 			<footer>
 				<ul>
 					<li><img src="/img/little-snipper-outline.svg" class="little-snipper"></li>
-					<li>Little Snipper (world)</li>
-					<li>ID: 0017A5EFB512</li>
-					<li>Version: 12345678</li>
+					<li>Little Snipper</li>
+					<li>ID: unknown</li>
+					<li>Version: unknown</li>
 			</footer>
 		</div>
 	</body>

@@ -3,12 +3,13 @@
 
 var updateStatus = function(response) {
 
-	var css_wifi    = 'wifi wifi-off wifi-error'
-	var icons_wifi  = 'icon-wifi icon-wifi-off icon-wifi-error'
-	var icons_vpn   = 'icon-vpn-connecting icon-vpn-error icon-vpn-tunneled'
-	var colors      = 'waiting connecting connected tunneled disconnected'
-	var status_icon = "icon-connection-error"
-	var flag_img    = '<img src="/img/blank.png" class="flag flag-ISO">'
+	var css_wifi       = 'wifi wifi-off wifi-error'
+	var icons_wifi     = 'icon-wifi icon-wifi-off icon-wifi-error'
+	var icons_vpn      = 'icon-vpn-connecting icon-vpn-error icon-vpn-tunneled'
+	var colors         = 'waiting connecting connected tunneled disconnected'
+	var status_icon    = "icon-connection-error"
+	var status_message = response.message
+	var flag_img       = '<img src="/img/blank.png" class="flag flag-ISO">'
 
 	// Wifi & other
 	if (response.ssid == "unavailable") {
@@ -39,11 +40,11 @@ var updateStatus = function(response) {
 		var status_icon = "icon-disconnected"
 	}
 
-	$('#status_color')
+	$('#status_icon')
 		.removeClass(colors)
 		.addClass(response.status)
 		.html('<i class="'+ status_icon + '"></i>')
-	$('#status_message').html(response.message)
+	$('#status_message').html(status_message)
 
 	// Connection Route
 	if (response.ip_country == 'Unspecified') {
@@ -51,13 +52,16 @@ var updateStatus = function(response) {
 		$('#status-route').hide()
 	} else {
 		var flag = flag_img.replace('ISO', response.ip_iso.toLowerCase())
-		var route = 'Via ' + response.ip_country
-
+		var route = response.ip_country + ' <em>' + response.ip + '</em>'
 		$('#status-route').find('span.flag').html(flag)
 		$('#status-route').find('span.country').html(route)
-		$('#status-route').find('span.ip').html(response.ip)
 		$('#status-route').show()
 	}
+
+	// Footer Device
+	$('footer').find('li:nth-child(2)').html('Little Snipper ' + response.version)
+	$('footer').find('li:nth-child(3)').html('ID: ' + response.mac)
+	$('footer').find('li:nth-child(4)').html('Version: ' + response.rev)
 }
 
 // Wifi Bridge (show / hide password field)
