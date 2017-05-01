@@ -456,11 +456,11 @@ footer img.little-snipper {
 
 .toggle-title {
 	width: 100%;
-	color: #666;
-	font-size: 2.2em;
+	color: #333;
+	font-size: 1.75em;
 	font-weight: 800;
 	padding: 0.6em 1.2em;
-	border: solid 1px #999;
+	border: 0px;
     cursor: pointer;
 	background: #efefef;
 

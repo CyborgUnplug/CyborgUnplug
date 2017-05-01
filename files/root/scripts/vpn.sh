@@ -45,6 +45,24 @@ vpnstart () {
                 # The saved vpn is the same we wish to run, so point to our archived .ovpn and .auth file 
                 KEYS=/root/keys/
             fi
+            # On a reboot the network might not be up, so we need to wait a while
+            netstate=$(cat $CONFIG/networkstate)
+            count=0
+            while [[ "$netstate" != *online* ]];
+                do
+                    if [ $count -lt 120 ]; then
+                        let "count+=1"
+                        echo "Count $count. Waiting for route to come up" 
+                        sleep 1 
+                    else
+                        echo $netstate: "Not online it seems, bailing out..." 
+                        vpnstop
+                        echo failed > $CONFIG/vpnstatus
+                        return 1 
+                    fi
+                done
+            sleep 15 # sleep a little more to let the route stabilise 
+            echo $netstate >> /tmp/vpnlog
         fi
         if [[ $arg1 == 1 ]]; then
             local auth=$KEYS/$arg2.auth 
@@ -71,10 +89,10 @@ vpnstart () {
                 if [[ "$STATUS" != "up" ]]; then
                     if [ $count -lt 120 ]; then
                         let "count+=1"
-                        echo "Count $count. Waiting for tun/tap to come up"
+                        echo "Count $count. Waiting for tun/tap to come up" 
                         sleep 1 
                     else
-                        echo "Failed to reach remote host, bailing out..."
+                        echo "Failed to reach remote host, bailing out..." 
                         vpnstop
                         echo failed > $CONFIG/vpnstatus
                         return 1 
@@ -87,7 +105,7 @@ vpnstart () {
                     return 0 
                 fi
         done
-        echo "OpenVPN process died, bailing out..."
+        echo "OpenVPN process died, bailing out..." 
         vpnstop
         return 1
     fi
@@ -97,7 +115,6 @@ vpncheck () {
     # VPNPID=$(ps | grep [open]vpn | awk '{ print $1 }') # PID not reliable, zombie procs
     TUN=$(ifconfig | grep -e tun -e tap)
     if [ -z "$TUN" ]; then
-        echo "VPN is down, do stuff here...."
         # VPN was in use, so take down WAN NIC immediately, to avoid leaks
         if [ ! -f $CONFIG/bridge ]; then
             ifconfig $ETH down 
@@ -115,6 +132,7 @@ vpncheck () {
 }
 
 vpnstop() {
+    echo "vpnstop was run" 
     local vpnpid=$(ps | grep [open]vpn)
     STARTED=0
     if [ ! -z "$vpnpid" ]; then
@@ -129,7 +147,6 @@ vpnstop() {
     echo idle > /tmp/blink
     #if [ -f $CONFIG/savedvpn ]; then
     rm -f $CONFIG/vpn
-    #fi
     exit
 }
 
