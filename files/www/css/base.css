@@ -81,10 +81,6 @@ p {
 	margin: 1.5em 0;
 }
 
-p:last-child {
-	margin-bottom: 0;
-}
-
 a:visited { opacity:0.9;}
 a:active, a:focus {
 	position:relative;
@@ -211,10 +207,10 @@ button,
 input,
 select,
 textarea {
-	font-size:100%;
-	margin:0;
-	vertical-align:baseline; 
-	*vertical-align:middle;
+	font-size: 100%;
+	margin: 0;
+	vertical-align: baseline; 
+	*vertical-align: middle;
 }
 
 button, input { 
@@ -408,7 +404,7 @@ select {
 }
 
 ::-webkit-input-placeholder {
-	color: #999;
+	color: #a3a3a3;
 	font-size: 1.1em;
 }
 

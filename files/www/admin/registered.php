@@ -1,16 +1,17 @@
-<?php include 'header.php';
-
+<?php
+$page_title = "Setup Completed";
+include('header.php');
 if (! isset($_POST['email']) ) {
-    echo "<div class='warning'>";
-    echo "No email entered...nothing to do.\n";
-    echo "</div>";
-    echo "<form method='get' id='email' action='registered.php'>";
-    echo "<input name='email' type='text' placeholder='jack@nsa.gov' />";
-    echo "<br><br>";
-    echo "<input type='submit' value='save' />";
-    echo "</form>";
-
-} else {
+?>
+<div class="warning">
+	No email entered...nothing to do.
+</div>
+<form method="get" id="email" action="registered.php">
+	<input name="email" type="text" placeholder="jack@nsa.gov">
+	<br><br>
+	<button type="submit" value="save">Save</button>
+</form>
+<?php } else { 
     if(isset($_POST['email'])) {
         if (filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
                 $email = $_POST['email'];
@@ -21,28 +22,35 @@ if (! isset($_POST['email']) ) {
                 if($ret === false) {
                     die('There was an error writing this file');
                 }
-                echo "<div class='warning warning3'>";
-                echo "Email data saved.\nYou're now ready to start using Little Snipper";
-                echo "</div>";
-                echo "<div>";
-                echo "<form method='get' id='registered' action='cgi-bin/config.cgi'>";
-                echo "<input name='registered' type='hidden' value='registered'>";
-                echo "<input type='submit' value='go' class='button'>";
-                echo "</form>";
-                echo "</div>";
-    //echo "$ret bytes written to auth file";
-        } else {
-            echo "<div class='warning warning1'>";
-            echo "<p>That doesn't appear to be a valid email address.</p>";
-            echo "</div>";
-            echo "<div>";
-            echo "<form method='get' id='again' action='start.php'>";
-            echo "<input type='submit' value='try again' class='button'>";
-            echo "</form>";
-            echo "</div>";
+?>
+<div class="center">
+	<h1>Setup Completed</h1>
+</div>
+<div class="warning warning3">
+	<p>Your email address was successfully saved. You are now ready to start
+using Little Snipper.</p>
+</div>
+<div>
+<form method="get" id="registered" action="cgi-bin/config.cgi">
+	<input name="registered" type="hidden" value="registered">
+	<button type="submit" value="go" class="button">Go</button>
+</form>
+</div>
+<?php } else { ?>
+<div class="center">
+	<h1>Setup your Little Snipper</h1>
+</div>
+<div class="warning warning1">
+	<p>Oops, that does not appear to be a valid email address.</p>
+</div>
+<div>
+<form method="get" id="again" action="start.php">
+	<button type="submit" value="try again" class="button">Try Again</button>
+</form>
+</div>
+<?php
         }
     
     }
 }
-
-include 'footer.php';?>
+include('footer.php'); ?>

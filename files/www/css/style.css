@@ -244,9 +244,16 @@ header button.wifi-error {
 	display: block;	
 }
 
+#status-type {
+	width: 39%;
+}
+
+#status-route {
+	width: 59%;
+}
+
 .status-section {
 	display: inline-block;
-	width: 49%;
 	text-align: left;
 }
 
@@ -254,49 +261,53 @@ header button.wifi-error {
 	display: inline-block;
 	vertical-align: middle;
 	text-align: left;
-	padding: 0 .5em 0 0;
 	color: #fff;
-	font-weight: bold;
+	font-weight: 600;
 	font-size: 1em;
 }
 
-#status_color {
+#status_icon {
 	display: inline-block;
+	margin-right: .5em;
 }
 
-#status_color i {
+#status_icon i {
 	font-size: 1.25em;
 }
 
-#status_color.waiting {
+#status_icon.waiting {
 	color: #efefef;
 }
 
-#status_color.connecting {
+#status_icon.connecting {
 	color: #e9dc00;
 }
 
-#status_color.connected {
+#status_icon.connected {
 	color: #182ac3;
 }
 
-#status_color.tunneled {
+#status_icon.tunneled {
 	color: #158f00;
 }
 
-#status_color.disconnected {
+#status_icon.disconnected {
 	color: #c6c6c6;
 }
 
-#status_color.error {
+#status_icon.error {
 	color: #ba1800;
 }
 
-#status-route span.country {
-
+#status-route span.flag {
+	margin-right: .5em;
 }
 
-#status-route span.ip {
+#status-route span.country em {
+	margin-left: .3em;
+	font-family: "Open sans", "Helvetica Neue", "HelveticaNeue", Helvetica, Arial, sans-serif;;
+	font-style: normal;
+	font-weight: 600;
 	color: #c6c6c6;
 }
 
@@ -923,71 +934,71 @@ html[xmlns] .slides {
 }
 
 .php-file-tree .pft-directory {
-	list-style-image: url(dir_img/directory.png);
+	list-style-image: url(/share/dir_img/directory.png);
 }
 
 /* Default File */
-.php-file-tree li.pft-file	{ list-style-image: url(dir_img/file.png); }
+.php-file-tree li.pft-file	{ list-style-image: url(/share/dir_img/file.png); }
 
 /* File Types */
-.php-file-tree li.ext-3gp	{ list-style-image: url(dir_img/film.png); }
-.php-file-tree li.ext-afp	{ list-style-image: url(dir_img/code.png); }
-.php-file-tree li.ext-afpa	{ list-style-image: url(dir_img/code.png); }
-.php-file-tree li.ext-asp	{ list-style-image: url(dir_img/code.png); }
-.php-file-tree li.ext-aspx	{ list-style-image: url(dir_img/code.png); }
-.php-file-tree li.ext-avi	{ list-style-image: url(dir_img/film.png); }
-.php-file-tree li.ext-bat{  list-style-image: url(dir_img/application.png); }
-.php-file-tree li.ext-bmp	{ list-style-image: url(dir_img/picture.png); }
-.php-file-tree li.ext-c		{ list-style-image: url(dir_img/code.png); }
-.php-file-tree li.ext-cfm	{ list-style-image: url(dir_img/code.png); }
-.php-file-tree li.ext-cgi	{ list-style-image: url(dir_img/code.png); }
-.php-file-tree li.ext-com { list-style-image: url(dir_img/application.png); }
-.php-file-tree li.ext-cpp	{ list-style-image: url(dir_img/code.png); }
-.php-file-tree li.ext-css	{ list-style-image: url(dir_img/css.png); }
-.php-file-tree li.ext-doc	{ list-style-image: url(dir_img/doc.png); }
-.php-file-tree li.ext-exe { list-style-image: url(dir_img/application.png); }
-.php-file-tree li.ext-gif	{ list-style-image: url(dir_img/picture.png); }
-.php-file-tree li.ext-fla	{ list-style-image: url(dir_img/flash.png); }
-.php-file-tree li.ext-h		{ list-style-image: url(dir_img/code.png); }
-.php-file-tree li.ext-htm	{ list-style-image: url(dir_img/html.png); }
-.php-file-tree li.ext-html	{ list-style-image: url(dir_img/html.png); }
-.php-file-tree li.ext-jar	{ list-style-image: url(dir_img/java.png); }
-.php-file-tree li.ext-jpg	{ list-style-image: url(dir_img/picture.png); }
-.php-file-tree li.ext-jpeg	{ list-style-image: url(dir_img/picture.png); }
-.php-file-tree li.ext-js	{ list-style-image: url(dir_img/script.png); }
-.php-file-tree li.ext-lasso	{ list-style-image: url(dir_img/code.png); }
-.php-file-tree li.ext-log	{ list-style-image: url(dir_img/txt.png); }
-.php-file-tree li.ext-m4p	{ list-style-image: url(dir_img/music.png); }
-.php-file-tree li.ext-mov	{ list-style-image: url(dir_img/film.png); }
-.php-file-tree li.ext-mp3	{ list-style-image: url(dir_img/music.png); }
-.php-file-tree li.ext-mp4	{ list-style-image: url(dir_img/film.png); }
-.php-file-tree li.ext-mpg	{ list-style-image: url(dir_img/film.png); }
-.php-file-tree li.ext-mpeg	{ list-style-image: url(dir_img/film.png); }
-.php-file-tree li.ext-ogg	{ list-style-image: url(dir_img/music.png); }
-.php-file-tree li.ext-pcx	{ list-style-image: url(dir_img/picture.png); }
-.php-file-tree li.ext-pdf	{ list-style-image: url(dir_img/pdf.png); }
-.php-file-tree li.ext-php	{ list-style-image: url(dir_img/php.png); }
-.php-file-tree li.ext-png	{ list-style-image: url(dir_img/picture.png); }
-.php-file-tree li.ext-ppt	{ list-style-image: url(dir_img/ppt.png); }
-.php-file-tree li.ext-psd	{ list-style-image: url(dir_img/psd.png); }
-.php-file-tree li.ext-pl	{ list-style-image: url(dir_img/script.png); }
-.php-file-tree li.ext-py	{ list-style-image: url(dir_img/script.png); }
-.php-file-tree li.ext-rb	{ list-style-image: url(dir_img/ruby.png); }
-.php-file-tree li.ext-rbx	{ list-style-image: url(dir_img/ruby.png); }
-.php-file-tree li.ext-rhtml	{ list-style-image: url(dir_img/ruby.png); }
-.php-file-tree li.ext-rpm 	{ list-style-image: url(dir_img/linux.png); }
-.php-file-tree li.ext-ruby	{ list-style-image: url(dir_img/ruby.png); }
-.php-file-tree li.ext-sql	{ list-style-image: url(dir_img/db.png); }
-.php-file-tree li.ext-swf	{ list-style-image: url(dir_img/flash.png); }
-.php-file-tree li.ext-tif	{ list-style-image: url(dir_img/picture.png); }
-.php-file-tree li.ext-tiff	{ list-style-image: url(dir_img/picture.png); }
-.php-file-tree li.ext-txt	{ list-style-image: url(dir_img/txt.png); }
-.php-file-tree li.ext-vb	{ list-style-image: url(dir_img/code.png); }
-.php-file-tree li.ext-wav	{ list-style-image: url(dir_img/music.png); }
-.php-file-tree li.ext-wmv	{ list-style-image: url(dir_img/film.png); }
-.php-file-tree li.ext-xls	{ list-style-image: url(dir_img/xls.png); }
-.php-file-tree li.ext-xml	{ list-style-image: url(dir_img/code.png); }
-.php-file-tree li.ext-zip	{ list-style-image: url(dir_img/zip.png); }
+.php-file-tree li.ext-3gp	{ list-style-image: url(/share/dir_img/film.png); }
+.php-file-tree li.ext-afp	{ list-style-image: url(/share/dir_img/code.png); }
+.php-file-tree li.ext-afpa	{ list-style-image: url(/share/dir_img/code.png); }
+.php-file-tree li.ext-asp	{ list-style-image: url(/share/dir_img/code.png); }
+.php-file-tree li.ext-aspx	{ list-style-image: url(/share/dir_img/code.png); }
+.php-file-tree li.ext-avi	{ list-style-image: url(/share/dir_img/film.png); }
+.php-file-tree li.ext-bat{  list-style-image: url(/share/dir_img/application.png); }
+.php-file-tree li.ext-bmp	{ list-style-image: url(/share/dir_img/picture.png); }
+.php-file-tree li.ext-c		{ list-style-image: url(/share/dir_img/code.png); }
+.php-file-tree li.ext-cfm	{ list-style-image: url(/share/dir_img/code.png); }
+.php-file-tree li.ext-cgi	{ list-style-image: url(/share/dir_img/code.png); }
+.php-file-tree li.ext-com { list-style-image: url(/share/dir_img/application.png); }
+.php-file-tree li.ext-cpp	{ list-style-image: url(/share/dir_img/code.png); }
+.php-file-tree li.ext-css	{ list-style-image: url(/share/dir_img/css.png); }
+.php-file-tree li.ext-doc	{ list-style-image: url(/share/dir_img/doc.png); }
+.php-file-tree li.ext-exe { list-style-image: url(/share/dir_img/application.png); }
+.php-file-tree li.ext-gif	{ list-style-image: url(/share/dir_img/picture.png); }
+.php-file-tree li.ext-fla	{ list-style-image: url(/share/dir_img/flash.png); }
+.php-file-tree li.ext-h		{ list-style-image: url(/share/dir_img/code.png); }
+.php-file-tree li.ext-htm	{ list-style-image: url(/share/dir_img/html.png); }
+.php-file-tree li.ext-html	{ list-style-image: url(/share/dir_img/html.png); }
+.php-file-tree li.ext-jar	{ list-style-image: url(/share/dir_img/java.png); }
+.php-file-tree li.ext-jpg	{ list-style-image: url(/share/dir_img/picture.png); }
+.php-file-tree li.ext-jpeg	{ list-style-image: url(/share/dir_img/picture.png); }
+.php-file-tree li.ext-js	{ list-style-image: url(/share/dir_img/script.png); }
+.php-file-tree li.ext-lasso	{ list-style-image: url(/share/dir_img/code.png); }
+.php-file-tree li.ext-log	{ list-style-image: url(/share/dir_img/txt.png); }
+.php-file-tree li.ext-m4p	{ list-style-image: url(/share/dir_img/music.png); }
+.php-file-tree li.ext-mov	{ list-style-image: url(/share/dir_img/film.png); }
+.php-file-tree li.ext-mp3	{ list-style-image: url(/share/dir_img/music.png); }
+.php-file-tree li.ext-mp4	{ list-style-image: url(/share/dir_img/film.png); }
+.php-file-tree li.ext-mpg	{ list-style-image: url(/share/dir_img/film.png); }
+.php-file-tree li.ext-mpeg	{ list-style-image: url(/share/dir_img/film.png); }
+.php-file-tree li.ext-ogg	{ list-style-image: url(/share/dir_img/music.png); }
+.php-file-tree li.ext-pcx	{ list-style-image: url(/share/dir_img/picture.png); }
+.php-file-tree li.ext-pdf	{ list-style-image: url(/share/dir_img/pdf.png); }
+.php-file-tree li.ext-php	{ list-style-image: url(/share/dir_img/php.png); }
+.php-file-tree li.ext-png	{ list-style-image: url(/share/dir_img/picture.png); }
+.php-file-tree li.ext-ppt	{ list-style-image: url(/share/dir_img/ppt.png); }
+.php-file-tree li.ext-psd	{ list-style-image: url(/share/dir_img/psd.png); }
+.php-file-tree li.ext-pl	{ list-style-image: url(/share/dir_img/script.png); }
+.php-file-tree li.ext-py	{ list-style-image: url(/share/dir_img/script.png); }
+.php-file-tree li.ext-rb	{ list-style-image: url(/share/dir_img/ruby.png); }
+.php-file-tree li.ext-rbx	{ list-style-image: url(/share/dir_img/ruby.png); }
+.php-file-tree li.ext-rhtml	{ list-style-image: url(/share/dir_img/ruby.png); }
+.php-file-tree li.ext-rpm 	{ list-style-image: url(/share/dir_img/linux.png); }
+.php-file-tree li.ext-ruby	{ list-style-image: url(/share/dir_img/ruby.png); }
+.php-file-tree li.ext-sql	{ list-style-image: url(/share/dir_img/db.png); }
+.php-file-tree li.ext-swf	{ list-style-image: url(/share/dir_img/flash.png); }
+.php-file-tree li.ext-tif	{ list-style-image: url(/share/dir_img/picture.png); }
+.php-file-tree li.ext-tiff	{ list-style-image: url(/share/dir_img/picture.png); }
+.php-file-tree li.ext-txt	{ list-style-image: url(/share/dir_img/txt.png); }
+.php-file-tree li.ext-vb	{ list-style-image: url(/share/dir_img/code.png); }
+.php-file-tree li.ext-wav	{ list-style-image: url(/share/dir_img/music.png); }
+.php-file-tree li.ext-wmv	{ list-style-image: url(/share/dir_img/film.png); }
+.php-file-tree li.ext-xls	{ list-style-image: url(/share/dir_img/xls.png); }
+.php-file-tree li.ext-xml	{ list-style-image: url(/share/dir_img/code.png); }
+.php-file-tree li.ext-zip	{ list-style-image: url(/share/dir_img/zip.png); }
 
 
 /* -- RESPONSIVE Tablet --------------------------------------------------- */
