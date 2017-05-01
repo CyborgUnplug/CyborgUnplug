@@ -346,7 +346,6 @@ label {
 	display: block;
 	margin-bottom:1em;
 	font-weight: 400;
-	color: #777;
 }
 
 input,
@@ -459,12 +458,12 @@ input[type=checkbox].css-checkbox + label.css-label {
 	display:inline-block;
 	background-repeat:no-repeat;
 	background-position: 0 0;
-	font-size:2em;
+	font-size:1.5em;
 	vertical-align:middle;
 	cursor:pointer;
 	margin-left: 20px;
 	margin-bottom: 0px;
-	margin-top: 20px;
+	margin-top: 15px;
 	color: #666;
 }
 

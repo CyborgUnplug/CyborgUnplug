@@ -29,9 +29,13 @@ config interface 'lan'
 
 config 'interface' 'wifi'
 	option 'ifname'	    'wlan0'	
-        option 'proto'      'static'
-        option 'ipaddr'     '10.10.10.1'
-        option 'netmask'    '255.255.255.0' 
+    option 'proto'      'static'
+    option 'ipaddr'     '10.10.10.1'
+    option 'netmask'    '255.255.255.0' 
+
+config interface 'wwan'
+	option ifname 'wlan0.1'
+	option proto 'dhcp'
 
 config interface 'wan'
 	option ifname 'eth0.2'

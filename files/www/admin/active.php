@@ -1,6 +1,6 @@
 <?php
 $page_title = " Sweeping for spy devices";
-include('header-no-status.php');
+include('header.php');
 ?>
     <div class="center">
     <?php 

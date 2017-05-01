@@ -6,7 +6,7 @@
     <br>
     <ul class='toggle-view'>
         <li>
-            <a href='#devices' class='navLink'><h4 class='toggle-title'>devices to detect</h4></a>
+            <a href='#devices' class='navLink'><h4 class='toggle-title'>Devices to detect</h4></a>
             <div id='devices' class='page'>
                 <form id="devices"> 
                     <div class="config_container">
@@ -34,7 +34,7 @@
             if ($g) {
                 if (preg_match('/allout/', $g) != 1) {
             echo "<li>";
-            echo "<a href='#networks' class='navLink'><h4 class='toggle-title'>networks to watch</h4></a>";
+            echo "<a href='#networks' class='navLink'><h4 class='toggle-title'>Networks to watch</h4></a>";
             echo "<div id='networks' class='page'>";
             echo "<form id='networks'>"; 
             echo "        <div class='config_container'>";
@@ -61,7 +61,7 @@
     <form method="get" id="armed" action="cgi-bin/config.cgi">
         <input name="armed" type="hidden" id="armed" value="standby">
         <center>
-        <input type="submit" value="ARM DEVICE" class='btnarm'>
+        <input type="submit" value="ARM DEVICE" class='btnnext'>
         </center>
     </form>
 

@@ -311,11 +311,28 @@ header #status-bar span {
 }
 
 .upload {
-    border: 0px solid #AAA;
+	cursor:pointer;
+	color: #333;
+	font-size: 1.75em;
+	font-weight: 800;
 	padding: 0.6em 1.2em;
-    margin: 0px;
+	border: 0px;
+    cursor: pointer;
+	background: #efefef;
     text-align: center;
-    background: #DDD;
+
+	border-radius: 3px;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	-o-border-radius: 3px;
+	-ms-border-radius: 3px;
+	-khtml-border-radius: 3px;
+	
+	-webkit-transition: 0.1s linear all;
+	-moz-transition: 0.1s linear all;
+	-ms-transition: 0.1s linear all;
+	-o-transition: 0.1s linear all;
+	transition: 0.1s linear all;
 }
 
 .upload:hover {
@@ -337,11 +354,11 @@ header #status-bar span {
 .button,
 .toggle-title {
 	width: 100%;
-	color: #666;
-	font-size: 2.2em;
+	color: #333;
+	font-size: 1.75em;
 	font-weight: 800;
 	padding: 0.6em 1.2em;
-	border: solid 1px #999;
+	border: 0px;
     cursor: pointer;
 	background: #efefef;
 

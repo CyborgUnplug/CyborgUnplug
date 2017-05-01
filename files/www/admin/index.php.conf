@@ -1,7 +1,4 @@
 <?php include('header.php') ;?>
-    <center>
-	<h1 id="headline">I want to...</h1>
-    </center>
 	<div id="container_start">
         <form action="detect.php">
 			<button name="detect" type="submit" value="detect">
