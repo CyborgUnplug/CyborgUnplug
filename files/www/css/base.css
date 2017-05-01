@@ -2,6 +2,37 @@
 ======	RESET
 ---------------------------------------------------------------------------- */
 
+html {
+	font-size: 100%;
+	-webkit-text-size-adjust: 100%;
+	-ms-text-size-adjust: 100%;
+}
+
+:hover, :focus, :active {
+	outline: none;
+}
+
+html,
+body,
+button,
+input,
+select,
+textarea {
+	font-family: "Open sans", "Helvetica Neue", "HelveticaNeue", Helvetica, Arial, sans-serif;
+	font-weight: 400;
+	color: #111; 
+	font-smooth: always;
+	-webkit-font-smoothing: antialiased;
+	font-smoothing: antialiased;
+}
+
+body {
+	margin: 0;
+	font-size: 13px;
+	line-height: 1.6;
+	color: #555;
+}
+
 article, aside, details, figcaption, figure, 
 footer, header, hgroup, menu, nav, section {
 	display: block;
@@ -15,45 +46,6 @@ audio, canvas, video {
 
 audio:not([controls]) {
 	display: none;
-}
-
-html {
-	font-size: 100%;
-	-webkit-text-size-adjust: 100%;
-	-ms-text-size-adjust: 100%;
-}
-
-:hover, :focus, :active {
-	outline: none;
-}
-
-html,
-button,
-input,
-select,
-textarea {
-	font-family: "Open sans", "Helvetica Neue", "HelveticaNeue", Helvetica, Arial, sans-serif;
-	font-weight: 400;
-	color: #555; 
-	font-smooth:always;
-	-webkit-font-smoothing: antialiased;
-	font-smoothing: antialiased;
-}
-
-select.networks {
-    font-size: 1.2em; 
-	color: #555; 
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    text-indent: 1px;
-    text-overflow: '';
-}
-
-body {
-	margin: 0;
-	font-size: 13px;
-	line-height: 1.6;
-	color: #555;
 }
 
 a,
@@ -86,7 +78,7 @@ a:hover {
 }	
 
 p {
-	margin: 0 0 1em;
+	margin: 1.5em 0;
 }
 
 p:last-child {
@@ -241,21 +233,21 @@ input[type="reset"],
 input[type="submit"] {
 	cursor:pointer;
 	width: 100%;
-	color: #333;
+	color: #111;
 	font-size: 1.75em;
 	font-weight: 800;
 	padding: 0.6em 1.2em;
 	border: 0px;
     cursor: pointer;
-	background: #efefef;
+	background: #e3e3e3;
 
-	border-radius: 3px;
-	-webkit-border-radius: 3px;
-	-moz-border-radius: 3px;
-	-o-border-radius: 3px;
-	-ms-border-radius: 3px;
-	-khtml-border-radius: 3px;
-	
+	border-radius: 5px;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	-o-border-radius: 5px;
+	-ms-border-radius: 5px;
+	-khtml-border-radius: 5px;
+
 	-webkit-transition: 0.1s linear all;
 	-moz-transition: 0.1s linear all;
 	-ms-transition: 0.1s linear all;
@@ -267,20 +259,18 @@ button:hover,
 input[type="button"]:hover,
 input[type="reset"]:hover,
 input[type="submit"]:hover {
-	color: #333;
 	text-decoration: none;
 	border: 0px;
-	background: #d8d8d8;
+	background: #c6c6c6;
 }
 
 button:focus,
 input[type="button"]:focus,
 input[type="reset"]:focus,
 input[type="submit"]:focus {
-	color: #111;
 	text-decoration: none;
 	border: 0px;
-	background: #c3c3c3;
+	background: #a3a3a3;
 }
 
 input[type="checkbox"],
@@ -352,16 +342,15 @@ label {
 input,
 select,
 textarea {
-	border: 1px solid #DDD;
-	color: #777;
+	border: 1px solid #333;
+	color: #333;
 	font-size: 1em;
 	padding: 1em;
-	width:100%;
+	width: 100%;
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	-ms-box-sizing: border-box;
 	box-sizing: border-box;
-	*behavior: url(/js/boxsizing.htc);
 }
 
 textarea {
@@ -385,7 +374,7 @@ input:focus,
 textarea:focus,
 input:active,
 textarea:active {
-	border: 1px solid #999;
+	border: 1px solid #000;
 }
 
 input[type="text"],
@@ -420,21 +409,18 @@ select {
 }
 
 ::-webkit-input-placeholder {
-	color: red;
+	color: #999;
 	font-size: 1.1em;
-    text-align: center
 }
 
 ::-moz-placeholder {
-	color: red;  
+	color: #999;
 	font-size: 1.1em;
-    text-align: center
 }
 
 :-ms-input-placeholder {  
-	color: red;  
+	color: #999;
 	font-size: 1.1em;
-    text-align: center
 }
 
 /* -- BUTTONS -------------------------------------------------------------- */
@@ -569,16 +555,16 @@ h6 {
 }
 
 h1 {
-	font-size: 2.0em; 
+	font-size: 2.5em; 
 	letter-spacing: -0.01em; 
 	line-height: 0.9; 
 	color: #111;
-	margin: 0 0 0.5em; 
+	margin: 0 0 1em 0; 
 }
 
 h2 {
-	font-size: 1.75em;
-	margin: 0 0 20px;
+	font-size: 2em;
+	margin: 0 0 .75em 0;
 	letter-spacing: -0.05em;
 	color: #555;
 	line-height: 1;
@@ -587,6 +573,7 @@ h2 {
 h3 {
 	font-size: 1.75em;
 	color: #555;
+	margin: 0 0 .5em 0;
 }
 
 h4 { 
@@ -628,39 +615,3 @@ h6 a:hover {
 	color:#0078CF;
 	text-decoration: underline; 
 }
-
-
-/* -- FOOTER --------------------------------------------------------------- */
-
-footer { 
-   color: #555; 
-   position: relative;
-   bottom: 0;
-   width: 100%;
-   height: 20px;
-}
-
-footer nav ul {
-	float: right;
-	overflow: hidden;
-}
-
-footer a {
-	color: #999;
-}
-
-footer li {
-	float: left;
-	margin-right: 1em;
-	padding-right: 1em;
-	border-right: 1px solid #DDD;
-	font-size: 0.8em;
-}
-
-footer li:last-child {
-	margin-right: 0;
-	padding-right: 0;
-	border-right: none;
-}
-
-
