@@ -26,10 +26,9 @@ include('header.php');
             echo "<div class='warning'>";
             echo "Seems there's a VPN running. Please stop it before creating a bridge, then start it again once the bridge is up and you're online";
             echo "</div>"; 
-            echo "<br>";
             echo "<form method='get' id='stopvpn' action='cgi-bin/config.cgi'>";
             echo "<input name='stopvpn' type='hidden' value='stopvpn'>";
-            echo "<input type='submit' value='stop vpn' class='button'>";
+            echo "<input type='submit' value='Stop VPN' class='button'>";
             echo "</form>";
             fclose($d);
         } else {

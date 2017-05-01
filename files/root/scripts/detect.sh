@@ -219,15 +219,14 @@ case "$MODE" in
     *)                    
 esac
 
-# Set the LED blinker to the detect pattern
-echo detect > /tmp/blink
-
 startt=$(date +'%s')
 
 while true;
         do
             echo "//------------------------------------------------------->"
             echo "Sleeping for " $POLLTIME " and writing capture log"
+            # Set the LED blinker to the detect pattern
+            echo detect > /tmp/blink
             sleep $POLLTIME
             # Sort associated clients into temporary pairing files. Channels are
             # not in the probed/association section of airodump-ng and so the

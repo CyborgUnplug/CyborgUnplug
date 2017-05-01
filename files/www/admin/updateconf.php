@@ -7,7 +7,7 @@
         <center>
         <form method="get" id="updatenow" action="cgi-bin/config.cgi">
             <input name="updatenow" type="hidden" value="nothing">
-            <input type="submit" value="UPDATE NOW" class="btnnext">
+            <input type="submit" value="Update now" class="btnnext">
         </form>
         </center>
         <div class='warning'>
@@ -30,7 +30,7 @@
                             echo "<br>";
                             echo "<form method='get' id='autoupdate' action='cgi-bin/config.cgi'>";
                             echo "<input name='autoupdate' type='hidden'value='disabled'>";
-                            echo "<input type='submit' value='disable' class='button'>";
+                            echo "<input type='submit' value='Disable' class='button'>";
                             echo "</form>";
                         } else {
                             echo "<center><h3>Auto updates are disabled</h3></center>";
@@ -47,7 +47,7 @@
             <center>
             By default Little Snipper checks for updates every day at
             midnight. The updates are applied on the next reboot. For your interest and/or peace-of-mind, each update directly
-            corresponds to a revision in this <a href="https://github.com/JulianOliver/CyborgUnplug/tree/usa">publicly auditable
+            corresponds to a revision in this <a href="https://github.com/CyborgUnplug/CyborgUnplug">publicly auditable
 code repository</a>.
             </center>
     </div>
