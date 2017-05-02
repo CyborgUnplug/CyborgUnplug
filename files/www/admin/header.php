@@ -16,19 +16,19 @@
 				<img src="/img/logo.png" alt="Cyborg Unplug">
 			</a>
 			<div id="header-buttons">
-				<form method="get" action="wifi.php">
+				<form method="get" action="/admin/wifi.php">
 					<button type="submit" id="your-wifi" class="wifi-off">
 						<i class="icon-wifi-off"></i>
 						<span>Unavailable</span>
 					</button>
 				</form>
-				<form method="get" action="cgi-bin/config.cgi">
+				<form method="get" action="/admin/cgi-bin/config.cgi">
 					<button name="reboot" type="submit" value="reboot">
 						<i class="icon-reboot"></i>
 						Reboot
 					</button>
 				</form>
-				<form action="configure.php">
+				<form action="/admin/configure.php">
 					<button name="configure" type="submit" value="settings">
 						<i class="icon-settings"></i>
 						Settings

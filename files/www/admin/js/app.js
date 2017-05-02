@@ -90,12 +90,16 @@ $(function() {
 	$('.navLink').on('click', function(e){
 		e.preventDefault()
 		var targetDiv = $($(this).attr('href'))
-		if (targetDiv.css('visibility') == 'visible'){
-			$('.page').css('display', 'none')
-			targetDiv.css('display', 'inline')
+		//if (targetDiv.css('visibility') == 'visible'){
+		if (targetDiv.css('display') == 'inline'){
+			//$('.page').css('display', 'none')
+			targetDiv.css('display', 'none')
 		}
 		else {
-			$('.page').css('display', 'none')
+			targetDiv.css('display', 'inline')
+			//$('.page').css('display', 'none')
 		}
 	})
 })
+
+

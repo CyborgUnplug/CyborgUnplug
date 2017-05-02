@@ -51,8 +51,8 @@ include('header.php');
 						    echo "<div class='device'><input type='checkbox' class='css-checkbox' id=$data>
 						    <label for=$data class='css-label'>$parts[0]</label></div>";
 						}
-				    }
-				}
+                    }
+                }
                 echo "<div class='device'>";
 				echo "<hr>";
                 echo "<input type='checkbox' onchange='checkall(this)' id='selectall' class='css-checkbox'>";

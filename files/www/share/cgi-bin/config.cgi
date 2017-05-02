@@ -27,6 +27,7 @@ set $EVENT
 #EVENT=${EVENT/=*/} 
 env > environment
 
+echo $EVENT > /tmp/event.log
 # Remove each time script is invoked to disarm in case the user goes back
 
 html() {
@@ -42,12 +43,18 @@ case "$EVENT" in
         block umount
         block mount
         sleep 1
+        # Give random visitors to Little Snipper's main page a button to access the share
+        cp /www/index.html.share /www/index.html 
+        # Give random visitors to the share resource a page without reboot, WiFi, config buttons
+        cp /www/share/index.php.share /www/share/index.php
         html share/index.php
     ;; 
     *umount*)
         block umount
         sleep 1
-        html share/index.php
+        cp /www/index.html.conf /www/index.html
+        cp /www/share/index.php.conf /www/share/index.php
+        html index.html 
     ;; 
 	*)
 esac
