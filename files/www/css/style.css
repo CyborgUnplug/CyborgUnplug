@@ -104,6 +104,18 @@ i {
   content: "\e917";
 }
 
+.page{ 
+    display: none; 
+    margin-top: 1px;
+    padding-bottom: 20px;
+    background-color: #f7f7f7;
+    -webkit-transform: translate3d(0,0,0);
+    -moz-transform: translate3d(0,0,0);
+    -ms-transform: translate3d(0,0,0);
+    -o-transform: translate3d(0,0,0);
+    transform: translate3d(0,0,0);
+}
+
 
 /* ---------------------------------------------------------------------------
 ====== GLOBAL HELPERS

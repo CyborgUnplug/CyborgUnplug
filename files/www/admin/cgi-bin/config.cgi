@@ -64,11 +64,12 @@ case "$EVENT" in
             html vpn.php
         fi
     ;; 
+    # This event probably no longer needed as it's all handled by /www/share/cgi-bin/config.cgi now
     *umount*)
         block umount
         cp $SITE/index.php.conf $SITE/index.php
         sleep 1
-        html share.php
+        html index.php 
     ;; 
     *wlanrestart*)
         touch $CONFIG/setwifi
@@ -143,6 +144,7 @@ case "$EVENT" in
         html vpn.php
     ;;
     *removevpn*)
+        # Remove the VPN we have set to use on startup 
         ovpn=$(cat $CONFIG/vpn | cut -d ' ' -f 2)
         if [[ $ovpn != "plugunplug.ovpn" ]]; then 
             rm -f $KEYS/$ovpn* #remove .ovpn files and auth file, if present
@@ -172,6 +174,11 @@ case "$EVENT" in
         touch $CONFIG/bridgeset
         cp $CONFIG/savedbridge $CONFIG/bridge 
         html index.php 
+    ;;
+    *removebridge*)
+        # Toggle a value in $CONFIG/savedbridge so that it is no longer used on startup 
+        sed -i 's/1$/0/' $CONFIG/savedbridge
+        html bridge.php
     ;;
 	*armed*)
         killall openvpn vpn.sh # stop existing instance

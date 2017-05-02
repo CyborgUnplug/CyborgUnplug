@@ -1,9 +1,9 @@
 <?php
-$page_title = "Create a Wifi bridge";
+$page_title = "Create a WiFi bridge";
 include('header.php');
 ?>
     <div class="center">
-    	<h1><i class="icon-bridge"></i> Create a Wifi bridge</h1>
+    	<h1><i class="icon-bridge"></i> Create a WiFi bridge</h1>
 	</div>
     <script>                                                                                                                                    var $r;
         function checkForPw() {
@@ -18,13 +18,14 @@ include('header.php');
                 
         }
     </script>
+
     <?php
         $d = fopen("config/vpnstatus", "r");
         $e=fgets($d);
         if (preg_match('/up/', $e) == 1) {
             echo "<br>";
             echo "<div class='warning'>";
-            echo "Seems there's a VPN running. Please stop it before creating a bridge, then start it again once the bridge is up and you're online";
+            echo "It seems there's a VPN running. Please stop it before creating a bridge, then start it again once the bridge is up and you're online";
             echo "</div>"; 
             echo "<form method='get' id='stopvpn' action='cgi-bin/config.cgi'>";
             echo "<input name='stopvpn' type='hidden' value='stopvpn'>";
@@ -62,6 +63,7 @@ include('header.php');
             echo "<input type='submit' value='NEXT' class='btnnext'>";
             echo "</form>";
             echo "<br>";
+            echo "<hr>";
             $fn = "config/savedbridge";
             if (file_exists($fn)) {
                 $f = fopen($fn, "r");
@@ -69,14 +71,23 @@ include('header.php');
                 $parts = explode(',', $g);
 				$ssid = base64_decode($parts[1]);
 		        $ap = $parts[0].','.$ssid;
-                echo "<hr>";
+                $default=$parts[6];
+                fclose($f);
                 echo "<br>";
-                echo "<h1>Choose a saved wifi network</h1>"; 
+                echo "<h3>Use a saved network</h3>"; 
                 echo "<form method='get' id='savedbridge' action='cgi-bin/config.cgi'>";
                 echo "<input name='savedbridge' type='hidden' value='savedbridge'>";
 				echo '<button class=button" value="'.$ap.'" type="submit">'.$ssid.'</button>';
                 echo "</form>";
-                fclose($f);
+                echo "<br>";
+                if ( $default == "1" ) {
+                    echo "<h3><em>".$ssid."</em> is your default connection</h3>";
+                    echo "<form method='get' id='removebridge' action='cgi-bin/config.cgi'>";
+                    echo "<input name='removebridge' type='hidden' value='removebridge'>";
+                    echo "<input type='submit' value='Unset as default' class='button'>";
+                    echo "</form>";
+
+                }
                 echo "</center>";
            }
         }

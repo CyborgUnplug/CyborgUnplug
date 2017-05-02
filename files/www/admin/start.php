@@ -27,6 +27,7 @@ if (file_exists($fn)) {
 your device can send you email alerts and updates when it detects spying
 devices. Rest assured, we won't use it for anything else.</p>
 		<input name="email" type="text" placeholder="you@yourdomain.com">
+        <br><br>
 		<button type="submit" value="save">Save</button>
 	</form>
 </div>
