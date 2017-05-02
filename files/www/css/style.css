@@ -4,17 +4,17 @@
 
 @font-face {
   font-family: 'cu-icons';
-  src:  url('../fonts/cu-icons.eot?1ex0a8');
-  src:  url('../fonts/cu-icons.eot?1ex0a8#iefix') format('embedded-opentype'),
-    url('../fonts/cu-icons.ttf?1ex0a8') format('truetype'),
-    url('../fonts/cu-icons.woff?1ex0a8') format('woff'),
-    url('../fonts/cu-icons.svg?1ex0a8#cu-icons') format('svg');
+  src:  url('../fonts/cu-icons.eot?gnb7ya');
+  src:  url('../fonts/cu-icons.eot?gnb7ya#iefix') format('embedded-opentype'),
+    url('../fonts/cu-icons.ttf?gnb7ya') format('truetype'),
+    url('../fonts/cu-icons.woff?gnb7ya') format('woff'),
+    url('../fonts/cu-icons.svg?gnb7ya#cu-icons') format('svg');
   font-weight: normal;
   font-style: normal;
 }
 
 i {
-  /* use !important to prevent issues with browser extensions */
+  /* use !important to prevent issues with browser extensions that change fonts */
   font-family: 'cu-icons' !important;
   speak: none;
   font-style: normal;
@@ -28,50 +28,80 @@ i {
   -moz-osx-font-smoothing: grayscale;
 }
 
-.icon-connected:before {
+.icon-email:before {
   content: "\e900";
 }
-.icon-connecting:before {
+.icon-alerts:before {
   content: "\e901";
 }
-.icon-connection-error:before {
+.icon-bridge:before {
   content: "\e902";
 }
-.icon-bridge:before {
+.icon-checkmark:before {
   content: "\e903";
 }
-.icon-file-share:before {
+.icon-connected:before {
   content: "\e904";
 }
-.icon-reboot:before {
+.icon-connecting:before {
   content: "\e905";
 }
-.icon-scan:before {
+.icon-connection-error:before {
   content: "\e906";
 }
-.icon-settings:before {
+.icon-disconnected:before {
   content: "\e907";
 }
-.icon-vpn-connecting:before {
+.icon-ethernet .path1:before {
   content: "\e908";
+  color: rgb(255, 255, 255);
 }
-.icon-vpn-error:before {
+.icon-ethernet .path2:before {
   content: "\e909";
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
 }
-.icon-vpn-tunneled:before {
+.icon-ethernet-port:before {
   content: "\e90a";
 }
-.icon-watch:before {
+.icon-file-share:before {
   content: "\e90b";
 }
-.icon-wifi:before {
+.icon-reboot:before {
   content: "\e90c";
 }
-.icon-wifi-error:before {
+.icon-scan:before {
   content: "\e90d";
 }
-.icon-wifi-off:before {
+.icon-settings:before {
   content: "\e90e";
+}
+.icon-terminal:before {
+  content: "\e90f";
+}
+.icon-vpn-connecting:before {
+  content: "\e910";
+}
+.icon-vpn-error:before {
+  content: "\e911";
+}
+.icon-vpn-tunneled:before {
+  content: "\e912";
+}
+.icon-warning:before {
+  content: "\e913";
+}
+.icon-watch:before {
+  content: "\e914";
+}
+.icon-wifi:before {
+  content: "\e915";
+}
+.icon-wifi-error:before {
+  content: "\e916";
+}
+.icon-wifi-off:before {
+  content: "\e917";
 }
 
 
