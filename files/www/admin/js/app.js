@@ -25,7 +25,7 @@ var updateStatus = function(response) {
 	$wifi = $('#your-wifi')
 	$wifi.removeClass(css_wifi).add(wifi_css)
 	$wifi.find('i').removeClass(icons_wifi).addClass(wifi_icon)
-	$wifi.find('span').html(wifi_text)
+	$wifi.find('span').html('Wifi')
 
 	// Connection Status
 	if (response.status == "tunneled" && response.vpn == "up") {
@@ -55,7 +55,7 @@ var updateStatus = function(response) {
 		var route = response.ip_country + ' <em>' + response.ip + '</em>'
 		$('#status-route').find('span.flag').html(flag)
 		$('#status-route').find('span.country').html(route)
-		$('#status-route').show()
+		$('#status-route').show().css('display', 'inline-block');
 	}
 
 	// Footer Device
