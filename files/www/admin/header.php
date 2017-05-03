@@ -16,6 +16,12 @@
 				<img src="/img/logo.png" alt="Cyborg Unplug">
 			</a>
 			<div id="header-buttons">
+				<form action="index.php" id="home">
+					<button name="home" type="submit" value="home">
+						<i class="icon-home"></i>
+						Home
+					</button>
+				</form>
 				<form method="get" action="/admin/wifi.php">
 					<button type="submit" id="your-wifi" class="wifi-off">
 						<i class="icon-wifi-off"></i>
@@ -40,7 +46,7 @@
 				<div id="status">
 					<div id="status-type" class="status-section">
 						<span id="status_icon" class="waiting">
-							<i class="icon-waiting"></i>
+							<i class="icon-connecting"></i>
 						</span>
 						<span id="status_message">
 							Getting network status...
