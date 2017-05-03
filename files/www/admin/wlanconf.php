@@ -18,7 +18,7 @@ the browser to change it.
         Set a new channel: 
         <input name="channel" type="text" placeholder="channel" />
         <br><br>
-        <input type="submit" value="save" />
+        <input type="submit" value="Save" />
       </form>
       </div>
      <div id="container_general">

@@ -12,7 +12,7 @@ if ($network["vpn"] == "start") {
     echo "<img src='../img/loading.gif'>";
     echo "</div>";
     echo "<form action='vpn.php'>"; 
-    echo "<input name='refresh' type='submit' class='button' value='refresh'>";
+    echo "<input name='refresh' type='submit' class='button' value='Refresh'>";
     echo "</form>";
     // TODO: make this work via JavaScript instead
     $secondsWait = 5;
