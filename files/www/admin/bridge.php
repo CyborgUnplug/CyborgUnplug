@@ -5,7 +5,8 @@ include('header.php');
     <div class="center">
     	<h1><i class="icon-bridge"></i> Create a WiFi bridge</h1>
 	</div>
-    <script>                                                                                                                                    var $r;
+    <script>
+		var $r;
         function checkForPw() {
                 var myselect = document.getElementById("bridge");
                 var rid=myselect.id;
@@ -18,25 +19,25 @@ include('header.php');
                 
         }
     </script>
-
     <?php
         $d = fopen("config/vpnstatus", "r");
         $e=fgets($d);
+        fclose($d);
         if (preg_match('/up/', $e) == 1) {
-            echo "<br>";
-            echo "<div class='warning'>";
-            echo "It seems there's a VPN running. Please stop it before creating a bridge, then start it again once the bridge is up and you're online";
-            echo "</div>"; 
-            echo "<form method='get' id='stopvpn' action='cgi-bin/config.cgi'>";
-            echo "<input name='stopvpn' type='hidden' value='stopvpn'>";
-            echo "<input type='submit' value='Stop VPN' class='button'>";
-            echo "</form>";
-            fclose($d);
-        } else {
-            echo "<form enctype='multipart/form-data' action='bridgeset.php' method='post'>";
-            echo "</center>";
-            echo "<select class='networks' name='bridge' onchange='checkForPw()' id='bridge'>";
-            echo "<option class='networks' id='nothing'>Choose a network...</option>"; 
+	?>
+	<br>
+	<div class="warning">
+		Seems there's a VPN running. Please stop it before creating a bridge, then start it again once the bridge is up and you're online
+	</div>
+	<form method="get" id="stopvpn" action="cgi-bin/config.cgi">
+		<input name="stopvpn" type="hidden" value="stopvpn">
+		<button type="submit" value="Stop VPN" class="button">Stop VPN</button>
+	</form>
+	<?php } else { ?>
+	<form enctype="multipart/form-data" action="bridgeset.php" method="post">
+		<select class="networks" name="bridge" onchange="checkForPw()" id="bridge">
+			<option class="networks" id="nothing">Choose a network...</option> 
+			<?php
             $f = fopen("data/networks", "r");
             while(!feof($f)) { 
                 $g=fgets($f);
@@ -50,20 +51,23 @@ include('header.php');
                 }
             }
             fclose($f);
-            echo "</select>";
-            echo "<div id='bridgepw' style='visibility:hidden'>";
-            echo "<br>";
-            echo "<input name='password'min='8' max='63' type='text' value='' placeholder='enter wifi passphrase' >";
-            echo "</div>";
-            echo "<input type='checkbox' name='save' id='save' class='css-checkbox'>";
-            echo "<label for='save' class='css-label'>Save this network</label>";
-            echo "<input type='checkbox' name='defaultroute' id='defaultroute' class='css-checkbox'>";
-            echo "<label for='defaultroute' class='css-label'>Make this my default connection</label>";
-            echo "<center>";
-            echo "<input type='submit' value='NEXT' class='btnnext'>";
-            echo "</form>";
-            echo "<br>";
-            echo "<hr>";
+            ?>
+            </select>
+            <div id='bridgepw' style='visibility:hidden'>
+            <br>
+            <input name='password'min='8' max='63' type='text' value='' placeholder='enter wifi passphrase' >
+            </div>
+            <input type='checkbox' name='save' id='save' class='css-checkbox'>
+            <label for='save' class='css-label'>Save this network</label>
+            <input type='checkbox' name='defaultroute' id='defaultroute' class='css-checkbox'>
+            <label for='defaultroute' class='css-label'>Make this my default connection</label>
+            <center>
+            <input type='submit' value='NEXT' class='btnnext'>
+            </center>
+            </form>
+            <br>
+            <hr>
+            <?php
             $fn = "config/savedbridge";
             if (file_exists($fn)) {
                 $f = fopen($fn, "r");
@@ -73,23 +77,29 @@ include('header.php');
 		        $ap = $parts[0].','.$ssid;
                 $default=$parts[6];
                 fclose($f);
-                echo "<br>";
-                echo "<h3>Use a saved network</h3>"; 
-                echo "<form method='get' id='savedbridge' action='cgi-bin/config.cgi'>";
-                echo "<input name='savedbridge' type='hidden' value='savedbridge'>";
+            ?>
+                <br>
+                <h3>Use a saved network</h3> 
+                <form method='get' id='savedbridge' action='cgi-bin/config.cgi'>
+                <input name='savedbridge' type='hidden' value='savedbridge'>
+                <?php
 				echo '<button class=button" value="'.$ap.'" type="submit">'.$ssid.'</button>';
-                echo "</form>";
-                echo "<br>";
+                ?>
+                </form>
+                <br>
+                <?php
                 if ( $default == "1" ) {
+                ?>
+                <?php
                     echo "<h3><em>".$ssid."</em> is your default connection</h3>";
-                    echo "<form method='get' id='removebridge' action='cgi-bin/config.cgi'>";
-                    echo "<input name='removebridge' type='hidden' value='removebridge'>";
-                    echo "<input type='submit' value='Unset as default' class='button'>";
-                    echo "</form>";
-
-                }
-                echo "</center>";
+                ?>
+                    <form method='get' id='removebridge' action='cgi-bin/config.cgi'>
+                    <input name='removebridge' type='hidden' value='removebridge'>
+                    <input type='submit' value='Unset as default' class='button'>
+                    </form>
+                <?php
            }
+            }
         }
     ?>
 <?php include('footer.php'); ?>

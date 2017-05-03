@@ -58,10 +58,10 @@ function get_network_status() {
 				// Waiting to verify IP
 				if (preg_match('/Waiting/', $g1) == 1) {
 					$response["status"] = "connecting";
-					$response["message"] = "Connecting to internet";
+					$response["message"] = "Connecting to Internet";
 				} else {
 					$response["status"] = "connected";
-					$response["message"] = "Connected to internet";
+					$response["message"] = "Connected to Internet";
 					$response["ip"] = $parts[1];
                     //TODO need a better fix for country names with multiple words. Renders commas. Consider base64.
 					$response["ip_country"] = array_slice($parts,2,-2);
@@ -105,11 +105,11 @@ function get_network_status() {
 			}
 			else if (preg_match('/offline/', $g) == 1) {
 				$response["status"] = "disconnected";
-				$response["message"] = "No internet connection";
+				$response["message"] = "No Internet connection";
 			}
 			else {
 				$response["status"] = "connecting";
-				$response["message"] = "Connecting to internet";
+				$response["message"] = "Connecting to Internet";
 			}
 		}
 		fclose($f2);

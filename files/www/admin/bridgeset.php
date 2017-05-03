@@ -1,4 +1,6 @@
-<?php include 'header.php';
+<?php
+$page_title = "WiFi Bridge Saved";
+include('header.php');
 
 $gtg=0;
 
@@ -61,9 +63,8 @@ if (! isset($_POST['bridge'])) {
         $gtg=1; // this is ridiculous, fix it 
     }
     if ( $gtg == 1 ){ // ...and here...
-        echo "<div class='warning warning3'>";
-        echo "Bridge data stored.\n";
-        //echo "$ret bytes written to auth file";
+        echo "<div class='center'>";
+        echo "<h1>Wifi Bridge Saved</h1>";
         echo "</div>";
         echo "<div class='warning warning3'>";
         echo "Select reboot below to restart the WiFi.\n";
@@ -71,9 +72,8 @@ if (! isset($_POST['bridge'])) {
         echo "</div>";
         echo "<form method='get' id='bridgeset' action='cgi-bin/config.cgi'>";
         echo "<input name='bridgeset' type='hidden' value='bridgeset'>";
-        echo "<input type='submit' value='start bridge' class='button'>";
+        echo "<button type='submit' value='Start bridge' class='button'>Start Bridge</button>";
         echo "</form>";
     }
 }
-
-include 'footer.php';?>
+include('footer.php'); ?>
