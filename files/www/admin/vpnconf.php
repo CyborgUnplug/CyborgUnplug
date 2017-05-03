@@ -23,7 +23,7 @@
     <br><br>
     <input name="password" type="text" placeholder="password" />
     <br><br>
-    <input type="submit" value="save" />
+    <input type="submit" value="Save" />
   </form>
   </div>
     

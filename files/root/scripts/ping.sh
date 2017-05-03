@@ -25,7 +25,7 @@ while true;
         # curl implementation does
         vpnstate=$(cat $CONFIG/vpnstatus)
         if [[ $vpnstate != start && $vpnstate != stop ]]; then
-            loc=$(php-cgi /www/admin/curl.php | tr -d $'\r' | tail -n +3 | head -n 1)
+            loc=$(php-cgi /www/admin/curl.php | tr -d $'\r' | tail -n +3 | head -n 1) 
             if [[ ! -z $loc ]]; then
                 echo online $loc > $CONFIG/networkstate
             else

@@ -206,7 +206,7 @@ if ($network["vpn"] == "start") {
         
         echo "<form method='get' id='extvpn' action='cgi-bin/config.cgi'>";
         echo "<input name='extvpn' type='hidden' value=".$extvpn.">";
-        echo "<input type='submit' value='start vpn' class='button'>";
+        echo "<input type='submit' value='Start vpn' class='button'>";
         echo "</form>";
     }
 }

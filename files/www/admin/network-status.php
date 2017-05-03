@@ -63,10 +63,10 @@ function get_network_status() {
 					$response["status"] = "connected";
 					$response["message"] = "Connected to Internet";
 					$response["ip"] = $parts[1];
-                    //TODO need a better fix for country names with multiple words. Renders commas. Consider base64.
-					$response["ip_country"] = array_slice($parts,2,-2);
-                    end($parts); // uses array's internal pointer
-					$response["ip_iso"] = str_replace(array("(", ")"), "", $parts[3]);
+                    //TODO need a better fix for country names with multiple words. Consider base64 
+                    $plen=count($parts);
+                    $response["ip_country"] = implode(" ", array_slice($parts,3,$plen));
+					$response["ip_iso"] = $parts[2]; 
 				}
 
 				// Determine VPN Status (up, down, start, stop, failed)
