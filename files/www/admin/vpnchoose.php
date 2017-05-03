@@ -53,7 +53,7 @@ href="https://mullvad.net">Mullvad</a>.
 <br>
 Please understand we cannot guarantee any are a safe choice. 
 <br>
-Be aware many VPN providers<a href="https://dnsleaktest.com">leak DNS</a>.
+Be aware many VPN providers<a href="https://dnsleaktest.com"> leak DNS</a>.
 	</div>
 <?php
         }
