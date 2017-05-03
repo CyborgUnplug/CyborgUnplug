@@ -24,7 +24,7 @@
             echo "<br>";
             echo "<input name='email' type='text' placeholder='". $g ."' />";
             echo "<br><br>";
-            echo "<input type='submit' value='save' />";
+            echo "<input type='submit' value='Save' />";
             echo "</form>";
             echo "</div>";
         }

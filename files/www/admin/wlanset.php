@@ -80,7 +80,7 @@ if (! isset($_POST['ssid']) || ! isset($_POST['password']) || ! isset($_POST['ch
         echo "WLAN data saved.\n";
         //echo "$ret bytes written to auth file";
         echo "</div>";
-        echo "<div class='warning warning3'>";
+        echo "<div class='warning'>";
         echo "Select reboot below to restart the WiFi.\n";
         echo "You'll need to log in with the new settings.\n";
         echo "</div>";

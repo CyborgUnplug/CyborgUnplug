@@ -58,12 +58,12 @@ include('header.php');
                 echo "<input type='checkbox' onchange='checkall(this)' id='selectall' class='css-checkbox'>";
                 echo "<label for='selectall' class='css-label'>Select all</label>";
                 echo "</div>";
-                echo "<br><br>";
+                echo "<br>";
 				fclose($f);
 			?>
             <div class="center">
 				<input name="devices" type="hidden" id="checkList" value="nothing">
-				<button type="submit" value="NEXT" class="btnnext">Next</button>
+				<button type="submit" value="NEXT" class="btnnext">NEXT</button>
             </div>
 		</form>
 	</div>

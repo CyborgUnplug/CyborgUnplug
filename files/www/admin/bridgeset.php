@@ -68,11 +68,13 @@ if (! isset($_POST['bridge'])) {
         echo "</div>";
         echo "<div class='warning warning3'>";
         echo "Select reboot below to restart the WiFi.\n";
-        echo "Be sure to check you are online. If not, check the password used with the selected network\n";
+        echo "Please wait while Little Snipper brings up the bridge. If the
+status bar reports that you're offline, check the password used with the network
+you selected and try again";
         echo "</div>";
         echo "<form method='get' id='bridgeset' action='cgi-bin/config.cgi'>";
         echo "<input name='bridgeset' type='hidden' value='bridgeset'>";
-        echo "<button type='submit' value='Start bridge' class='button'>Start Bridge</button>";
+        echo "<button type='submit' value='Start bridge' class='button'>Start bridge</button>";
         echo "</form>";
     }
 }

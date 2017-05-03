@@ -42,7 +42,7 @@ case "$EVENT" in
     *sharerefresh*)
         block umount
         block mount
-        sleep 1
+        sleep 3
         # Give random visitors to Little Snipper's main page a button to access the share
         cp /www/index.html.share /www/index.html 
         # Give random visitors to the share resource a page without reboot, WiFi, config buttons
