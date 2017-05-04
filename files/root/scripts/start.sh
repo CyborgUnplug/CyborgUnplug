@@ -177,7 +177,6 @@ while true;
                 if [[ "$MODE" == "sweep" ]]; then
                     echo "Doing a sweep..."
                     $SCRIPTS/sweep.sh # This script exists on its own 
-                    echo idle > /tmp/blink
                 else
                     echo "Starting detector..."
                     $SCRIPTS/detect.sh &

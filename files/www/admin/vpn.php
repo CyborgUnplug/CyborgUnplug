@@ -21,7 +21,6 @@ function showLog() {
 
 // Connecting to VPN
 if ($network["vpn"] == "start") {
-    echo "<br><br>";
     echo "<div class='warning warning3'>";
     echo "Connecting to VPN...\n";
     echo "<img src='../img/loading.gif'>";

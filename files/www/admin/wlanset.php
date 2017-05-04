@@ -81,7 +81,7 @@ if (! isset($_POST['ssid']) || ! isset($_POST['password']) || ! isset($_POST['ch
         //echo "$ret bytes written to auth file";
         echo "</div>";
         echo "<div class='warning'>";
-        echo "Select reboot below to restart the WiFi.\n";
+        echo "Select reboot below to restart the Wi-Fi.\n";
         echo "You'll need to log in with the new settings.\n";
         echo "</div>";
         echo "<form method='get' id='wlanrestart' action='cgi-bin/config.cgi'>";

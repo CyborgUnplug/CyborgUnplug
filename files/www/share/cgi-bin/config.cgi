@@ -48,7 +48,7 @@ case "$EVENT" in
         # Test if we really truly do have access to the USB mass storage file
         # system by looking for a unique file we put in the mountpoint folder
         if [ ! -f /www/share/usb/$(cat /www/config/rev) ]; then 
-            # Give random visitors to the share resource a page without reboot, WiFi, config buttons
+            # Give random visitors to the share resource a page without reboot, Wi-Fi, config buttons
             cp /www/share/index.php.share /www/share/index.php
         else 
             cp /www/share/index.php.conf /www/share/index.php

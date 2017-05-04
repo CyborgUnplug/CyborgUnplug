@@ -9,7 +9,7 @@ protection of you, the owner of a Cyborg Unplug Device. Each Device has a unique
 certificate which is bound to the owner of that Device, here known as the User.
 <br><br>
 The User, taking due care, is responsible for all use of the Service through the
-Device, including any third party they give Service access to, via WiFi or
+Device, including any third party they give Service access to, via Wi-Fi or
 Ethernet connection. As such, the User undertakes to prevent abuse of the Service or to refrain from using the Service
 her/himself for fraudulent or false activities or activities that are in
 contradiction to activities the character of which constitute a
