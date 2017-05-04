@@ -8,6 +8,7 @@
 	<link rel="stylesheet" href="/css/style.css">
 	<link rel="stylesheet" href="/css/flags.min.css">
     <link type="image/ico" rel="icon" href="/img/little-snipper-36.png">
+	<link rel="manifest" href="/manifest.json">
 </head>
 <body>
 	<div id="container">
