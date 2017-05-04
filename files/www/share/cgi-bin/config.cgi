@@ -45,8 +45,14 @@ case "$EVENT" in
         sleep 3
         # Give random visitors to Little Snipper's main page a button to access the share
         cp /www/index.html.share /www/index.html 
-        # Give random visitors to the share resource a page without reboot, WiFi, config buttons
-        cp /www/share/index.php.share /www/share/index.php
+        # Test if we really truly do have access to the USB mass storage file
+        # system by looking for a unique file we put in the mountpoint folder
+        if [ ! -f /www/share/usb/$(cat /www/config/rev) ]; then 
+            # Give random visitors to the share resource a page without reboot, WiFi, config buttons
+            cp /www/share/index.php.share /www/share/index.php
+        else 
+            cp /www/share/index.php.conf /www/share/index.php
+        fi
         html share/index.php
     ;; 
     *umount*)

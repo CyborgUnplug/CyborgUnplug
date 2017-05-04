@@ -4,6 +4,21 @@ include('header.php');
 include('network-status.php');
 $network = get_network_status();
 
+function showLog() {
+    $vpnlog='/var/log/openvpn.log';
+    if (file_exists($vpnlog)) {
+        $f3 = fopen("/var/log/openvpn.log", "r");
+        echo "<hr>";
+        echo "<h3>VPN Debug Output</h3>";
+        echo "<div class='stdout'>";
+        while(! feof($f3)) {
+            echo fgets($f3). "<br />";
+        }
+        echo "</div>";
+    fclose($f3);
+    }
+}
+
 // Connecting to VPN
 if ($network["vpn"] == "start") {
     echo "<br><br>";
@@ -17,6 +32,7 @@ if ($network["vpn"] == "start") {
     // TODO: make this work via JavaScript instead
     $secondsWait = 5;
     echo '<meta http-equiv="refresh" content="'.$secondsWait.'">';
+    showLog();
 
 // Successfully tunneled
 } else if ($network["status"] == "tunneled" && $network["vpn"] == "up") {
@@ -72,19 +88,7 @@ if ($network["vpn"] == "start") {
 						echo "<input type='submit' value='Make this VPN my default' class='button'>";
 						echo "</form>";
 					}
-
-					$vpnlog='/var/log/openvpn.log';
-					if (file_exists($vpnlog)) {
-						$f3 = fopen("/var/log/openvpn.log", "r");
-						echo "<hr>";
-						echo "<h3>VPN Debug Output</h3>";
-						echo "<div class='stdout'>";
-						while(! feof($f3)) {
-							echo fgets($f3). "<br />";
-						}
-						echo "</div>";
-					fclose($f3);
-					}
+                    showLog();
 			fclose($f1);
 			}
 		}
@@ -113,18 +117,7 @@ if ($network["vpn"] == "start") {
     echo "Also, be sure an ethernet cable is connected from the WAN port to\n";
     echo "your wired Internet connection.\n";
     echo "</div>";
-    $vpnlog='/var/log/openvpn.log';
-    if (file_exists($vpnlog)) {
-        $f3 = fopen("/var/log/openvpn.log", "r");
-        echo "<hr>";
-        echo "<h3>Debug output</h3>";
-        echo "<div class='stdout'>";
-        while(! feof($f3)) {
-            echo fgets($f3). "<br />";
-        }
-        echo "</div>";
-	    fclose($f3);
-    }
+    showLog();
 
 } else {
     // Сheck that we have a VPN file

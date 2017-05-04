@@ -65,7 +65,16 @@ function get_network_status() {
 					$response["ip"] = $parts[1];
                     //TODO need a better fix for country names with multiple words. Consider base64 
                     $plen=count($parts);
-                    $response["ip_country"] = implode(" ", array_slice($parts,3,$plen));
+                    // Cities aren't always returned, so we need to check and
+                    // build a string.
+                    // Some countries also have several strings, so just use ISO
+                    // country codes to save space
+                    if ($parts[3]) {
+                        $ip_country = rtrim($parts[3]).", ".$parts[2]; 
+                    } else {
+                        $ip_country = $parts[2];
+                    }
+                    $response["ip_country"] = $ip_country;
 					$response["ip_iso"] = $parts[2]; 
 				}
 

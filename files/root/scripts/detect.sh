@@ -23,6 +23,7 @@ shopt -s nocasematch # Important
 
 readonly SCRIPTS=/root/scripts
 readonly LOGS=/www/admin/logs/
+#readonly DEBUG=/tmp/detect.log
 readonly CAPDIR=/tmp
 readonly CONFIG=/www/config
 readonly FRAMES=5 # Number of de-auth frames to send. 10 a good hit/time tradeoff
@@ -56,7 +57,12 @@ uci set wireless.@wifi-iface[0].mode="sta"
 uci set wireless.@wifi-iface[0].disabled="0"
 uci commit wireless
 wifi up
-sleep 3 # Important
+
+# Set it back to AP so the AP's not dead on reboot
+uci set wireless.@wifi-iface[0].mode="ap"
+uci commit wireless
+
+sleep 10 # Important
 
 # Extract and define a variable for our wireless NIC and bring it up in Monitor
 # mode. We use $NIC to capture rather than the mon0 device created below. This
@@ -73,11 +79,14 @@ sleep 3 # Important
 airmon-ng start $NIC 
 sleep 3 # Important
 
-# Bring up the admin default VPN for sending alerts to users
-killall openvpn vpn.sh
-echo start > $CONFIG/vpnstatus
-echo "0 plugunplug.ovpn" > $CONFIG/vpn
-$SCRIPTS/vpn.sh &
+if [[ $(cat $CONFIG/vpn) != *plugunplug* ]]; then  
+    killall openvpn vpn.sh
+    # Bring up the admin default VPN for sending alerts to users
+    echo "0 plugunplug.ovpn" > $CONFIG/vpn # bring up Unplug VPN for alerts
+    echo "start" > $CONFIG/vpnstatus
+    $SCRIPTS/vpn.sh &
+    sleep 5 # a little extra time for the VPN
+fi
 
 alert() {
     tmail=false
