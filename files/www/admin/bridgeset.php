@@ -64,7 +64,7 @@ if (! isset($_POST['bridge'])) {
     }
     if ( $gtg == 1 ){ // ...and here...
         echo "<div class='center'>";
-        echo "<h1>Wifi Bridge Saved</h1>";
+        echo "<h1>Wi-Fi Bridge Saved</h1>";
         echo "</div>";
         echo "<div class='warning warning3'>";
         echo "Select reboot below to restart the WiFi.\n";

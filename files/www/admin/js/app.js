@@ -11,11 +11,11 @@ var updateStatus = function(response) {
 	var status_message = response.message
 	var flag_img       = '<img src="/img/blank.png" class="flag flag-ISO">'
 
-	// Wifi & other
+	// Wi-Fi & other
 	if (response.ssid == "unavailable") {
 		var wifi_css  = "wifi-error"
 		var wifi_icon = "icon-wifi-error"
-		var wifi_text = "Wifi Unavailable"
+		var wifi_text = "Wi-Fi Unavailable"
 	} else {
 		var wifi_css  = "wifi"
 		var wifi_icon = "icon-wifi"					
@@ -25,7 +25,7 @@ var updateStatus = function(response) {
 	$wifi = $('#your-wifi')
 	$wifi.removeClass(css_wifi).add(wifi_css)
 	$wifi.find('i').removeClass(icons_wifi).addClass(wifi_icon)
-	$wifi.find('span').html('Wifi')
+	$wifi.find('span').html('Wi-Fi')
 
 	// Connection Status
 	if (response.status == "tunneled" && response.vpn == "up") {
@@ -64,7 +64,7 @@ var updateStatus = function(response) {
 	$('footer').find('li:nth-child(4)').html('Version: ' + response.rev)
 }
 
-// Wifi Bridge (show / hide password field)
+// Wi-Fi Bridge (show / hide password field)
 function checkForPw() {
 	var myselect = $("#bridge").val();
 	if(myselect.split(",")[3] != 'off') {

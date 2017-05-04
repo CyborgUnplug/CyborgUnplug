@@ -1,23 +1,30 @@
 <?php
 // PHP File Tree code by Cory LaViska, adapts code from here:
 //   http://abeautifulsite.net/notebook.php?article=21
-$page_title = "Share files over Wifi";
+$page_title = "Share files over Wi-Fi";
 include('/www/admin/header.php');
 include("/www/share/php_file_tree.php");
 ?>
 	<script src="/share/php_file_tree.js" type="text/javascript"></script>
 	<div class="center">
-		<h1><i class="icon-file-share"></i> Share files over WiFi</h1>
+		<h1><i class="icon-file-share"></i> Share files over Wi-Fi</h1>
 	</div>
 <?php
-	$g = "usb/empty";
+    // The revision file is used in 'start.sh' to derive a unique filename we can
+    // test against - in the mountpoint folder - to know for sure if a USB stick is
+    // actually accessible (pulled out and yet '/bin/mount' still reports it's mounted, etc.
+    $f = fopen("/www/config/rev", "r");
+    $g="usb/".trim(fgets($f));
+    fclose($f);
 	if (file_exists($g)) {
 		echo "<br>";
 		echo "<div class='warning warning3'>";
-		echo "Insert USB stick to start sharing";
+		echo "Insert USB stick to start sharing. For best results use a stick
+with just the files you need to share; too many files takes a long time for
+Little Snipper to read and present to you";
 		echo "</div>"; 
 		echo "<div class='warning'>";
-		echo "Note that during USB stick sharing mode there is no access to the main and configuration menus until the USB stick is ejected and the owner/administrator logs in again";
+		echo "Note that during USB stick sharing mode there is no access to the main and configuration menus until the USB stick is ejected and an authenticated user logs in";
 		echo "</div>"; 
 		echo "<form method='get' id='sharerefresh' action='cgi-bin/config.cgi'>";
 		echo "<div class='center'>";

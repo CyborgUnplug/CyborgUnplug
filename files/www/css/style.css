@@ -877,31 +877,30 @@ html[xmlns] .slides {
 	margin-bottom: 15px!important;
 	background: #222; 
 	width:100%;
-	padding: 1em 1.5em;
     font-size: .8em;
+	border-radius: 5px;
+	padding: .5em;
 }
 
 #reports_container {
 	margin-left: -15px!important;
-	margin-right: -20px!important;
-	background-color: #eaeaea;
+	margin-right: -15px!important;
+	background-color: #222; 
 	height: 200px;
-	width: 104.1%!important;
-	border: 0px!important;
-	overflow: scroll;
-	width:101%;
-	padding: 0px!important;
-	font-size: 12px!important;
+	width: 101%!important;
+	border-radius: 5px;
+	padding: .8em;
+	font-size: 1em; 
+    overflow-y: scroll;
 }
 
 .reports_entry {
-	background-color: white;
-	padding-right: 5px;
 	padding-left: 5px;
 	margin-bottom: 2px;
-	font-size: 1.3em;
+	font-size: .8em;
+    font-color: #fff;
 	cursor: default;
-    text-align: center;
+    text-align: left;
 }
 
 .reports_entry:hover {

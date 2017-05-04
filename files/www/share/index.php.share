@@ -1,7 +1,7 @@
 <?php
 // PHP File Tree code by Cory LaViska, adapts code from here:
 //   http://abeautifulsite.net/notebook.php?article=21
-$page_title = "Share files over Wifi";
+$page_title = "Share files over Wi-Fi";
 // Visitors of the device during USB stick sharing should not be able to reboot the device, configure it, etc.
 // For this reason this file exists and with a path to a different header.
 // TODO: do this all dynamically in PHP in /www/share/index.php
@@ -13,7 +13,12 @@ include("/www/share/php_file_tree.php");
 		<h1><i class="icon-file-share"></i> Download files from USB stick</h1>
 	</div>
 <?php
-	$g = "usb/empty";
+    // The revision file is used in 'start.sh' to derive a unique filename we can
+    // test against - in the mountpoint folder - to know for sure if a USB stick is
+    // actually accessible (pulled out and yet '/bin/mount' still reports it's mounted, etc.
+    $f = fopen("/www/config/rev", "r");
+    $g="usb/".trim(fgets($f));
+    fclose($f);
 	if (file_exists($g)) {
 		echo "<br>";
 		echo "<div class='warning warning3'>";

@@ -1,5 +1,5 @@
 <?php 
-$page_title = "Wifi";
+$page_title = "Wi-Fi";
 include('header.php'); ?>
 
 <form action="wlanconf.php">

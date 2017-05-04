@@ -72,7 +72,15 @@ sleep 5
 spipid=$(ps | grep spi32[766] | awk '{ print $1 }')
 renice -10 $spipid 
 
-# Start the automounter
+# Used to test actual fs access during USB mount operations: eg. fs reports USB
+# stick as being 'mounted' even though someone's pulled it out.  Needs to be a
+# unique name we can compare on the host. Must be done before any automounting
+# of USB sticks
+
+# Create the file:
+touch /www/share/usb/$(cat $CONFIG/rev)
+
+# Now wtart the automounter
 block umount; block mount
 
 # Setup GPIO for indicator LED

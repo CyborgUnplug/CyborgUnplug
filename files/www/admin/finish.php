@@ -32,7 +32,7 @@
             $f = fopen("config/mode", "r");
             $g=fgets($f);                                                                                                                              
             if ($g) {
-                if (preg_match('/allout/', $g) != 1) {
+                if (preg_match('/allout/', $g) != 1 && preg_match('/alarm/', $g) != 1) {
             echo "<li>";
             echo "<a href='#networks' class='navLink'><h4 class='toggle-title'>Networks to watch</h4></a>";
             echo "<div id='networks' class='page'>";

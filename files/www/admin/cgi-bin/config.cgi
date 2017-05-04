@@ -181,10 +181,10 @@ case "$EVENT" in
         html bridge.php
     ;;
 	*armed*)
-        killall openvpn vpn.sh # stop existing instance
-        rm -f $CONFIG/vpn
-		touch $CONFIG/armed	
-		sleep 2
+        #killall openvpn vpn.sh # stop existing instance
+        #rm -f $CONFIG/vpn
+        touch $CONFIG/armed	
+        sleep 2
         html active.php
 	;;
     *autoupdate*)

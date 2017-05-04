@@ -23,6 +23,7 @@ shopt -s nocasematch # Important
 
 readonly SCRIPTS=/root/scripts
 readonly LOGS=/www/admin/logs/
+#readonly DEBUG=/tmp/detect.log
 readonly CAPDIR=/tmp
 readonly CONFIG=/www/config
 readonly FRAMES=5 # Number of de-auth frames to send. 10 a good hit/time tradeoff
@@ -32,6 +33,8 @@ readonly SRCT=$(cat $CONFIG/targets | cut -d "," -f 2)
 readonly TARGETS='@('$(echo $SRCT | sed 's/\ /\*\|/g')'*)'
 
 readonly NIC=wlan0
+
+vpnup=0;
 
 seen=()
 apid=0
@@ -52,7 +55,11 @@ uci set wireless.@wifi-iface[0].disabled="0"
 uci set wireless.@wifi-iface[1].disabled="1"
 uci commit wireless
 wifi up
-sleep 3 # Important
+# Set it back to AP so the AP's not dead on reboot
+uci set wireless.@wifi-iface[0].mode="ap"
+uci commit wireless
+
+sleep 10 # Important
 
 # Extract and define a variable for our wireless NIC and bring it up in Monitor
 # mode. We use $NIC to capture rather than the mon0 device created below. This
@@ -63,16 +70,34 @@ iwconfig $NIC mode Monitor
 ifconfig $NIC up
 sleep 3 # Important
 
+
 # Create a monitor device for aireplay-ng to de-auth with. Aireplay will only
 # work with an airmon-ng mon device, not $NIC.
 airmon-ng start $NIC 
 sleep 3 # Important
 
-# Bring up the admin default VPN for sending alerts to users
-echo "0 plugunplug.ovpn" > $CONFIG/vpn # bring up Unplug VPN for alerts
-echo "start" > $CONFIG/vpnstatus
-$SCRIPTS/vpn.sh &
-sleep 5 # a little extra time for the VPN
+rm -f /tmp/sweep.log
+
+if [[ $(cat $CONFIG/vpnstatus) != "up" && $(cat $CONFIG/vpn) != *plugunplug* ]]; then  
+    vpnstatus=$(cat $CONFIG/vpnstatus)
+    vpn=$(cat $CONFIG/vpn)
+    echo "Taking down the VPN we weren't using prior" >> /tmp/sweep.log
+    killall openvpn vpn.sh
+    echo unconfigured > $CONFIG/vpnstatus
+    #echo stop > $CONFIG/vpnstatus
+    #while [ -f $CONFIG/vpn ]; 
+    #    do
+    #        sleep 1
+    #        echo "waiting for VPN to come down"
+    #    done
+    # Bring up the admin default VPN for sending alerts to users
+    echo "0 plugunplug.ovpn" > $CONFIG/vpn # bring up Unplug VPN for alerts
+    echo "start" > $CONFIG/vpnstatus
+    $SCRIPTS/vpn.sh &
+    sleep 5 # A little extra time for the VPN
+else
+    vpnup=1
+fi
 
 alert() {
     tmail=false
@@ -112,8 +137,9 @@ horst -x pause
 COUNT=0
 
 echo detect > /tmp/blink
+echo NULL > $CONFIG/mode
 
-while [ $COUNT -lt 6 ];
+while [ $COUNT -lt 2 ];
         do
             echo "//--------------------* $COUNT * ----------------------------------->"
             echo "Sleeping for " $POLLTIME " and writing capture log"
@@ -123,6 +149,7 @@ while [ $COUNT -lt 6 ];
             # not in the probed/association section of airodump-ng and so the
             # pairs need to be extraced and matched separately.
             cat $CAPDIR/cap | awk '{ print $2 $3 $4 $11 }' | sed 's/,/\ /g' | sort -u > $CAPDIR/pairs
+            cat $CAPDIR/pairs
             if [ -f $CAPDIR/pairs ]; then
                     while read line;
                              do
@@ -145,6 +172,7 @@ while [ $COUNT -lt 6 ];
                                 fi
                         done < $CAPDIR/pairs #EOF
                 let 'COUNT += 1'
+                echo $COUNT
                 echo "Removing temporary files."
                 rm -f $CAPDIR/pairs $CAPDIR/channels 
                 horst -x pause
@@ -154,7 +182,10 @@ while [ $COUNT -lt 6 ];
             fi
 done
 
-if [[ $(cat $CONFIG/networkstate) == "online" && ! -f $LOGS/detected ]]; then
+echo "Left main loop" >> /tmp/sweep.log
+
+if [[ $(cat $CONFIG/networkstate) == *online* && ! -f $LOGS/detected ]]; then
+        echo "Made it to here" >> /tmp/sweep.log
         # in case a stuck alert.sh PID
         if [[ $apid != 0 ]]; then
             kill -9 $apid 
@@ -164,24 +195,37 @@ if [[ $(cat $CONFIG/networkstate) == "online" && ! -f $LOGS/detected ]]; then
 fi
 
 echo idle > /tmp/blink
-echo NULL > $CONFIG/mode
 cp /www/admin/index.php.conf /www/admin/index.php
 
 killall horst 
 #kill -9 $hpid 
-killall openvpn vpn.sh
-sleep 1
+
+if [ $vpnup == 0 ]; then
+    killall openvpn vpn.sh
+    echo unconfigured > $CONFIG/vpnstatus
+    #while [ -f $CONFIG/vpn ]; 
+    #    do
+    #        sleep 1
+    #        echo "waiting for VPN to come down"
+    #    done
+    echo "Restoring to the prior VPN" >> /tmp/sweep.log
+    echo $vpn > $CONFIG/vpn
+    echo start > $CONFIG/vpnstatus
+fi
+echo "Past VPN restore" >> /tmp/sweep.log
 
 # Set back to AP mode 
 wifi down
-uci set wireless.@wifi-iface[0].mode="ap"
+# just in case
+uci set wireless.@wifi-iface[0].mode="ap" 
 uci set wireless.@wifi-iface[0].disabled="0"
 uci commit wireless
 wifi up
 
-rm -f $CONFIG/vpn
-echo unconfigured > $CONFIG/vpnstatus
+#rm -f $CONFIG/vpn
+#echo unconfigured > $CONFIG/vpnstatus
 rm -f $CONFIG/armed
 killall dnsmasq # For some reason using /etc/init.d/ to pull it down doesn't work
 /etc/init.d/dnsmasq start
+echo "Finishing up..." >> /tmp/sweep.log
 

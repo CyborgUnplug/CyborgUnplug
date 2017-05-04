@@ -11,7 +11,7 @@ include('header.php');
                 echo "<h1><i class='icon-scan'></i> Sweeping for spy devices</h1>";
                 echo "<br>";
                 echo "<div class='warning'>";
-                echo "A sweep should take a little over 80 seconds. During this time your WiFi connection to Little Snipper will go down. Reconnect and refresh this page in a couple of minutes to read a report.<br>In the interim, check email for alerts.";
+                echo "A sweep should take a little over 80 seconds. During this time your Wi-Fi connection to Little Snipper will go down. Reconnect and refresh this page in a couple of minutes to read a report.<br>In the interim, check email for alerts.";
                 echo "</div>";
             }
             else if (preg_match('/NULL/', $g) == 1) {
@@ -29,11 +29,10 @@ include('header.php');
                 echo "<h1 id='headline'>The detector is active</h1>";
                 echo "<br>";
                 echo "<div class='warning'>";
-                echo "WiFi access disabled during detection<br>";
+                echo "Wi-Fi access disabled during detection<br>";
                 echo "Alerts sent by email<br>";
                 echo "Connect by Ethernet to read reports<br>";
                 echo "</div>";
-                echo "<br>";
                 echo "<div class='warning warning3'>";
                 echo "To reconfigure, unplug/replug Little Snipper<br>";
                 echo "</div>";

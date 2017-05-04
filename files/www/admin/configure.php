@@ -5,7 +5,7 @@ include('header.php');
 <div class="center">
 	<h1><i class="icon-settings"></i> Settings</h1>
 	<form action="wlanconf.php">
-		<input name="wifi" type="submit" value="Wifi Hotspot Setup">
+		<input name="wifi" type="submit" value="Wi-Fi Hotspot Setup">
 	</form>
 	<form action="authconf.php">
 		<input name="auth" type="submit" value="Admin Password">
