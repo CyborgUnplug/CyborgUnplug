@@ -79,13 +79,27 @@ sleep 3 # Important
 airmon-ng start $NIC 
 sleep 3 # Important
 
-if [[ $(cat $CONFIG/vpn) != *plugunplug* ]]; then  
-    killall openvpn vpn.sh
-    # Bring up the admin default VPN for sending alerts to users
-    echo "0 plugunplug.ovpn" > $CONFIG/vpn # bring up Unplug VPN for alerts
-    echo "start" > $CONFIG/vpnstatus
-    $SCRIPTS/vpn.sh &
-    sleep 5 # a little extra time for the VPN
+unplugvpn() {
+        killall openvpn vpn.sh
+        # bring up Unplug VPN for alerts
+        echo "0 plugunplug.ovpn" > $CONFIG/vpn 
+        echo "start" > $CONFIG/vpnstatus
+        $SCRIPTS/vpn.sh &
+        # A little extra time for the VPN. Make this a watchdog on VPN up state
+        # in future
+        sleep 30 
+}
+
+if [ -f $CONFIG/vpn ]; then
+    if [[ $(cat $CONFIG/vpn) != *plugunplug* ]]; then  
+        # Record prior VPN status
+        unplugvpn
+    else
+        # We're already using the main Unplug VPN
+    fi
+else
+    # There is no VPN currently used
+    unplugvpn
 fi
 
 alert() {

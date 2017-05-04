@@ -1,9 +1,9 @@
 <?php
-$page_title = "Create a WiFi bridge";
+$page_title = "Create a Wi-Fi bridge";
 include('header.php');
 ?>
     <div class="center">
-    	<h1><i class="icon-bridge"></i> Create a WiFi bridge</h1>
+    	<h1><i class="icon-bridge"></i> Create a Wi-Fi bridge</h1>
 	</div>
     <script>
 		var $r;

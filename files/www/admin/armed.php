@@ -15,7 +15,7 @@ include('header.php');
         if ($g) {
             if (preg_match('/sweep/', $g) == 1) {
                 echo "<div class='warning warning3'>";
-                echo "A sweep should take a little over a minute. During that time the WiFi will go down. Just reconnect in a minute and refresh this page";
+                echo "A sweep should take a little over a minute. During that time the Wi-Fi will go down. Just reconnect in a minute and refresh this page";
                 </div>
         }
 	?>

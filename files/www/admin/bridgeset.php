@@ -1,5 +1,5 @@
 <?php
-$page_title = "WiFi Bridge Saved";
+$page_title = "Wi-Fi Bridge Saved";
 include('header.php');
 
 $gtg=0;
@@ -67,7 +67,7 @@ if (! isset($_POST['bridge'])) {
         echo "<h1>Wi-Fi Bridge Saved</h1>";
         echo "</div>";
         echo "<div class='warning warning3'>";
-        echo "Select reboot below to restart the WiFi.\n";
+        echo "Select reboot below to restart the Wi-Fi.\n";
         echo "Please wait while Little Snipper brings up the bridge. If the
 status bar reports that you're offline, check the password used with the network
 you selected and try again";

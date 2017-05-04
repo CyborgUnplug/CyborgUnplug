@@ -20,7 +20,7 @@ if (file_exists($fn)) {
 	To do so, connect an Ethernet cable provided to the WAN port on Little Snipper <br>
 	and the other end to a LAN port on your router.<br>
 	Alternatively, configure a 'wireless bridge' in the configuration menu,<br>
-	to connect Little Snipper to a local WiFi network. 
+	to connect Little Snipper to a local Wi-Fi network. 
 	</div>
 	<br><br>
 	<input type="submit" value="refresh">

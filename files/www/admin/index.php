@@ -12,12 +12,12 @@
         </form>
         <form method="get" action="cgi-bin/config.cgi">
 			<button name="bridgechoose" type="submit" value="bridgechoose">
-				<i class="icon-bridge"></i> Create a WiFi bridge
+				<i class="icon-bridge"></i> Create a Wi-Fi bridge
 			</button>
         </form>
         <form action="/share/index.php">
 			<button name="share" type="submit" value="share">
-				<i class="icon-file-share"></i> Share files over WiFi
+				<i class="icon-file-share"></i> Share files over Wi-Fi
 			</button>
         </form>
 	</div>

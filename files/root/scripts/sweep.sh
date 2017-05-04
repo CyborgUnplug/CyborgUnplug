@@ -78,25 +78,31 @@ sleep 3 # Important
 
 rm -f /tmp/sweep.log
 
-if [[ $(cat $CONFIG/vpnstatus) != "up" && $(cat $CONFIG/vpn) != *plugunplug* ]]; then  
-    vpnstatus=$(cat $CONFIG/vpnstatus)
-    vpn=$(cat $CONFIG/vpn)
-    echo "Taking down the VPN we weren't using prior" >> /tmp/sweep.log
-    killall openvpn vpn.sh
-    echo unconfigured > $CONFIG/vpnstatus
-    #echo stop > $CONFIG/vpnstatus
-    #while [ -f $CONFIG/vpn ]; 
-    #    do
-    #        sleep 1
-    #        echo "waiting for VPN to come down"
-    #    done
-    # Bring up the admin default VPN for sending alerts to users
-    echo "0 plugunplug.ovpn" > $CONFIG/vpn # bring up Unplug VPN for alerts
-    echo "start" > $CONFIG/vpnstatus
-    $SCRIPTS/vpn.sh &
-    sleep 5 # A little extra time for the VPN
+unplugvpn() {
+        killall openvpn vpn.sh
+        # bring up Unplug VPN for alerts
+        echo "0 plugunplug.ovpn" > $CONFIG/vpn 
+        echo "start" > $CONFIG/vpnstatus
+        $SCRIPTS/vpn.sh &
+        # A little extra time for the VPN. Make this a watchdog on VPN up state
+        # in future
+        sleep 30 
+}
+
+if [ -f $CONFIG/vpn ]; then
+    if [[ $(cat $CONFIG/vpn) != *plugunplug* ]]; then  
+        # Record prior VPN status
+        vpnstatus=$(cat $CONFIG/vpnstatus)
+        vpn=$(cat $CONFIG/vpn)
+        unplugvpn
+    else
+        # We're already using the main Unplug VPN
+        vpnup=1
+    fi
 else
-    vpnup=1
+    # There is no VPN currently used
+    vpnup=-1
+    unplugvpn
 fi
 
 alert() {
@@ -182,10 +188,7 @@ while [ $COUNT -lt 2 ];
             fi
 done
 
-echo "Left main loop" >> /tmp/sweep.log
-
 if [[ $(cat $CONFIG/networkstate) == *online* && ! -f $LOGS/detected ]]; then
-        echo "Made it to here" >> /tmp/sweep.log
         # in case a stuck alert.sh PID
         if [[ $apid != 0 ]]; then
             kill -9 $apid 
@@ -194,7 +197,6 @@ if [[ $(cat $CONFIG/networkstate) == *online* && ! -f $LOGS/detected ]]; then
         $SCRIPTS/alert.sh none 
 fi
 
-echo idle > /tmp/blink
 cp /www/admin/index.php.conf /www/admin/index.php
 
 killall horst 
@@ -202,17 +204,14 @@ killall horst
 
 if [ $vpnup == 0 ]; then
     killall openvpn vpn.sh
-    echo unconfigured > $CONFIG/vpnstatus
-    #while [ -f $CONFIG/vpn ]; 
-    #    do
-    #        sleep 1
-    #        echo "waiting for VPN to come down"
-    #    done
-    echo "Restoring to the prior VPN" >> /tmp/sweep.log
     echo $vpn > $CONFIG/vpn
     echo start > $CONFIG/vpnstatus
+elif [ $vpnup == -1 ]; then
+    killall openvpn vpn.sh
+    echo idle > /tmp/blink
+else
+    echo vpn > /tmp/blink
 fi
-echo "Past VPN restore" >> /tmp/sweep.log
 
 # Set back to AP mode 
 wifi down
@@ -227,5 +226,4 @@ wifi up
 rm -f $CONFIG/armed
 killall dnsmasq # For some reason using /etc/init.d/ to pull it down doesn't work
 /etc/init.d/dnsmasq start
-echo "Finishing up..." >> /tmp/sweep.log
 

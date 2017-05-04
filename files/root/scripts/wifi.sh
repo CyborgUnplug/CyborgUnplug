@@ -137,7 +137,7 @@ ap () {
     if [ "$DO" == "bridge" ]; then
         uci set wireless.@wifi-iface[0].channel=$CHANNEL
     else
-        # Disable our sta NIC before bringing up WiFi
+        # Disable our sta NIC before bringing up Wi-Fi
         uci set wireless.@wifi-iface[1].disabled=1
         if [ -f $CONFIG/channel ]; then
             # Reset channel to that in channel config
