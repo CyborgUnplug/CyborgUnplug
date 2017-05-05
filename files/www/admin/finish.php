@@ -26,38 +26,7 @@
             </div>
         </li>
    
-        <?php
-        $fn='config/mode';
-        if (file_exists($fn)) {
-            $f = fopen("config/mode", "r");
-            $g=fgets($f);                                                                                                                              
-            if ($g) {
-                if (preg_match('/allout/', $g) != 1 && preg_match('/alarm/', $g) != 1) {
-            echo "<li>";
-            echo "<a href='#networks' class='navLink'><h4 class='toggle-title'>Networks to watch</h4></a>";
-            echo "<div id='networks' class='page'>";
-            echo "<form id='networks'>"; 
-            echo "        <div class='config_container'>";
-                            $f = fopen("config/networks", "r");
-                            while(!feof($f)) {
-                                $g=fgets($f);
-                                if ($g) {
-                                    $parts=explode(',',$g);
-                                    echo base64_decode($parts[1])."<br/>";
-                                }
-                            }
-                            fclose($f);
-                    echo "</div>";
-                echo "</form>";
-            echo "</div>";
-        echo "</li>";
-
-            }
-        }
-    }
-    ?>
     </ul>
-
     <form method="get" id="armed" action="cgi-bin/config.cgi">
         <input name="armed" type="hidden" id="armed" value="standby">
         <center>

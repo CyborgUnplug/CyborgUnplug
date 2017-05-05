@@ -30,7 +30,7 @@ readonly FRAMES=5 # Number of de-auth frames to send. 10 a good hit/time tradeof
 readonly MODE=$(cat $CONFIG/mode) 
 
 # For allout and alert modes. Determines time spent capturing, in seconds.
-# Higher values = lower anxiety = less regular alerts/deauths Will eventually be
+# Higher values = lower anxiety = less regular alerts. Will eventually be
 # user-editable through UI
 readonly ANXIETY=13
 
@@ -92,10 +92,7 @@ unplugvpn() {
 
 if [ -f $CONFIG/vpn ]; then
     if [[ $(cat $CONFIG/vpn) != *plugunplug* ]]; then  
-        # Record prior VPN status
         unplugvpn
-    else
-        # We're already using the main Unplug VPN
     fi
 else
     # There is no VPN currently used
@@ -143,8 +140,6 @@ alert() {
             $SCRIPTS/alert.sh "$device" $target &
             apid=$! # new PID 
             if [[ "$MODE" != "alarm" ]]; then
-                echo $(date) "detected and de-authed device" "$device" "with MAC addr" $target >> $LOGS/detected
-            else
                 echo $(date) "detected device" "$device" "with MAC addr" $target >> $LOGS/detected
             fi
         else
@@ -153,30 +148,6 @@ alert() {
     else
         echo "Can't send alert. Unplug not online"
     fi
-}
-
-deauth() {
-    echo "Target found."
-    # Pause horst and set the channel
-    if [[ "$MODE" == "allout" || "$MODE" == "alarm" ]]; then
-        horst -x channel_auto=0
-    fi
-    horst -x pause
-    # We can set the channel of $NIC and mon0 at once as $NIC is in Monitor mode
-    iwconfig $NIC freq $freq"000000"
-    sleep 2
-    iwconfig | grep Frequency
-    # Do the de-auth
-    echo "De-authing: " "$STA" " from " "$BSSID"
-    aireplay-ng -0 $FRAMES -a $BSSID -c $STA mon0 
-    alert
-    if [[ "$MODE" == "allout" ]]; then
-        horst -x channel_auto=1
-    fi
-    horst -x resume
-    # Reset MAC vars 
-    STA=ff:ff:ff:ff:ff:ff
-    BSSID=ff:ff:ff:ff:ff:ff
 }
 
 channelWalk(){
@@ -193,54 +164,13 @@ channelWalk(){
         done
 }
 
-
-#if [ $? -ne 0 ]; then # Test horst exit status 
-  # Something is wrong, like a dead mon0
-  # and/or NIC. Store settings and reboot.
-#   reboot -n 
-#fi
-
-case "$MODE" in 
-    *territory*)
-        # In territory mode, we're only concerned if an unwanted device joins
-        # our network, so just filter for association, auth and data packets. 
-        horst -u 13 -q -i $NIC -f ASSOC -f AUTH -f DATA -o $CAPDIR/cap -X &
-        HPID=$!
-        # Override channels with those of target BSSIDs. We have to resource awk
-        # twice, due to two cases of uniqueness tested.
-        readonly CHANNELS=($(cat $CONFIG/networks | sort -u | awk 'BEGIN { FS = "," }; { print $NF }' | sort -u | awk '{ print $0 }'))
-        #CHANNELS=($(cat /www/config/networks | sort -u | awk 'BEGIN { FS = "," }; { print $NF }'))
-        # We'll poll for as many seconds as there are networks to guard 
-        readonly POLLTIME=$(wc -l < $CONFIG/networks)
-        echo "These are the networks we're watching"
-        cat $CONFIG/networks
-        # Read in the networks we're watching and build the target string. 
-        readonly SRCN=$(cat /www/config/networks | cut -d "," -f 1)
-        readonly networks='@('$(echo $SRCN | sed 's/\ /\|/g')')'
-        channelWalk &
-        CPID=$!
-    ;;
-    *alarm*)
-        # In alarm mode, we're looking for the pure presence of a device, and
-        # so watch for any packets from the target(s) - probe, data or otherwise
-        horst -u 13 -q -i $NIC -o $CAPDIR/cap -X &
-        HPID=$!
-        # Put things specific to alarm/alert mode here.
-        POLLTIME=$ANXIETY # Seconds we wait for capture to find STA/BSSID pairs
-        horst -x channel_auto=1
-    ;;
-    *allout*)
-        # In allout mode we're looking for activity of the device on any
-        # network in our presence, de-authing it in turn. Data packets are what
-        # we need to filter for
-        horst -u 13 -q -i $NIC -f DATA -o $CAPDIR/cap -X &
-        HPID=$!
-        # Put things specific to allout mode here.
-        POLLTIME=$ANXIETY # Seconds we wait for capture to find STA/BSSID pairs
-        horst -x channel_auto=1
-    ;;
-    *)                    
-esac
+# In alarm mode, we're looking for the pure presence of a device, and
+# so watch for any packets from the target(s) - probe, data or otherwise
+horst -u 13 -q -i $NIC -o $CAPDIR/cap -X &
+HPID=$!
+# Put things specific to alarm/alert mode here.
+POLLTIME=$ANXIETY # Seconds we wait for capture to find STA/BSSID pairs
+horst -x channel_auto=1
 
 startt=$(date +'%s')
 
@@ -269,24 +199,12 @@ while true;
                         else 
                             STA=$dst 
                         fi
-
-                        if [[ "$MODE" == "territory" && "$STA" == $TARGETS && "$BSSID" == $networks ]]; then
-                                target=$STA
-                                deauth
-                        elif [[ "$STA" == $TARGETS ]]; then
+                        if [[ "$STA" == $TARGETS ]]; then
                             target=$STA
-                            if [[ "$MODE" == "allout" ]]; then
-                                deauth
-                            else
-                                alert
-                            fi
+                            alert
                         elif [[ "$BSSID" == $TARGETS ]]; then
                             target=$BSSID
-                            if [[ "$MODE" == "allout" ]]; then
-                                deauth
-                            else
-                                alert
-                            fi
+                            alert
                         fi
                     done < $CAPDIR/pairs #EOF
 

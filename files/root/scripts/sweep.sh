@@ -18,6 +18,8 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+# TODO: Integrate this into detect.sh on the USA and USA-solo models.
+
 trap "trap - SIGTERM && kill -- -$$" SIGINT SIGTERM EXIT
 shopt -s nocasematch # Important
 
@@ -145,7 +147,7 @@ COUNT=0
 echo detect > /tmp/blink
 echo NULL > $CONFIG/mode
 
-while [ $COUNT -lt 2 ];
+while [ $COUNT -lt 3 ];
         do
             echo "//--------------------* $COUNT * ----------------------------------->"
             echo "Sleeping for " $POLLTIME " and writing capture log"
@@ -215,11 +217,12 @@ fi
 
 # Set back to AP mode 
 wifi down
-# just in case
 uci set wireless.@wifi-iface[0].mode="ap" 
 uci set wireless.@wifi-iface[0].disabled="0"
 uci commit wireless
-wifi up
+
+sleep 10 # Important: time for the route to flush out
+/etc/init.d/network restart
 
 #rm -f $CONFIG/vpn
 #echo unconfigured > $CONFIG/vpnstatus

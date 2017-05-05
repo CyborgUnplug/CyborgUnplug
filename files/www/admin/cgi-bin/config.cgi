@@ -88,20 +88,11 @@ case "$EVENT" in
         html mode.php
 	;;
 	*mode1*)
-		echo territory > $CONFIG/mode
-        $SCRIPTS/wifi.sh scan
-        html territorial.php
-	;;
-	*mode2*)
-		echo allout > $CONFIG/mode
-        html allout.php
-	;;
-	*mode3*)
 		echo alarm > $CONFIG/mode
 		cat $DATA/networks > $CONFIG/networks
         html finish.php
 	;;
-	*mode4*)
+	*mode2*)
 		echo sweep > $CONFIG/mode
         $SCRIPTS/wifi.sh scan
 		cat $DATA/networks > $CONFIG/networks
@@ -152,15 +143,6 @@ case "$EVENT" in
         rm -f $CONFIG/savedvpn
         html vpn.php
     ;;
-        
-	*finish1*)
-		echo $EVENT | cut -d "=" -f 2 | sed -e 's/%3D/=/g' -e 's/\ //g' | base64 -d  > $CONFIG/networks
-        html finish.php
-	;;
-	*finish2*)
-		cat $DATA/networks > $CONFIG/networks
-        html finish.php
-	;;
     *bridgechoose*)
         $SCRIPTS/wifi.sh scan 
         html bridge.php
