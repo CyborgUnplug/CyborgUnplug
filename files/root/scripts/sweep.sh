@@ -145,7 +145,7 @@ COUNT=0
 echo detect > /tmp/blink
 echo NULL > $CONFIG/mode
 
-while [ $COUNT -lt 2 ];
+while [ $COUNT -lt 5 ];
         do
             echo "//--------------------* $COUNT * ----------------------------------->"
             echo "Sleeping for " $POLLTIME " and writing capture log"
@@ -219,7 +219,9 @@ wifi down
 uci set wireless.@wifi-iface[0].mode="ap" 
 uci set wireless.@wifi-iface[0].disabled="0"
 uci commit wireless
-wifi up
+
+sleep 10 # Important: time for the route to flush out
+/etc/init.d/network restart
 
 #rm -f $CONFIG/vpn
 #echo unconfigured > $CONFIG/vpnstatus

@@ -94,8 +94,6 @@ if [ -f $CONFIG/vpn ]; then
     if [[ $(cat $CONFIG/vpn) != *plugunplug* ]]; then  
         # Record prior VPN status
         unplugvpn
-    else
-        # We're already using the main Unplug VPN
     fi
 else
     # There is no VPN currently used
