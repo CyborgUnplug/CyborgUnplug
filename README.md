@@ -2,6 +2,8 @@
 
 ![](https://plugunplug.net/img/site-banner.jpg)
 
+![](https://plugunplug.net/img/home_v2.jpg)
+
 Cyborg Unplug firmware files for the sold 16M SPI flash, 32M RAM RT5350f target
 _Little Snipper_.  Please see the _wr710n_ branch for the 'homebake' DIY Atheros
 target (currently TP-Link WR710N).
