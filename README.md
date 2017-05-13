@@ -1,6 +1,6 @@
 # CyborgUnplug
 
-![](https://plugunplug.net/img/site-banner.jpg)
+![](https://plugunplug.net/img/site-banner_gh.jpg)
 
 ![](https://plugunplug.net/img/home_v2.jpg)
 
