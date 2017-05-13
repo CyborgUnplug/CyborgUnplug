@@ -4,10 +4,7 @@
 
 ![](https://plugunplug.net/img/home_v2.jpg)
 
-Firmware files for _Little Snipper_.  Please see the _wr710n_ branch for the 'homebake' DIY Atheros
-target (currently TP-Link WR710N).
-
-This firmware builds on OpenWrt BARRIER BREAKER (Bleeding Edge).
+Firmware files for _Little Snipper_. This firmware builds on OpenWrt BARRIER BREAKER (Bleeding Edge).
 
 ## ABOUT 'LITTLE SNIPPER'
 
