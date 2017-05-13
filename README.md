@@ -10,9 +10,9 @@ target (currently TP-Link WR710N).
 
 This firmware builds on OpenWrt BARRIER BREAKER (Bleeding Edge).
 
-## ABOUT CYBORG UNPLUG
+## ABOUT 'LITTLE SNIPPER'
 
-Cyborg Unplug is a privacy appliance for the home, hotel and workplace. It
+_Little Snipper_ is a privacy appliance for the home, hotel and workplace. It
 detects and optionally disconnects (outside US only) selected devices known to
 pose a risk to personal privacy, stopping streams of image, video and audio data
 to the Internet (or the car outside).
