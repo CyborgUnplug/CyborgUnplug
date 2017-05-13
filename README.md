@@ -25,12 +25,7 @@ Visit the project page [here](http://plugunplug.net).
 
 ## BRANCH DIFFERENCES
 
-Note the _wr710n_ branch is lagging behind _master_ due to differences in
-hardware and features such as the free SSL sheathed VPN service, automatic
-firmware updates and private email alerts/notification system. These are only
-available with Little Snipper hardware sold due to the work involved, alongside
-the financial and administrative costs of having thousands of people on the
-project VPN.
+Note the _wr710n_ (DIY) branch is far behind _master_ now and will be discontinued. This is due to TP-Link finally giving into the FCC and ensuring that this device can't be flashed with alternative, after-market firmware. We're currently looking into a new OpenWrt capable router target widely available in shops worldwide to support.
 
 ## KEYS
 
