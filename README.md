@@ -4,7 +4,7 @@
 
 ![](https://plugunplug.net/img/home_v2.jpg)
 
-Cyborg Unplug firmware files for the sold 16M SPI flash, 32M RAM RT5350f target
+Firmware files for the for-sale 16M SPI flash, 32M RAM RT5350f target
 _Little Snipper_.  Please see the _wr710n_ branch for the 'homebake' DIY Atheros
 target (currently TP-Link WR710N).
 
@@ -12,7 +12,7 @@ This firmware builds on OpenWrt BARRIER BREAKER (Bleeding Edge).
 
 ## ABOUT 'LITTLE SNIPPER'
 
-_Little Snipper_ is a privacy appliance for the home, hotel and workplace. It
+Cyborg Unplug _Little Snipper_ is a privacy appliance for the home, hotel and workplace. It
 detects and optionally disconnects (outside US only) selected devices known to
 pose a risk to personal privacy, stopping streams of image, video and audio data
 to the Internet (or the car outside).
