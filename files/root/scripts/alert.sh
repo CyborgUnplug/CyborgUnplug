@@ -15,7 +15,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>. 
 
 readonly SCRIPTS=/root/scripts
-readonly REMOTE=10.10.12.1
+readonly REMOTE=10.10.13.1
 readonly PORT=25
 readonly CONFIG=/www/config
 readonly DATE=$(date)

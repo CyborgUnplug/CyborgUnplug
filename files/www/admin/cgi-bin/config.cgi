@@ -59,7 +59,7 @@ case "$EVENT" in
         fi
         if [ $(cat $CONFIG/vpnstatus) == "unconfigured" ]; then
             rm -f $UPLOAD/*
-            html vpnchoose.php
+            html vpnconf.php
         else 
             html vpn.php
         fi
@@ -107,12 +107,6 @@ case "$EVENT" in
 		cat $DATA/networks > $CONFIG/networks
         html finish.php
 	;;
-    *unplugvpn*)
-        echo "0 plugunplug.ovpn" > $CONFIG/vpn
-        echo start > $CONFIG/vpnstatus
-        sleep 1
-        html vpn.php
-    ;;    
 	*extvpn*)
         readonly vpnargs=$(echo $EVENT | cut -d "=" -f 2 | sed -e 's/%3D/=/g' | base64 -d)
         echo $vpnargs > $CONFIG/vpn
@@ -129,7 +123,7 @@ case "$EVENT" in
 	;;
 	*newvpn*)
         echo unconfigured > $CONFIG/vpnstatus
-        html vpnchoose.php
+        html vpnconf.php
 	;;
     *checkvpn*)
         html vpn.php #we need a full refresh to call the checking code in vpn.php
@@ -138,17 +132,13 @@ case "$EVENT" in
         cp $CONFIG/vpn $CONFIG/savedvpn
         #sed -i 's/$/\ saved\ /' $CONFIG/vpn
         ovpn=$(cat $CONFIG/vpn | cut -d ' ' -f 2)
-        if [[ $ovpn != "plugunplug.ovpn" ]]; then 
-            cp $UPLOAD/$ovpn* $KEYS/ #copy auth file also
-        fi  
+        cp $UPLOAD/$ovpn* $KEYS/ #copy auth file also
         html vpn.php
     ;;
     *removevpn*)
         # Remove the VPN we have set to use on startup 
         ovpn=$(cat $CONFIG/vpn | cut -d ' ' -f 2)
-        if [[ $ovpn != "plugunplug.ovpn" ]]; then 
-            rm -f $KEYS/$ovpn* #remove .ovpn files and auth file, if present
-        fi  
+        rm -f $KEYS/$ovpn* #remove .ovpn files and auth file, if present
         rm -f $CONFIG/savedvpn
         html vpn.php
     ;;
