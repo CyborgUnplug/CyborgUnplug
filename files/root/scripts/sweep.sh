@@ -223,6 +223,7 @@ uci commit wireless
 
 sleep 10 # Important: time for the route to flush out
 /etc/init.d/network restart
+ifconfig eth0.2 up # Just in case
 
 #rm -f $CONFIG/vpn
 #echo unconfigured > $CONFIG/vpnstatus
