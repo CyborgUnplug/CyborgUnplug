@@ -1,8 +1,8 @@
 # CyborgUnplug
 
-![](https://plugunplug.net/img/site-banner_gh.jpg)
+![](https://cyborgunplug.com/img/site-banner_gh.jpg)
 
-![](https://plugunplug.net/img/home_v2.jpg)
+![](https://cyborgunplug.com/img/home_v2.jpg)
 
 Firmware files for _Little Snipper_. This firmware builds on OpenWrt BARRIER BREAKER (Bleeding Edge).
 
@@ -18,7 +18,7 @@ traffic, locking out spies along the route. It can also be used to easily and
 privately share files on a USB stick with others on the same network. No extra
 software is required on your phone, tablet or laptop.
 
-Visit the project page [here](http://plugunplug.net).
+Visit the project page [here](http://cyborgunplug.com).
 
 ## BRANCH DIFFERENCES
 
