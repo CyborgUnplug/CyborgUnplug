@@ -385,6 +385,7 @@ footer ul li {
 	margin: 0 1em;
 	font-size: 14px;
 	color: #a3a3a3;
+	white-space: nowrap;
 }
 
 footer img.little-snipper {
