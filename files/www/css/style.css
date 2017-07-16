@@ -333,7 +333,7 @@ header button.wifi-error {
 }
 
 #status_icon.waiting {
-	color: #efefef;
+	color: #c6c6c6;
 }
 
 #status_icon.connecting {
@@ -341,7 +341,7 @@ header button.wifi-error {
 }
 
 #status_icon.connected {
-	color: #182ac3;
+	color: #fff;
 }
 
 #status_icon.tunneled {
@@ -349,7 +349,7 @@ header button.wifi-error {
 }
 
 #status_icon.disconnected {
-	color: #c6c6c6;
+	color: #a6a6a6;
 }
 
 #status_icon.error {
