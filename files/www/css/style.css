@@ -264,6 +264,7 @@ header form button {
 	font-size: 14px;
 	font-weight: normal;
 	color: #111;
+	white-space: nowrap;
 }
 
 header form button:hover {
